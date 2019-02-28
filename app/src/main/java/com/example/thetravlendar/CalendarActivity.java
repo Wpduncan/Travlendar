@@ -1,11 +1,18 @@
 package com.example.thetravlendar;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.Toast;
@@ -28,6 +35,8 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         calendarView = findViewById(R.id.calendarView);
         calendarView.showCurrentMonthPage();
 
@@ -65,6 +74,37 @@ public class CalendarActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_calendar, menu);
+        final SearchView searchView = (SearchView) MenuItemCompat
+                .getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_account_settings:
+                Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
+                        .show();
+                Intent intent = new Intent(this, AccountSettingsActivity.class);
+                startActivity(intent);
+                break;
+            // action with ID action_settings was selected
+            case R.id.action_search:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 
     private void addNote() {

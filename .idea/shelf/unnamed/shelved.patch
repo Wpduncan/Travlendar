@@ -1,0 +1,160 @@
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.thetravlendar\">\r\n    <!--\r\n         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use\r\n         Google Maps Android API v2, but you must specify either coarse or fine\r\n         location permissions for the 'MyLocation' functionality.\r\n    -->\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n    <uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" /> <!-- To auto-complete the email text field in the login form with the user's emails -->\r\n    <uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />\r\n    <uses-permission android:name=\"android.permission.READ_PROFILE\" />\r\n    <uses-permission android:name=\"android.permission.READ_CONTACTS\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".AccountSettingsActivity\"></activity>\r\n        <activity android:name=\".ResetPasswordActivity\" />\r\n        <activity android:name=\".SignupActivity\" />\r\n        <!--\r\n             The API key for Google Maps-based APIs is defined as a string resource.\r\n             (See the file \"res/values/google_maps_api.xml\").\r\n             Note that the API key is linked to the encryption key used to sign the APK.\r\n             You need a different API key for each encryption key, including the release key that is used to\r\n             sign the APK for publishing.\r\n             You can define the keys for the debug and release targets in src/debug/ and src/release/.\r\n        -->\r\n        <meta-data\r\n            android:name=\"com.google.android.geo.API_KEY\"\r\n            android:value=\"@string/google_maps_key\" />\r\n\r\n        <activity\r\n            android:name=\".MapsActivity\"\r\n            android:label=\"@string/title_activity_maps\">\r\n            <meta-data\r\n                android:name=\"android.support.PARENT_ACTIVITY\"\r\n                android:value=\"com.example.thetravlendar.LoginActivity\" />\r\n        </activity>\r\n        <activity\r\n            android:name=\".LoginActivity\"\r\n            android:label=\"@string/app_name\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <activity android:name=\".CalendarActivity\">\r\n        </activity>\r\n        <activity android:name=\".AddEventActivity\"\r\n            android:parentActivityName=\".CalendarActivity\">\r\n            <meta-data\r\n                android:name=\"android.support.PARENT_ACTIVITY\"\r\n                android:value=\".CalendarActivity\"\r\n                />\r\n        </activity>\r\n        <activity android:name=\".ViewEventActivity\"\r\n            android:parentActivityName=\".CalendarActivity\">\r\n            <meta-data\r\n                android:name=\"android.support.PARENT_ACTIVITY\"\r\n                android:value=\".CalendarActivity\"/>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision efea855534f8c4d31c59039745b5a418bf79099d)
++++ app/src/main/AndroidManifest.xml	(date 1551328644876)
+@@ -50,7 +50,8 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+-        <activity android:name=".CalendarActivity">
++        <activity android:name=".CalendarActivity"
++            android:theme="@style/AppTheme">
+         </activity>
+         <activity android:name=".AddEventActivity"
+             android:parentActivityName=".CalendarActivity">
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\n\r\n\r\nandroid {\r\n    compileSdkVersion 28\r\n    defaultConfig {\r\n        applicationId \"com.example.thetravlendar\"\r\n        minSdkVersion 15\r\n        targetSdkVersion 28\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        testInstrumentationRunner \"android.support.test.runner.AndroidJUnitRunner\"\r\n        vectorDrawables.useSupportLibrary = true\r\n    }\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation 'com.android.support:appcompat-v7:28.0.0'\r\n    implementation 'com.google.firebase:firebase-auth:16.1.0'\r\n    implementation 'com.google.android.gms:play-services-auth:16.0.1'\r\n    implementation 'com.google.firebase:firebase-core:16.0.7'\r\n    implementation 'com.android.support:design:28.0.0'\r\n    implementation 'com.google.android.gms:play-services-maps:16.1.0'\r\n    implementation 'com.android.support.constraint:constraint-layout:1.1.3'\r\n    implementation 'com.applandeo:material-calendar-view:1.5.1'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'com.android.support.test:runner:1.0.2'\r\n    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'\r\n}\r\n\r\napply plugin: 'com.google.gms.google-services'
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision efea855534f8c4d31c59039745b5a418bf79099d)
++++ app/build.gradle	(date 1551328112204)
+@@ -27,6 +27,7 @@
+ dependencies {
+     implementation fileTree(dir: 'libs', include: ['*.jar'])
+     implementation 'com.android.support:appcompat-v7:28.0.0'
++    implementation 'com.android.support:support-v4:28.0.0'
+     implementation 'com.google.firebase:firebase-auth:16.1.0'
+     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+     implementation 'com.google.firebase:firebase-core:16.0.7'
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n\r\n    <!-- Base application theme. -->\r\n    <style name=\"AppTheme\" parent=\"Theme.AppCompat.Light.DarkActionBar\">\r\n        <!-- Customize your theme here. -->\r\n        <item name=\"colorPrimary\">@color/colorPrimary</item>\r\n        <item name=\"colorPrimaryDark\">@color/colorPrimaryDark</item>\r\n        <item name=\"colorAccent\">@color/colorAccent</item>\r\n    </style>\r\n\r\n    <style name=\"AppTheme.AppBarOverlay\"></style>\r\n\r\n    <style name=\"AppTheme.PopupOverlay\"></style>\r\n\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(revision efea855534f8c4d31c59039745b5a418bf79099d)
++++ app/src/main/res/values/styles.xml	(date 1551326130037)
+@@ -7,7 +7,9 @@
+         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+         <item name="colorAccent">@color/colorAccent</item>
+     </style>
+-
++    <style name="CalendarBar">
++        <item name="android:background">@color/colorPrimary</item>
++    </style>
+     <style name="AppTheme.AppBarOverlay"></style>
+ 
+     <style name="AppTheme.PopupOverlay"></style>
+Index: app/src/main/res/layout/activity_calendar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".CalendarActivity\">\r\n\r\n    <com.applandeo.materialcalendarview.CalendarView\r\n        android:id=\"@+id/calendarView\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"0dp\"\r\n        app:headerColor=\"@color/colorPrimary\"\r\n        app:selectionColor=\"@color/colorPrimary\"\r\n        app:selectionLabelColor=\"@color/colorPrimary\"\r\n        app:abbreviationsLabelsColor=\"@color/colorPrimary\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintLeft_toLeftOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"/>\r\n\r\n    <android.support.design.widget.FloatingActionButton\r\n        android:id=\"@+id/fab\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_margin=\"16dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:srcCompat=\"@drawable/ic_add_24dp\"\r\n        app:rippleColor=\"@color/colorPrimary\"/>\r\n\r\n</android.support.constraint.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_calendar.xml	(revision efea855534f8c4d31c59039745b5a418bf79099d)
++++ app/src/main/res/layout/activity_calendar.xml	(date 1551328689147)
+@@ -6,6 +6,14 @@
+     android:layout_height="match_parent"
+     tools:context=".CalendarActivity">
+ 
++    <android.support.v7.widget.Toolbar
++        android:id="@+id/my_toolbar"
++        android:layout_width="match_parent"
++        android:layout_height="?attr/actionBarSize"
++        style="@style/CalendarBar"
++
++        android:elevation="4dp"
++        />
+     <com.applandeo.materialcalendarview.CalendarView
+         android:id="@+id/calendarView"
+         android:layout_width="0dp"
+Index: app/src/main/java/com/example/thetravlendar/CalendarActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.thetravlendar;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Parcel;\r\nimport android.os.Parcelable;\r\nimport android.support.v7.app.AppCompatActivity;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.support.design.widget.FloatingActionButton;\r\nimport android.widget.Toast;\r\n\r\nimport com.applandeo.materialcalendarview.CalendarView;\r\nimport com.applandeo.materialcalendarview.EventDay;\r\nimport com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;\r\nimport com.applandeo.materialcalendarview.listeners.OnDayClickListener;\r\nimport java.util.ArrayList;\r\nimport java.util.Calendar;\r\nimport java.util.List;\r\n\r\npublic class CalendarActivity extends AppCompatActivity {\r\n    public static final String RESULT = \"result\";\r\n    public static final String EVENT = \"event\";\r\n    private static final int ADD_NOTE = 44;\r\n    private CalendarView calendarView;\r\n    private List<EventDay> eventDays = new ArrayList<>();\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_calendar);\r\n        calendarView = findViewById(R.id.calendarView);\r\n        calendarView.showCurrentMonthPage();\r\n\r\n\r\n        FloatingActionButton fab = findViewById(R.id.fab);\r\n        fab.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Log.d(\"testing\", \"onClick\");\r\n                addNote();\r\n            }\r\n        });\r\n\r\n        calendarView.setOnDayClickListener(new OnDayClickListener() {\r\n            @Override\r\n            public void onDayClick(EventDay eventDay) {\r\n                Log.d(\"testing\", \"onDayClick\");\r\n                previewNote(eventDay);\r\n            }\r\n        });\r\n    }\r\n\r\n    @Override\r\n    protected void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n        if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {\r\n            MyEventDay myEventDay = data.getParcelableExtra(RESULT);\r\n            try {\r\n                calendarView.setDate(myEventDay.getCalendar());\r\n                eventDays.add(myEventDay);\r\n                calendarView.setEvents(eventDays);\r\n            } catch (OutOfDateRangeException exception) {\r\n\r\n                Toast.makeText(getApplicationContext(),\r\n                        \"Date is out of range\",\r\n                        Toast.LENGTH_LONG).show();\r\n            }\r\n        }\r\n    }\r\n\r\n    private void addNote() {\r\n        Intent intent = new Intent(this, AddEventActivity.class);\r\n        Log.d(\"testing\", \"add note\");\r\n        startActivityForResult(intent, ADD_NOTE);\r\n        Log.d(\"testing\", \"add note - after exec\");\r\n    }\r\n\r\n    private void previewNote(EventDay eventDay) {\r\n        Intent intent = new Intent(this, ViewEventActivity.class);\r\n        Log.d(\"testing\", \"previewNote\");\r\n        if(eventDay instanceof MyEventDay){\r\n            intent.putExtra(EVENT, (MyEventDay) eventDay);\r\n        }\r\n        startActivity(intent);\r\n    }\r\n}\r\n\r\nclass MyEventDay extends EventDay implements Parcelable {\r\n    private int imageResource;\r\n    private String mNote;\r\n\r\n    public MyEventDay(Calendar day, int imageResource, String note) {\r\n        super(day, imageResource);\r\n        mNote = note;\r\n    }\r\n    String getNote() {\r\n        return mNote;\r\n    }\r\n    public int getImageResource() { return imageResource;}\r\n    //    mImageResource = imageResource;\r\n    //    mNote = note;\r\n\r\n\r\n    private MyEventDay(Parcel in) {\r\n        super((Calendar) in.readSerializable(), in.readInt());\r\n        mNote = in.readString();\r\n        //    mImageResource = in.readInt();\r\n        //    mNote = in.readString();\r\n    }\r\n\r\n    public static final Creator<MyEventDay> CREATOR = new Creator<MyEventDay>() {\r\n        @Override\r\n        public MyEventDay createFromParcel(Parcel in) {\r\n            return new MyEventDay(in);\r\n        }\r\n\r\n        @Override\r\n        public MyEventDay[] newArray(int size) {\r\n            return new MyEventDay[size];\r\n        }\r\n    };\r\n\r\n    @Override\r\n    public int describeContents() {\r\n        return 0;\r\n    }\r\n\r\n    @Override\r\n    public void writeToParcel(Parcel dest, int flags) {\r\n        dest.writeSerializable(getCalendar());\r\n        dest.writeInt(getImageResource());\r\n        dest.writeString(mNote);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/thetravlendar/CalendarActivity.java	(revision efea855534f8c4d31c59039745b5a418bf79099d)
++++ app/src/main/java/com/example/thetravlendar/CalendarActivity.java	(date 1551328024582)
+@@ -1,14 +1,20 @@
+ package com.example.thetravlendar;
+ 
++import android.app.SearchManager;
+ import android.content.Intent;
+ import android.os.Parcel;
+ import android.os.Parcelable;
++import android.support.v4.view.MenuItemCompat;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
++import android.support.v7.widget.SearchView;
+ import android.util.Log;
++import android.view.Menu;
++import android.view.MenuItem;
+ import android.view.View;
+ import android.support.design.widget.FloatingActionButton;
+ import android.widget.Toast;
++import android.support.v7.widget.Toolbar;
+ 
+ import com.applandeo.materialcalendarview.CalendarView;
+ import com.applandeo.materialcalendarview.EventDay;
+@@ -24,10 +30,14 @@
+     private static final int ADD_NOTE = 44;
+     private CalendarView calendarView;
+     private List<EventDay> eventDays = new ArrayList<>();
++
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_calendar);
++        Toolbar calendarToolBar = findViewById(R.id.calendarHeader);
++        setSupportActionBar(calendarToolBar);
+         calendarView = findViewById(R.id.calendarView);
+         calendarView.showCurrentMonthPage();
+ 
+@@ -82,6 +92,34 @@
+         }
+         startActivity(intent);
+     }
++    @Override
++    public boolean onCreateOptionsMenu(Menu menu) {
++        // Inflate the menu; this adds items to the action bar if it is present.
++        getMenuInflater().inflate(R.menu.menu_calendar, menu);
++        final SearchView searchView = (SearchView) MenuItemCompat
++                .getActionView(menu.findItem(R.id.action_search));
++        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
++        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
++        return true;
++    }
++
++    @Override
++    public boolean onOptionsItemSelected(MenuItem item) {
++        // Handle action bar item clicks here. The action bar will
++        // automatically handle clicks on the Home/Up button, so long
++        // as you specify a parent activity in AndroidManifest.xml.
++        int id = item.getItemId();
++
++        //noinspection SimplifiableIfStatement
++        if (id == R.id.action_account_settings) {
++            Toast.makeText(CalendarActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
++            Intent intent = new Intent(this, AccountSettingsActivity.class);
++            startActivity(intent);
++            return true;
++        }
++
++        return super.onOptionsItemSelected(item);
++    }
+ }
+ 
+ class MyEventDay extends EventDay implements Parcelable {

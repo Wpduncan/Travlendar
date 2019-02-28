@@ -30,4 +30,7 @@
     <string name="forgot_password_msg">We just need your registered Email Id to send you password reset instructions.</string>
     <string name="prompt_password" />
     <string name="title_activity_maps">Map</string>
+
+
+    <string name="action_account_settings">Account Settings</string>
 </resources>
