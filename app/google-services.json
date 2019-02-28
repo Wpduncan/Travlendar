@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "23072461476",
+    "firebase_url": "https://the-travlendar.firebaseio.com",
+    "project_id": "the-travlendar",
+    "storage_bucket": "the-travlendar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23072461476:android:15b54101472ad1cb",
+        "android_client_info": {
+          "package_name": "com.example.thetravlendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23072461476-at1hibpgdficplk6c5fiom1q4gidncno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thetravlendar",
+            "certificate_hash": "737ff2b976a69951ba495cd82032225dd7d38e63"
+          }
+        },
+        {
+          "client_id": "23072461476-2gfnnl3q7i5hckcl6ddl2up1uorj3k71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZgAZYz2nkF6TQhciOZwW6LJOpAh0xegg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23072461476-2gfnnl3q7i5hckcl6ddl2up1uorj3k71.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
