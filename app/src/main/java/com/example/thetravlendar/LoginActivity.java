@@ -3,11 +3,8 @@ package com.example.thetravlendar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            //startActivity(new Intent(LoginActivity.this, AccountSettingsActivity.class));
+            startActivity(new Intent(LoginActivity.this, CalendarActivity.class));
             finish();
         }
 
@@ -129,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, AccountSettingsActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -170,7 +168,8 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            //Intent intent = new Intent(getApplicationContext(), AccountSettingsActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
                             startActivity(intent);
                             finish();
                             Toast.makeText(getApplicationContext(), "User Logged in Successfully", Toast.LENGTH_SHORT).show();
