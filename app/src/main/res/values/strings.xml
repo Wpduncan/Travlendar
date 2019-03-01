@@ -39,6 +39,9 @@
     <string name="event_name">Event Name</string>
     <string name="event_date">Event Date</string>
     <string name="event_location">Event Location</string>
+    <string name="event_start_time">Event Start Time</string>
+    <string name="event_end_time">Event End Time</string>
+    <string name="event_note">Note</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
