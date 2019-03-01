@@ -33,4 +33,13 @@
 
 
     <string name="action_account_settings">Account Settings</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- Add Event Strings -->
+    <string name="event_name">Event Name</string>
+    <string name="event_date">Event Date</string>
+    <string name="event_location">Event Location</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_add_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_add_note">
+    android:orientation="vertical">
 
-    <com.applandeo.materialcalendarview.CalendarView
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_toolbar" />
+
+    <!--<com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/datePicker"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="370dp"
+        app:abbreviationsLabelsColor="@color/colorPrimary"
         app:datePicker="true"
         app:headerColor="@color/colorPrimary"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:selectionColor="@color/colorAccent"
+        app:selectionColor="@color/colorPrimary"
         app:todayLabelColor="@color/colorPrimaryDark" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/addEventButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/noteEditText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_margin="8dp"
         android:background="@null"
@@ -40,5 +32,80 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/datePicker" />
+    -->
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/event_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/event_name"
+                    android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/white" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/event_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/event_date"
+                    android:inputType="date"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/white" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/event_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/event_location"
+                    android:inputType="textPostalAddress"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/white" />
+            </android.support.design.widget.TextInputLayout>
+            <TimePicker
+                android:id="@+id/event_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                    
+
+            </TimePicker>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/addEventButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+</LinearLayout>
