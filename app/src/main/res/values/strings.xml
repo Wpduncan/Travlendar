@@ -48,6 +48,7 @@
 
     <!-- Dialog Strings -->
     <string name="time_picker_title">Select Time</string>
+    <string name="date_picker_title">Select Date</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
