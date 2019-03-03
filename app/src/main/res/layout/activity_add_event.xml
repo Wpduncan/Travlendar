@@ -69,6 +69,8 @@
                     android:hint="@string/event_date"
                     android:autofillHints="@string/event_date_auto"
                     android:inputType="date"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/white" />
             </android.support.design.widget.TextInputLayout>

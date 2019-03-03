@@ -21,19 +21,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-
-
 import com.applandeo.materialcalendarview.CalendarView;
-
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
+
 public class AddEventActivity extends AppCompatActivity implements
-        StartTimePickerFragment.TimeDialogListener, EndTimePickerFragment.TimeDialogListener{
+        DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
+        EndTimePickerFragment.TimeDialogListener {
 
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
+    private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     Button button;
     EditText editEventName;
     EditText editEventDate;
@@ -41,7 +39,6 @@ public class AddEventActivity extends AppCompatActivity implements
     EditText editEventStart;
     EditText editEventEnd;
     EditText editEventNote;
-    String time_input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +47,7 @@ public class AddEventActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_add_event);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //final CalendarView datePicker = findViewById(R.id.datePicker);
-        //final EditText noteEditText = findViewById(R.id.noteEditText);
+
         button = findViewById(R.id.addEventButton);
         editEventName = findViewById(R.id.event_name);
         editEventDate = findViewById(R.id.event_date);
@@ -61,9 +57,6 @@ public class AddEventActivity extends AppCompatActivity implements
         editEventEnd = findViewById(R.id.event_end_time);
         //editEventEnd.setOnClickListener(this);
         editEventNote = findViewById(R.id.event_note);
-
-
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +73,14 @@ public class AddEventActivity extends AppCompatActivity implements
                 finish();
             }
 
+        });
+
+        editEventDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(getSupportFragmentManager(), DIALOG_DATE);
+            }
         });
 
         editEventStart.setOnClickListener(new View.OnClickListener() {
@@ -100,16 +101,20 @@ public class AddEventActivity extends AppCompatActivity implements
     }
     
     public String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String hireDate = sdf.format(date);
         return hireDate;
     }
 
+    public void onFinishDateDialog(Date date){
+        editEventDate.setText(formatDate(date));
+    }
     @Override
     public void onFinishStartDialog(String time) {
         Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
         editEventStart.setText(time);
     }
+    @Override
     public void onFinishEndDialog(String time) {
         Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
         editEventEnd.setText(time);
