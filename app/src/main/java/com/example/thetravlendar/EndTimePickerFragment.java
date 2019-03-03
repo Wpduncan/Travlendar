@@ -1,19 +1,21 @@
 package com.example.thetravlendar;
 
 import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
-public class TimePickerFragment extends DialogFragment  {
+
+
+
+
+public class EndTimePickerFragment extends DialogFragment {
 
     private TimePicker timePicker;
     public interface TimeDialogListener {
-        void onFinishDialog(String time);
+        void onFinishEndDialog(String time);
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -40,8 +42,8 @@ public class TimePickerFragment extends DialogFragment  {
                                 }else{
                                     minute = timePicker.getCurrentMinute();
                                 }
-                                TimeDialogListener activity = (TimeDialogListener) getActivity();
-                                activity.onFinishDialog(updateTime(hour,minute));
+                                EndTimePickerFragment.TimeDialogListener activity = (EndTimePickerFragment.TimeDialogListener) getActivity();
+                                activity.onFinishEndDialog(updateTime(hour,minute));
                                 dismiss();
                             }
                         })
@@ -74,3 +76,4 @@ public class TimePickerFragment extends DialogFragment  {
         return myTime;
     }
 }
+

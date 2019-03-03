@@ -30,7 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddEventActivity extends AppCompatActivity implements TimePickerFragment.TimeDialogListener{
+public class AddEventActivity extends AppCompatActivity implements
+        StartTimePickerFragment.TimeDialogListener, EndTimePickerFragment.TimeDialogListener{
 
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     Button button;
@@ -40,6 +41,8 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerFra
     EditText editEventStart;
     EditText editEventEnd;
     EditText editEventNote;
+    String time_input;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +57,13 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerFra
         editEventDate = findViewById(R.id.event_date);
         editEventLocation = findViewById(R.id.event_location);
         editEventStart = findViewById(R.id.event_start_time);
+        //editEventStart.setOnClickListener(this);
         editEventEnd = findViewById(R.id.event_end_time);
+        //editEventEnd.setOnClickListener(this);
         editEventNote = findViewById(R.id.event_note);
+
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,20 +81,19 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerFra
             }
 
         });
-/////////////////////////////////////////////////////////////////////////////////////////////////
-        //editEventStart.setInputType(InputType.TYPE_NULL);
+
         editEventStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerFragment dialog = new TimePickerFragment();
+                StartTimePickerFragment dialog = new StartTimePickerFragment();
                 dialog.show(getSupportFragmentManager(),DIALOG_TIME);
             }
         });
-        //editEventEnd.setInputType(InputType.TYPE_NULL);
+
         editEventEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerFragment dialog = new TimePickerFragment();
+                EndTimePickerFragment dialog = new EndTimePickerFragment();
                 dialog.show(getSupportFragmentManager(),DIALOG_TIME);
             }
         });
@@ -99,11 +106,15 @@ public class AddEventActivity extends AppCompatActivity implements TimePickerFra
     }
 
     @Override
-    public void onFinishDialog(String time) {
+    public void onFinishStartDialog(String time) {
         Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
         editEventStart.setText(time);
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onFinishEndDialog(String time) {
+        Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
+        editEventEnd.setText(time);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
