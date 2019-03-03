@@ -98,13 +98,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/event_start_time"
-
-                    android:onClick="setStartTime"
-
                     android:inputType="time"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/white"
-                    android:focusable="false"/>
+                    android:textColorHint="@android:color/white" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -119,6 +117,8 @@
                     android:hint="@string/event_end_time"
                     android:autofillHints="@string/event_time_auto"
                     android:inputType="time"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/white" />
             </android.support.design.widget.TextInputLayout>
