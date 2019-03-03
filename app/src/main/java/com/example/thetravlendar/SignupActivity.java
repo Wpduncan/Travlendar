@@ -109,7 +109,7 @@ public class SignupActivity extends AppCompatActivity {
 
         writeNewUser(user.getUid(), username, user.getEmail());
 
-        startActivity(new Intent(SignupActivity.this, AccountSettingsActivity.class));
+        startActivity(new Intent(SignupActivity.this, CalendarActivity.class));
         finish();
     }
 
