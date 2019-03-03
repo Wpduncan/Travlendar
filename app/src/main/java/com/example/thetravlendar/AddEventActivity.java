@@ -2,12 +2,16 @@ package com.example.thetravlendar;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,11 +19,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+
 
 import com.applandeo.materialcalendarview.CalendarView;
 
-public class AddEventActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class AddEventActivity extends AppCompatActivity implements TimePickerFragment.TimeDialogListener{
+
+    private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
+    Button button;
+    EditText editEventName;
+    EditText editEventDate;
+    EditText editEventLocation;
+    EditText editEventStart;
+    EditText editEventEnd;
+    EditText editEventNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +48,14 @@ public class AddEventActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //final CalendarView datePicker = findViewById(R.id.datePicker);
-        Button button = findViewById(R.id.addEventButton);
         //final EditText noteEditText = findViewById(R.id.noteEditText);
+        button = findViewById(R.id.addEventButton);
+        editEventName = findViewById(R.id.event_name);
+        editEventDate = findViewById(R.id.event_date);
+        editEventLocation = findViewById(R.id.event_location);
+        editEventStart = findViewById(R.id.event_start_time);
+        editEventEnd = findViewById(R.id.event_end_time);
+        editEventNote = findViewById(R.id.event_note);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,8 +71,39 @@ public class AddEventActivity extends AppCompatActivity {
                 Log.d("testing", "myevent after");
                 finish();
             }
+
+        });
+/////////////////////////////////////////////////////////////////////////////////////////////////
+        //editEventStart.setInputType(InputType.TYPE_NULL);
+        editEventStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment dialog = new TimePickerFragment();
+                dialog.show(getSupportFragmentManager(),DIALOG_TIME);
+            }
+        });
+        //editEventEnd.setInputType(InputType.TYPE_NULL);
+        editEventEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment dialog = new TimePickerFragment();
+                dialog.show(getSupportFragmentManager(),DIALOG_TIME);
+            }
         });
     }
+    
+    public String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String hireDate = sdf.format(date);
+        return hireDate;
+    }
+
+    @Override
+    public void onFinishDialog(String time) {
+        Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
+        editEventStart.setText(time);
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -78,4 +135,8 @@ public class AddEventActivity extends AppCompatActivity {
 
         return true;
     }
+
+
 }
+
+

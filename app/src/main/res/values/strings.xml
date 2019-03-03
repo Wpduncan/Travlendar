@@ -38,10 +38,16 @@
     <!-- Add Event Strings -->
     <string name="event_name">Event Name</string>
     <string name="event_date">Event Date</string>
+    <string name="event_date_auto">mm-dd-yyyy</string>
     <string name="event_location">Event Location</string>
     <string name="event_start_time">Event Start Time</string>
     <string name="event_end_time">Event End Time</string>
+    <string name="event_time_auto">HH:MMpm</string>
     <string name="event_note">Note</string>
+    <string name="event_save">Save Event</string>
+
+    <!-- Dialog Strings -->
+    <string name="time_picker_title">Select Time</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
