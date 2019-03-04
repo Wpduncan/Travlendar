@@ -37,6 +37,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+            }
+        });
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle(getString(R.string.app_name));
         //setSupportActionBar(toolbar);

@@ -7,9 +7,11 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ public class ViewEventActivity extends AppCompatActivity {
     Button btnEditEvent;
     Button btnDeleteEvent;
     Button btnSaveEvent;
+    Button btnAddNewEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,24 @@ public class ViewEventActivity extends AppCompatActivity {
         btnEditEvent = findViewById(R.id.editEventButton);
         btnDeleteEvent = findViewById(R.id.deleteEventButton);
         btnSaveEvent = findViewById(R.id.saveEventButton);
+        btnAddNewEvent = findViewById(R.id.addNewEventButton);
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+            }
+        });
+
+        btnAddNewEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ViewEventActivity.this,
+                        AddEventActivity.class));
+            }
+        });
 
         if (intent != null) {
             Object event = intent.getParcelableExtra(CalendarActivity.EVENT);
