@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Account Settings"
+        android:key="account_category"
+        android:textColor="@color/colorPreferenceCategory">
+
+        <EditTextPreference
+            android:title="View Account Info"
+            android:key="view_account_info"
+            android:summary="Press to View Account Information"/>
+        <EditTextPreference
+            android:title="Change Email Address"
+            android:key="change_email"
+            android:summary="Press to change Email Address"/>
+
+        <EditTextPreference
+            android:title="Change Password"
+            android:key="change_password"
+            android:summary="Press to change Password"/>
+
+        <EditTextPreference
+            android:title="Change Address"
+            android:key="change_address"
+            android:summary="Press to change Address"/>
+
+
+    </PreferenceCategory>
+
+    <!--
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="example_switch"
+        android:summary="@string/switch_summary"
+        android:title="@string/switch_title" />
+    -->
+    <PreferenceCategory
+        android:title="Notifications"
+        android:key="notification_category">
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="event_notification_switch"
+            android:summary="Turn Event Notifications On or Off"
+            android:title="Event Notifications" />
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="vibrate_notification_switch"
+            android:summary="Turn Vibrate On or Off for Event Notifications"
+            android:title="Vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Theme"
+        android:key="them_settings">
+        <ListPreference
+            android:key="@string/list_pref_font_color"
+            android:title="Font Color"
+            android:entries="@array/font_color_names_array"
+            android:entryValues="@array/font_color_values_array"
+            android:defaultValue="#dc143c"
+            android:summary="Choose Font Color"/>
+
+        <ListPreference
+            android:key="@string/list_pref_font_size"
+            android:title="Font Size"
+            android:entries="@array/font_size_names_array"
+            android:entryValues="@array/font_size_values_array"
+            android:defaultValue="24dp"
+            android:summary="Choose Font Size"/>
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="theme_switch"
+            android:summary="Turn Dark Them on or off"
+            android:title="Dark Theme" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Map Settings"
+        android:key="map_settings">
+
+        <ListPreference
+            android:key="@string/list_pref_mode_of_trans"
+            android:title="Modes of Transportation"
+            android:entries="@array/mode_of_trans_names_array"
+            android:entryValues="@array/mode_of_trans_values_array"
+            android:defaultValue="Car"
+            android:summary="Choose your preferred mode of transportation" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Calendar Settings"
+        android:key="calendar_settings">
+        <EditTextPreference
+            android:title="Import Calendar"
+            android:key="import_calendar"
+            android:summary="Press for import options"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
