@@ -28,16 +28,21 @@ import java.util.Date;
 
 public class AddEventActivity extends AppCompatActivity implements
         DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
-        EndTimePickerFragment.TimeDialogListener {
+        EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
 
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
+    private static final String DIALOG_MOD = "AddEventActivity.";
     Button button;
     EditText editEventName;
     EditText editEventDate;
-    EditText editEventLocation;
     EditText editEventStart;
     EditText editEventEnd;
+    EditText editEventAddress;
+    EditText editEventCity;
+    EditText editEventState;
+    EditText editEventZipCode;
+    EditText editEventMOD;
     EditText editEventNote;
 
     @Override
@@ -51,12 +56,15 @@ public class AddEventActivity extends AppCompatActivity implements
         button = findViewById(R.id.addEventButton);
         editEventName = findViewById(R.id.event_name);
         editEventDate = findViewById(R.id.event_date);
-        editEventLocation = findViewById(R.id.event_location);
         editEventStart = findViewById(R.id.event_start_time);
-        //editEventStart.setOnClickListener(this);
         editEventEnd = findViewById(R.id.event_end_time);
-        //editEventEnd.setOnClickListener(this);
+        editEventAddress = findViewById(R.id.event_address);
+        editEventCity = findViewById(R.id.event_city);
+        editEventState = findViewById(R.id.event_state);
+        editEventZipCode = findViewById(R.id.event_zip_code);
+        editEventMOD = findViewById(R.id.event_mod);
         editEventNote = findViewById(R.id.event_note);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +106,14 @@ public class AddEventActivity extends AppCompatActivity implements
                 dialog.show(getSupportFragmentManager(),DIALOG_TIME);
             }
         });
+
+        editEventMOD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ModeOfTransportationFragment dialog = new ModeOfTransportationFragment();
+                dialog.show(getSupportFragmentManager(), DIALOG_MOD);
+            }
+        });
     }
     
     public String formatDate(Date date) {
@@ -105,7 +121,11 @@ public class AddEventActivity extends AppCompatActivity implements
         String hireDate = sdf.format(date);
         return hireDate;
     }
-
+    @Override
+    public void onFinishMODDialog(String mod){
+        editEventMOD.setText(mod);
+    }
+    @Override
     public void onFinishDateDialog(Date date){
         editEventDate.setText(formatDate(date));
     }
