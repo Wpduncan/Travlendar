@@ -58,6 +58,21 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
 
+    <!-- View Event Strings -->
+    <string name="view_event_name">View Event Name</string>
+    <string name="view_event_date">View Event Date</string>
+    <string name="view_event_start_time">View Event Start Time</string>
+    <string name="view_event_end_time">View Event End Time</string>
+    <string name="view_event_address">View Event Address</string>
+    <string name="view_event_city">View Event City</string>
+    <string name="view_event_state">View Event State</string>
+    <string name="view_event_zip">View Event Zip Code</string>
+    <string name="view_event_mod">View Event MOD</string>
+    <string name="view_event_note">View Event Note</string>
+    <string name="edit_event_btn">Edit</string>
+    <string name="delete_event_btn">Delete</string>
+    <string name="save_event_btn">Save</string>
+
     <!--MOD Array-->
     <string-array name="MOD_array">
         <item>Walk</item>
