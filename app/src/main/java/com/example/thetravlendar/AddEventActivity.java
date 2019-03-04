@@ -1,17 +1,12 @@
 package com.example.thetravlendar;
 
-import android.app.Activity;
 import android.app.SearchManager;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +14,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
+<<<<<<< HEAD
 import com.applandeo.materialcalendarview.CalendarView;
+=======
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+>>>>>>> Winton
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,7 +35,9 @@ public class AddEventActivity extends AppCompatActivity implements
         DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
         EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
 
+    private static final String TAG = "AddToDatabase";
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
+<<<<<<< HEAD
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
     Button button;
@@ -44,6 +51,19 @@ public class AddEventActivity extends AppCompatActivity implements
     EditText editEventZipCode;
     EditText editEventMOD;
     EditText editEventNote;
+=======
+    Button saveEvent;
+    EditText mEventName;
+    EditText mEventDate;
+    EditText mEventLocation;
+    EditText mEventStart;
+    EditText mEventEnd;
+    EditText mEventNote;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
+>>>>>>> Winton
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +72,7 @@ public class AddEventActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_add_event);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+<<<<<<< HEAD
 
         button = findViewById(R.id.addEventButton);
         editEventName = findViewById(R.id.event_name);
@@ -67,22 +88,50 @@ public class AddEventActivity extends AppCompatActivity implements
 
 
         button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("testing", "addNote - onclick");
-                Intent returnIntent = new Intent();
+=======
+        //final CalendarView datePicker = findViewById(R.id.datePicker);
+        //final EditText noteEditText = findViewById(R.id.noteEditText);
+        saveEvent = findViewById(R.id.addEventButton);
+        mEventName = findViewById(R.id.event_name);
+        mEventDate = findViewById(R.id.event_date);
+        mEventLocation = findViewById(R.id.event_location);
+        mEventStart = findViewById(R.id.event_start_time);
+        mEventEnd = findViewById(R.id.event_end_time);
+        mEventNote = findViewById(R.id.event_note);
 
-                //MyEventDay myEventDay = new MyEventDay(datePicker.getSelectedDate(),
-                //        R.drawable.ic_message_24dp, noteEditText.getText().toString());
-                Log.d("testing", "myevent call");
-                //returnIntent.putExtra(CalendarActivity.RESULT, myEventDay);
-                setResult(Activity.RESULT_OK, returnIntent);
-                Log.d("testing", "myevent after");
-                finish();
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef =  mFirebaseDatabase.getReference();
+
+        /*mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if(user != null) {
+                toastMessage("Successfully signed in with: " + user.getEmail());
+            }
+            else {
+                toastMessage("Successfully signed out.");
+            }
+        };*/
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+>>>>>>> Winton
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Value is: " + value);
             }
 
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
         });
 
+<<<<<<< HEAD
         editEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,14 +141,47 @@ public class AddEventActivity extends AppCompatActivity implements
         });
 
         editEventStart.setOnClickListener(new View.OnClickListener() {
+=======
+        /*
+        saveEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: attempting to add object to database.");
+                String eventDate = mEventDate.getText().toString();
+                String eventName = mEventName.getText().toString();
+                String eventLocation = mEventLocation.getText().toString();
+                String eventStart = mEventStart.getText().toString();
+                String eventEnd = mEventEnd.getText().toString();
+                String eventNote = mEventNote.getText().toString();
+
+                if (!(eventDate.equals("")) && !(eventName.equals("")) &&
+                    !(eventStart.equals(""))){
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    DatabaseReference userRef = myRef.child("users");
+                    String key = userRef.push().getKey();
+                    myRef.child(key).push({
+                            event_date: eventDate,
+
+                    })
+                }
+            }
+
+        });*/
+/////////////////////////////////////////////////////////////////////////////////////////////////
+        mEventStart.setOnClickListener(new View.OnClickListener() {
+>>>>>>> Winton
             @Override
             public void onClick(View v) {
                 StartTimePickerFragment dialog = new StartTimePickerFragment();
                 dialog.show(getSupportFragmentManager(),DIALOG_TIME);
             }
         });
+<<<<<<< HEAD
 
         editEventEnd.setOnClickListener(new View.OnClickListener() {
+=======
+        mEventEnd.setOnClickListener(new View.OnClickListener() {
+>>>>>>> Winton
             @Override
             public void onClick(View v) {
                 EndTimePickerFragment dialog = new EndTimePickerFragment();
@@ -132,7 +214,7 @@ public class AddEventActivity extends AppCompatActivity implements
     @Override
     public void onFinishStartDialog(String time) {
         Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
-        editEventStart.setText(time);
+        mEventStart.setText(time);
     }
     @Override
     public void onFinishEndDialog(String time) {
@@ -171,6 +253,10 @@ public class AddEventActivity extends AppCompatActivity implements
 
         return true;
     }
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
 
 
 }

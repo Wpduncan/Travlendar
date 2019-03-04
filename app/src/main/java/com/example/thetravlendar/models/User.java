@@ -1,4 +1,4 @@
-package com.example.thetravlendar;
+package com.example.thetravlendar.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
