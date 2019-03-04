@@ -86,6 +86,14 @@ public class AddEventActivity extends AppCompatActivity implements
         editEventMOD = findViewById(R.id.event_mod);
         editEventNote = findViewById(R.id.event_note);
 
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+            }
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
 =======

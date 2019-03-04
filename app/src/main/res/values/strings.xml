@@ -72,6 +72,7 @@
     <string name="edit_event_btn">Edit</string>
     <string name="delete_event_btn">Delete</string>
     <string name="save_event_btn">Save</string>
+    <string name="add_new_event_btn">Add New Event</string>
 
     <!--MOD Array-->
     <string-array name="MOD_array">
