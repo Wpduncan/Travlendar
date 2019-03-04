@@ -28,10 +28,15 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:abbreviationsLabelsColor="@color/colorPrimary"
-        app:headerColor="@color/colorPrimary"
-        app:selectionColor="@color/colorPrimary"
-        app:selectionLabelColor="@color/colorPrimary" />
+        app:headerColor="#00b8d4"
+        app:abbreviationsBarColor="#62ebff"
+        app:abbreviationsLabelsColor="#212121"
+        app:selectionColor="#ffffff"
+        app:selectionLabelColor="#ffffff"
+        app:pagesColor="#00b8d4"
+        app:daysLabelsColor="#212121"
+        app:todayLabelColor="#ffffff"
+        />
 
 
     <android.support.design.widget.FloatingActionButton
