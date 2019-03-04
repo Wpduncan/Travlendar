@@ -66,6 +66,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
             MyEventDay myEventDay = data.getParcelableExtra(RESULT);
+            AddEventActivity mAddEvent;
             try {
                 calendarView.setDate(myEventDay.getCalendar());
                 eventDays.add(myEventDay);

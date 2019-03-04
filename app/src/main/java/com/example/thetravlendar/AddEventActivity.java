@@ -1,17 +1,12 @@
 package com.example.thetravlendar;
 
-import android.app.Activity;
 import android.app.SearchManager;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.applandeo.materialcalendarview.CalendarView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +33,7 @@ public class AddEventActivity extends AppCompatActivity implements
         DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
         EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
 
+    private static final String TAG = "AddToDatabase";
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
@@ -44,6 +48,11 @@ public class AddEventActivity extends AppCompatActivity implements
     EditText editEventZipCode;
     EditText editEventMOD;
     EditText editEventNote;
+
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,10 @@ public class AddEventActivity extends AppCompatActivity implements
         editEventMOD = findViewById(R.id.event_mod);
         editEventNote = findViewById(R.id.event_note);
 
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef =  mFirebaseDatabase.getReference();
+
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -73,24 +86,6 @@ public class AddEventActivity extends AppCompatActivity implements
                 startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
             }
         });
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("testing", "addNote - onclick");
-                Intent returnIntent = new Intent();
-
-                //MyEventDay myEventDay = new MyEventDay(datePicker.getSelectedDate(),
-                //        R.drawable.ic_message_24dp, noteEditText.getText().toString());
-                Log.d("testing", "myevent call");
-                //returnIntent.putExtra(CalendarActivity.RESULT, myEventDay);
-                setResult(Activity.RESULT_OK, returnIntent);
-                Log.d("testing", "myevent after");
-                finish();
-            }
-
-        });
-
         editEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,6 +174,10 @@ public class AddEventActivity extends AppCompatActivity implements
 
         return true;
     }
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
 
 
 }
