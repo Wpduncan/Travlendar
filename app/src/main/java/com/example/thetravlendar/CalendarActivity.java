@@ -65,7 +65,7 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
-            //MyEventDay myEventDay = data.getParcelableExtra(RESULT);
+            MyEventDay myEventDay = data.getParcelableExtra(RESULT);
             AddEventActivity mAddEvent;
             try {
                 calendarView.setDate(myEventDay.getCalendar());
@@ -127,7 +127,7 @@ public class CalendarActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
-/*
+
 class MyEventDay extends EventDay implements Parcelable {
     private int imageResource;
     private String mNote;
@@ -175,4 +175,3 @@ class MyEventDay extends EventDay implements Parcelable {
         dest.writeString(mNote);
     }
 }
-*/
