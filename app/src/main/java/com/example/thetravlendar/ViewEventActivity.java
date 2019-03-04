@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,21 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ViewEventActivity extends AppCompatActivity {
+
+    EditText editViewEventName;
+    EditText editViewEventDate;
+    EditText editViewEventStartTime;
+    EditText editViewEventEndTime;
+    EditText editViewEventAddress;
+    EditText editViewEventCity;
+    EditText editViewEventState;
+    EditText editViewEventZipCode;
+    EditText editViewEventMOD;
+    EditText editViewEventNote;
+    Button btnEditEvent;
+    Button btnDeleteEvent;
+    Button btnSaveEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +45,19 @@ public class ViewEventActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
 
-        TextView note = findViewById(R.id.event);
+        editViewEventName = findViewById(R.id.view_event_name);
+        editViewEventDate = findViewById(R.id.view_event_date);
+        editViewEventStartTime = findViewById(R.id.view_event_start_time);
+        editViewEventEndTime = findViewById(R.id.view_event_end_time);
+        editViewEventAddress = findViewById(R.id.view_event_address);
+        editViewEventCity = findViewById(R.id.view_event_city);
+        editViewEventState = findViewById(R.id.view_event_state);
+        editViewEventZipCode = findViewById(R.id.view_event_zip_code);
+        editViewEventMOD = findViewById(R.id.view_event_mod);
+        editViewEventNote = findViewById(R.id.view_event_note);
+        btnEditEvent = findViewById(R.id.editEventButton);
+        btnDeleteEvent = findViewById(R.id.deleteEventButton);
+        btnSaveEvent = findViewById(R.id.saveEventButton);
 
         if (intent != null) {
             Object event = intent.getParcelableExtra(CalendarActivity.EVENT);
@@ -36,8 +65,8 @@ public class ViewEventActivity extends AppCompatActivity {
             if(event instanceof MyEventDay){
                 MyEventDay myEventDay = (MyEventDay)event;
 
-                getSupportActionBar().setTitle(getFormattedDate(myEventDay.getCalendar().getTime()));
-                note.setText(myEventDay.getNote());
+                //getSupportActionBar().setTitle(getFormattedDate(myEventDay.getCalendar().getTime()));
+                //note.setText(myEventDay.getNote());
 
                 return;
             }
