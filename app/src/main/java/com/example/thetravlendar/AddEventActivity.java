@@ -1,6 +1,7 @@
 package com.example.thetravlendar;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +14,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.thetravlendar.models.Events;
@@ -32,6 +36,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.thetravlendar.models.Utility.hideKeyboard;
+
 
 public class AddEventActivity extends AppCompatActivity implements
         DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
@@ -42,6 +48,7 @@ public class AddEventActivity extends AppCompatActivity implements
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
+    LinearLayout layout;
     Button buttonSaveEvent;
     EditText editEventName;
     EditText editEventDate;
@@ -78,12 +85,21 @@ public class AddEventActivity extends AppCompatActivity implements
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        layout = (LinearLayout) findViewById(R.id.act_add_event);
 
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+            }
+        });
+
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard(v,getApplicationContext());
+                return false;
             }
         });
         editEventDate.setOnClickListener(new View.OnClickListener() {
@@ -247,6 +263,7 @@ public class AddEventActivity extends AppCompatActivity implements
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
+
 
 
 

@@ -1,16 +1,21 @@
 package com.example.thetravlendar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.thetravlendar.models.Utility;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,12 +32,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static Context instance;
     private EditText inputEmail, inputPassword;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
     SignInButton btnGoogle;
     GoogleSignInClient mGoogleSignInClient;
+    CoordinatorLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +56,14 @@ public class LoginActivity extends AppCompatActivity {
 
         // set the view now
         setContentView(R.layout.activity_login);
-
+        layout = findViewById(R.id.act_login);
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Utility.hideKeyboard(v,getApplicationContext());
+                return false;
+            }
+        });
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -186,4 +200,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+
 }

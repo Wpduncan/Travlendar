@@ -11,14 +11,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
 
+import com.example.thetravlendar.models.Utility;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +52,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     Button btnDeleteEvent;
     Button btnSaveEvent;
     Button btnAddNewEvent;
+    private LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +76,16 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         btnDeleteEvent = findViewById(R.id.deleteEventButton);
         btnSaveEvent = findViewById(R.id.saveEventButton);
         btnAddNewEvent = findViewById(R.id.addNewEventButton);
-
+        layout = findViewById(R.id.act_view_event);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
-
+        layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Utility.hideKeyboard(v,getApplicationContext());
+                return false;
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
