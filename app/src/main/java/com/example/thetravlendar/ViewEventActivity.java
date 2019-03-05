@@ -92,7 +92,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             }
         });
 
-        if (intent != null) {
+        /*if (intent != null) {
             Object event = intent.getParcelableExtra(CalendarActivity.EVENT);
 
             if(event instanceof MyEventDay){
@@ -108,7 +108,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
                 EventDay eventDay = (EventDay)event;
                 getSupportActionBar().setTitle(getFormattedDate(eventDay.getCalendar().getTime()));
             }
-        }
+        }*/
     }
 
     public static String getFormattedDate(Date date) {
