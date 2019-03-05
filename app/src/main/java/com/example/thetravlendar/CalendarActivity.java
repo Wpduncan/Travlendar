@@ -22,9 +22,12 @@ import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.example.thetravlendar.models.Events;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 public class CalendarActivity extends AppCompatActivity {
     public static final String RESULT = "result";
@@ -120,6 +123,8 @@ public class CalendarActivity extends AppCompatActivity {
 
     private void previewNote(EventDay eventDay) {
         Intent intent = new Intent(this, ViewEventActivity.class);
+        Events events;
+        //Map<String, Object> eventValues = events.toMap();
         Log.d("testing", "previewNote");
         if(eventDay instanceof MyEventDay){
             intent.putExtra(EVENT, (MyEventDay) eventDay);

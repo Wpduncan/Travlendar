@@ -14,13 +14,13 @@ public class Events {
     public String eDate;
     public String eStartTime;
     public String eEndTime;
+    public String eAddress;
     public String eCity;
     public String eState;
     public String eZip;
     public String eMod;
     public String eNote;
-    public int eventCount = 0;
-    public Map<String, Boolean> event = new HashMap<>();
+    //public Map<String, Boolean> event = new HashMap<>();
 
     public Events(){
 
@@ -33,13 +33,14 @@ public class Events {
     }
 
     public Events(String eUid, String eName, String eDate, String eStartTime,
-                  String eEndTime, String eCity, String eState, String eZip,
-                  String eMod, String eNote){
+                  String eEndTime, String eAddress, String eCity, String eState,
+                  String eZip, String eMod, String eNote){
         this.eUid = eUid;
         this.eName = eName;
         this.eDate = eDate;
         this.eStartTime = eStartTime;
         this.eEndTime = eEndTime;
+        this.eAddress = eAddress;
         this.eCity = eCity;
         this.eState = eState;
         this.eZip = eZip;
@@ -55,12 +56,13 @@ public class Events {
         result.put("date", eDate);
         result.put("start time", eStartTime);
         result.put("end time", eEndTime);
+        result.put("address", eAddress);
         result.put("city", eCity);
         result.put("state", eState);
         result.put("zip", eZip);
         result.put("mode of transportation", eMod);
         result.put("note", eNote);
-        result.put("events", event);
+        //result.put("events", event);
 
         return result;
     }

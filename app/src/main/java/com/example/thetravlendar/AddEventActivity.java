@@ -3,10 +3,12 @@ package com.example.thetravlendar;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,17 +18,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.applandeo.materialcalendarview.CalendarView;
-
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.thetravlendar.models.Events;
+import com.example.thetravlendar.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AddEventActivity extends AppCompatActivity implements
@@ -34,10 +38,11 @@ public class AddEventActivity extends AppCompatActivity implements
         EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
 
     private static final String TAG = "AddToDatabase";
+    private static final String REQUIRED = "Required";
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
-    Button button;
+    Button buttonSaveEvent;
     EditText editEventName;
     EditText editEventDate;
     EditText editEventStart;
@@ -49,10 +54,7 @@ public class AddEventActivity extends AppCompatActivity implements
     EditText editEventMOD;
     EditText editEventNote;
 
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mFirebaseDatabase;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class AddEventActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        button = findViewById(R.id.addEventButton);
+        buttonSaveEvent = findViewById(R.id.addEventButton);
         editEventName = findViewById(R.id.event_name);
         editEventDate = findViewById(R.id.event_date);
         editEventStart = findViewById(R.id.event_start_time);
@@ -74,9 +76,7 @@ public class AddEventActivity extends AppCompatActivity implements
         editEventMOD = findViewById(R.id.event_mod);
         editEventNote = findViewById(R.id.event_note);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef =  mFirebaseDatabase.getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
@@ -117,8 +117,78 @@ public class AddEventActivity extends AppCompatActivity implements
                 dialog.show(getSupportFragmentManager(), DIALOG_MOD);
             }
         });
+
+        buttonSaveEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitEvent();
+            }
+        });
     }
-    
+
+    private void submitEvent() {
+        final String name = editEventName.getText().toString();
+        final String date = editEventDate.getText().toString();
+        final String startTime = editEventStart.getText().toString();
+        final String endTime = editEventEnd.getText().toString();
+        final String address = editEventAddress.getText().toString();
+        final String city = editEventCity.getText().toString();
+        final String state = editEventState.getText().toString();
+        final String zip = editEventZipCode.getText().toString();
+        final String mod = editEventMOD.getText().toString();
+        final String note = editEventNote.getText().toString();
+
+        if (TextUtils.isEmpty(name)){
+            editEventName.setError(REQUIRED);
+            return;
+        }
+
+        if(TextUtils.isEmpty(date)){
+            editEventDate.setError(REQUIRED);
+            return;
+        }
+
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+
+                        if (user == null) {
+                            Log.e(TAG, "User " + userId + " is unexpectedly null");
+                            Toast.makeText(AddEventActivity.this,"Error: could not fetch user.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            writeNewEvent(userId, name,date,startTime,endTime, address,
+                                    city,state,zip,mod,note);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
+    private void writeNewEvent(String userId, String name, String date, String startTime,
+                               String endTime, String address, String city,
+                               String state, String zip, String mod, String note) {
+        String key = mDatabase.child("events").push().getKey();
+        Events events = new Events(userId, name, date, startTime, endTime, address, city,
+                state, zip, mod, note);
+        Map<String, Object> eventValues = events.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        //childUpdates.put("/events/" + key + "/", eventValues);
+        childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
+
+        mDatabase.updateChildren(childUpdates);
+    }
+
     public String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String hireDate = sdf.format(date);

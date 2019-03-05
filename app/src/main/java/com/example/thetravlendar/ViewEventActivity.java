@@ -19,11 +19,21 @@ import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import com.example.thetravlendar.models.Events;
+import com.example.thetravlendar.models.User;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ViewEventActivity extends AppCompatActivity {
+public class ViewEventActivity extends AppCompatActivity {//implements View.OnClickListener{
 
     EditText editViewEventName;
     EditText editViewEventDate;
@@ -64,6 +74,8 @@ public class ViewEventActivity extends AppCompatActivity {
         btnAddNewEvent = findViewById(R.id.addNewEventButton);
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
