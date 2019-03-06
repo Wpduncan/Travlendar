@@ -188,6 +188,7 @@ public class AddEventActivity extends AppCompatActivity implements
                     }
                 }
         );
+        startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
     }
 
     private void writeNewEvent(String userId, String name, String date, String startTime,
