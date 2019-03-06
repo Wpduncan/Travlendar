@@ -42,6 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         calendarView = findViewById(R.id.calendarView);
+
         calendarView.showCurrentMonthPage();
 
 
