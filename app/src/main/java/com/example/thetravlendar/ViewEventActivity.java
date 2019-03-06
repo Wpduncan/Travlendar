@@ -38,6 +38,8 @@ import java.util.Locale;
 
 public class ViewEventActivity extends AppCompatActivity {//implements View.OnClickListener{
 
+    public static final String EXTRA_EVENT_KEY = "event_key";
+
     EditText editViewEventName;
     EditText editViewEventDate;
     EditText editViewEventStartTime;
@@ -53,6 +55,9 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     Button btnSaveEvent;
     Button btnAddNewEvent;
     private LinearLayout layout;
+    private DatabaseReference mEventReference;
+    private ValueEventListener mEventListener;
+    private String mEventKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +65,13 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         setContentView(R.layout.activity_view_event);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Intent intent = getIntent();
 
+        mEventKey = getIntent().getStringExtra(EXTRA_EVENT_KEY);
+        if(mEventKey == null){
+            throw new IllegalArgumentException("Must pass EXTRA_EVENT_KEY");
+        }
+
+        //mEventReference = FirebaseDatabase.getInstance().getReference().child()
         editViewEventName = findViewById(R.id.view_event_name);
         editViewEventDate = findViewById(R.id.view_event_date);
         editViewEventStartTime = findViewById(R.id.view_event_start_time);

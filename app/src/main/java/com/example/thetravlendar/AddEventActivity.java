@@ -200,7 +200,7 @@ public class AddEventActivity extends AppCompatActivity implements
         Map<String, Object> eventValues = events.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        //childUpdates.put("/events/" + key + "/", eventValues);
+        childUpdates.put("/events/" + key + "/", eventValues);
         childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
 
         mDatabase.updateChildren(childUpdates);
