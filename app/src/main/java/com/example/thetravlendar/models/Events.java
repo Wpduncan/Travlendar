@@ -42,25 +42,6 @@ public class Events {
         this.eNote = eNote;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("eventID", eUid);
-        result.put("name", eName);
-        result.put("date", eDate);
-        result.put("start time", eStartTime);
-        result.put("end time", eEndTime);
-        result.put("address", eAddress);
-        result.put("city", eCity);
-        result.put("state", eState);
-        result.put("zip", eZip);
-        result.put("mode of transportation", eMod);
-        result.put("note", eNote);
-        //result.put("events", event);
-
-        return result;
-    }
-
     public String geteUid() {
         return eUid;
     }
