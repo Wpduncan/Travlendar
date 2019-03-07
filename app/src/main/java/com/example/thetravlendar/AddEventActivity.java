@@ -188,7 +188,7 @@ public class AddEventActivity extends AppCompatActivity implements
                     }
                 }
         );
-        startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
+        //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
     }
 
     private void writeNewEvent(String userId, String name, String date, String startTime,
@@ -200,7 +200,7 @@ public class AddEventActivity extends AppCompatActivity implements
         Map<String, Object> eventValues = events.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        //childUpdates.put("/events/" + key + "/", eventValues);
+        childUpdates.put("/events/" + userId + "/", eventValues);
         childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
 
         mDatabase.updateChildren(childUpdates);
