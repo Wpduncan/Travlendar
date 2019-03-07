@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.thetravlendar.models.Events;
 import com.example.thetravlendar.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -201,13 +203,36 @@ public class AddEventActivity extends AppCompatActivity implements
 
         Map<String, Object> childUpdates = new HashMap<>();
 <<<<<<< HEAD
+<<<<<<< HEAD
         childUpdates.put("/events/" + userId + "/", eventValues);
 =======
         childUpdates.put("/events/" + key + "/", eventValues);
 >>>>>>> master
         childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
+=======
+        childUpdates.put("/events/" + (userId + key) + "/", eventValues);
+        //childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
+>>>>>>> master
 
-        mDatabase.updateChildren(childUpdates);
+        mDatabase.updateChildren(childUpdates)
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    SendUserToCalendarActivity();
+                    Toast.makeText(AddEventActivity.this, "New event updated succesfully", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(AddEventActivity.this, "Error occurred while updating event", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void SendUserToCalendarActivity() {
+        Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);
+        startActivity(intent);
     }
 
     public String formatDate(Date date) {
