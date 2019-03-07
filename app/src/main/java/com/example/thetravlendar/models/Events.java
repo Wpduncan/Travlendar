@@ -1,132 +1,119 @@
 package com.example.thetravlendar.models;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.HashMap;
-import java.util.Map;
 
-@IgnoreExtraProperties
+
 public class Events {
 
-    public String eUid;
-    public String eName;
-    public String eDate;
-    public String eStartTime;
-    public String eEndTime;
-    public String eAddress;
-    public String eCity;
-    public String eState;
-    public String eZip;
-    public String eMod;
-    public String eNote;
+    public String uid;
+    public String name;
+    public String date;
+    public String start_time;
+    public String end_time;
+    public String address;
+    public String city;
+    public String state;
+    public String zip;
+    public String mode_of_transportation;
+    public String note;
     //public Map<String, Boolean> event = new HashMap<>();
 
     public Events(){
 
     }
 
-    public Events(String eUid, String eName, String eDate, String eStartTime,
-                  String eEndTime, String eAddress, String eCity, String eState,
-                  String eZip, String eMod, String eNote){
-        this.eUid = eUid;
-        this.eName = eName;
-        this.eDate = eDate;
-        this.eStartTime = eStartTime;
-        this.eEndTime = eEndTime;
-        this.eAddress = eAddress;
-        this.eCity = eCity;
-        this.eState = eState;
-        this.eZip = eZip;
-        this.eMod = eMod;
-        this.eNote = eNote;
+    public Events(String uid, String name, String start_time, String end_time){
+        this.name = name;
+        this.uid = uid;
+        this.start_time = start_time;
+        this.end_time = end_time;
     }
 
-    public String geteUid() {
-        return eUid;
+    public String getUid() {
+        return uid;
     }
 
-    public void seteUid(String eUid) {
-        this.eUid = eUid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String geteName() {
-        return eName;
+    public String getName() {
+        return name;
     }
 
-    public void seteName(String eName) {
-        this.eName = eName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String geteDate() {
-        return eDate;
+    public String getDate() {
+        return date;
     }
 
-    public void seteDate(String eDate) {
-        this.eDate = eDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String geteStartTime() {
-        return eStartTime;
+    public String getStart_time() {
+        return start_time;
     }
 
-    public void seteStartTime(String eStartTime) {
-        this.eStartTime = eStartTime;
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
     }
 
-    public String geteEndTime() {
-        return eEndTime;
+    public String getEnd_time() {
+        return end_time;
     }
 
-    public void seteEndTime(String eEndTime) {
-        this.eEndTime = eEndTime;
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
     }
 
-    public String geteAddress() {
-        return eAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void seteAddress(String eAddress) {
-        this.eAddress = eAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String geteCity() {
-        return eCity;
+    public String getCity() {
+        return city;
     }
 
-    public void seteCity(String eCity) {
-        this.eCity = eCity;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String geteState() {
-        return eState;
+    public String getState() {
+        return state;
     }
 
-    public void seteState(String eState) {
-        this.eState = eState;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String geteZip() {
-        return eZip;
+    public String getZip() {
+        return zip;
     }
 
-    public void seteZip(String eZip) {
-        this.eZip = eZip;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
-    public String geteMod() {
-        return eMod;
+    public String getMode_of_transportation() {
+        return mode_of_transportation;
     }
 
-    public void seteMod(String eMod) {
-        this.eMod = eMod;
+    public void setMode_of_transportation(String mode_of_transportation) {
+        this.mode_of_transportation = mode_of_transportation;
     }
 
-    public String geteNote() {
-        return eNote;
+    public String getNote() {
+        return note;
     }
 
-    public void seteNote(String eNote) {
-        this.eNote = eNote;
+    public void setNote(String note) {
+        this.note = note;
     }
 }

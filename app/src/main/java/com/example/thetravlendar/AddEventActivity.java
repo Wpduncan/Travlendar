@@ -187,13 +187,13 @@ public class  AddEventActivity extends AppCompatActivity implements
                     eventMap.put("uid", userId);
                     eventMap.put("name", name);
                     eventMap.put("date", date);
-                    eventMap.put("start time", startTime);
-                    eventMap.put("end time", endTime);
+                    eventMap.put("start_time", startTime);
+                    eventMap.put("end_time", endTime);
                     eventMap.put("address", address);
                     eventMap.put("city", city);
                     eventMap.put("state", state);
                     eventMap.put("zip", zip);
-                    eventMap.put("mode of transportation", mod);
+                    eventMap.put("mode_of_transportation", mod);
                     eventMap.put("note", note);
 
                     mEventRef.child((userId + eventRandom)).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
