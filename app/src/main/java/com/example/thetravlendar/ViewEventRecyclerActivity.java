@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static com.example.thetravlendar.R.layout.cardview_event;
+
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
 
@@ -57,6 +57,17 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                         EventsRef
                 )
         {
+            @NonNull
+            @Override
+            public EventsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                return null;
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull Events model) {
+
+            }
+
             @Override
             protected void populateViewHolder(EventsViewHolder viewHolder, Events model, int position){
 
@@ -83,7 +94,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             mView = itemView;
         }
 
-        public 
+        public
     }
 }
 
