@@ -123,7 +123,7 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void previewNote(EventDay eventDay) {
-        Intent intent = new Intent(this, ViewEventActivity.class);
+        Intent intent = new Intent(this, ViewEventRecyclerActivity.class);
         Events events;
         //Map<String, Object> eventValues = events.toMap();
         Log.d("testing", "previewNote");

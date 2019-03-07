@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.example.thetravlendar.models.Events;
@@ -37,13 +39,14 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         UserRef = FirebaseDatabase.getInstance().getReference().child("users");
 
-        myEvents = findViewById(R.id.rv);
+        myEvents = findViewById(R.id.recview);
         myEvents.setHasFixedSize(true);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         //linearLayoutManager.setReverseLayout(true);
         //linearLayoutManager.setStackFromEnd(true);
         myEvents.setLayoutManager(linearLayoutManager);
-
+        //linearLayoutManager.setStackFromEnd(true);
         DisplayAllEvents();
     }
 
@@ -57,32 +60,16 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                         EventsRef
                 )
         {
-            @NonNull
-            @Override
-            public EventsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                return null;
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull Events model) {
-
-            }
 
             @Override
             protected void populateViewHolder(EventsViewHolder viewHolder, Events model, int position){
-
+                viewHolder.seteName(model.geteName());
+                viewHolder.seteDate(model.geteDate());
+                viewHolder.seteStartTime(model.geteStartTime());
+                viewHolder.seteEndTime(model.geteEndTime());
             }
 
-            /*@Override
-            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull Events model) {
 
-            }
-
-            @NonNull
-            @Override
-            public EventsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                return null;
-            }*/
         };
         myEvents.setAdapter(firebaseRecyclerAdapter);
     }
@@ -94,7 +81,23 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             mView = itemView;
         }
 
-        public
+        public void seteName(String eventName){
+            TextView textEventName = mView.findViewById(R.id.cv_event_name);
+            //Log.e("Event " + eventName + " is unexp", TAG);
+            textEventName.setText(eventName);
+        }
+        public void seteDate(String eventDate) {
+            TextView textEventDate = mView.findViewById(R.id.cv_date);
+            textEventDate.setText(eventDate);
+        }
+        public void seteStartTime(String eventStart) {
+            TextView textEventStart = mView.findViewById(R.id.cv_start_time);
+            textEventStart.setText(eventStart);
+        }
+        public void seteEndTime(String eventEnd) {
+            TextView textEventEnd = mView.findViewById(R.id.cv_end_time);
+            textEventEnd.setText(eventEnd);
+        }
     }
 }
 
@@ -102,4 +105,4 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     /*public static class EventsViewHolder extends RecyclerView.ViewHolder {
 
     }
-}
+}*/
