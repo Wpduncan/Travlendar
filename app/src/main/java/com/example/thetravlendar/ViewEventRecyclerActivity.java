@@ -1,5 +1,6 @@
 package com.example.thetravlendar;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
 
+    private static final String TAG = "checking get event";
     private RecyclerView myEvents;
     private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
@@ -33,6 +35,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_view_event);
+
 
         mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
@@ -64,6 +67,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(EventsViewHolder viewHolder, Events model, int position){
                 viewHolder.seteName(model.geteName());
+                Log.e(TAG,"name = " + model.geteName() + "fuck"  );
                 viewHolder.seteDate(model.geteDate());
                 viewHolder.seteStartTime(model.geteStartTime());
                 viewHolder.seteEndTime(model.geteEndTime());

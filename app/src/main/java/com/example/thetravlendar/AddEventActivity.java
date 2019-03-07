@@ -41,7 +41,7 @@ import java.util.Map;
 import static com.example.thetravlendar.models.Utility.hideKeyboard;
 
 
-public class AddEventActivity extends AppCompatActivity implements
+public class  AddEventActivity extends AppCompatActivity implements
         DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
         EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
 
