@@ -1,7 +1,6 @@
 package com.example.thetravlendar;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +62,8 @@ public class  AddEventActivity extends AppCompatActivity implements
     EditText editEventMOD;
     EditText editEventNote;
 
-    private DatabaseReference mDatabase;
+    private DatabaseReference mUserRef, mEventRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,9 @@ public class  AddEventActivity extends AppCompatActivity implements
         editEventMOD = findViewById(R.id.event_mod);
         editEventNote = findViewById(R.id.event_note);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance().getReference();
+        mEventRef = FirebaseDatabase.getInstance().getReference().child("events");
 
         layout = (LinearLayout) findViewById(R.id.act_add_event);
 
@@ -156,70 +158,63 @@ public class  AddEventActivity extends AppCompatActivity implements
         final String mod = editEventMOD.getText().toString();
         final String note = editEventNote.getText().toString();
 
-        if (TextUtils.isEmpty(name)){
+        Calendar calfordDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
+        String saveCurrentDate = currentDate.format(calfordDate.getTime());
+
+        Calendar calfordTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
+        String saveCurrentTime = currentTime.format(calfordDate.getTime());
+
+        String eventRandom = saveCurrentDate + saveCurrentTime;
+
+        if (TextUtils.isEmpty(name)) {
             editEventName.setError(REQUIRED);
             return;
         }
 
-        if(TextUtils.isEmpty(date)){
+        if (TextUtils.isEmpty(date)) {
             editEventDate.setError(REQUIRED);
             return;
         }
 
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-
-                        if (user == null) {
-                            Log.e(TAG, "User " + userId + " is unexpectedly null");
-                            Toast.makeText(AddEventActivity.this,"Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            writeNewEvent(userId, name,date,startTime,endTime, address,
-                                    city,state,zip,mod,note);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                }
-        );
-        //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
-    }
-
-    private void writeNewEvent(String userId, String name, String date, String startTime,
-                               String endTime, String address, String city,
-                               String state, String zip, String mod, String note) {
-        String key = mDatabase.child("events").push().getKey();
-        Events events = new Events(userId, name, date, startTime, endTime, address, city,
-                state, zip, mod, note);
-        Map<String, Object> eventValues = events.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/events/" + (userId + key) + "/", eventValues);
-        //childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
-
-
-        mDatabase.updateChildren(childUpdates)
-        .addOnCompleteListener(new OnCompleteListener<Void>() {
+        mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    SendUserToCalendarActivity();
-                    Toast.makeText(AddEventActivity.this, "New event updated succesfully", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(AddEventActivity.this, "Error occurred while updating event", Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    HashMap eventMap = new HashMap();
+                    eventMap.put("uid", userId);
+                    eventMap.put("name", name);
+                    eventMap.put("date", date);
+                    eventMap.put("start time", startTime);
+                    eventMap.put("end time", endTime);
+                    eventMap.put("address", address);
+                    eventMap.put("city", city);
+                    eventMap.put("state", state);
+                    eventMap.put("zip", zip);
+                    eventMap.put("mode of transportation", mod);
+                    eventMap.put("note", note);
+
+                    mEventRef.child((userId + eventRandom)).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if (task.isSuccessful()) {
+                                SendUserToCalendarActivity();
+                                Toast.makeText(AddEventActivity.this, "new event updated.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(AddEventActivity.this, "error occurred updating event", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
-        });
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void SendUserToCalendarActivity() {
