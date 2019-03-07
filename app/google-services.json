@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "23072461476-at1hibpgdficplk6c5fiom1q4gidncno.apps.googleusercontent.com",
+          "client_id": "23072461476-2g9on8jrmastca2ad21dcsrt2ud5b76h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thetravlendar",
+            "certificate_hash": "e67b459e7fc0336d390164333d73ff39fc66e924"
+          }
+        },
+        {
+          "client_id": "23072461476-h9f2eqe673t25s1ld16o9k66k81bgeqb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.thetravlendar",
             "certificate_hash": "737ff2b976a69951ba495cd82032225dd7d38e63"
+          }
+        },
+        {
+          "client_id": "23072461476-snnbug6nikjvvh05pnvt86qhj358j2sm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thetravlendar",
+            "certificate_hash": "f397c42f20569a89931e19f1ea4c6eec243328bb"
           }
         },
         {
