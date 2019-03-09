@@ -50,7 +50,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         query = EventsRef;
 
         myEvents = findViewById(R.id.recview);
-        myEvents.setHasFixedSize(true);
+        //myEvents.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         //linearLayoutManager.setReverseLayout(true);
@@ -71,6 +71,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                     public Events parseSnapshot(@NonNull DataSnapshot snapshot) {
                         return new Events(snapshot.child("uid").getValue().toString(),
                                 snapshot.child("name").getValue().toString(),
+                                snapshot.child("date").getValue().toString(),
                                 snapshot.child("start_time").getValue().toString(),
                                 snapshot.child("end_time").getValue().toString());
                     }
@@ -90,10 +91,13 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull EventsViewHolder holder, final int position, @NonNull Events model) {
                 holder.setName(model.getName());
-                //Log.e(TAG,"name = " + model.getName() + " yikes"  );
+                Log.e(TAG,"name = " + model.getName() + " yikes"  );
                 holder.setDate(model.getDate());
+                Log.e(TAG,"date = " + model.getDate() + " yikes"  );
                 holder.setStart_Time(model.getStart_time());
+                Log.e(TAG,"start = " + model.getStart_time() + " yikes"  );
                 holder.setEnd_Time(model.getEnd_time());
+                Log.e(TAG,"end = " + model.getEnd_time() + " yikes"  );
             }
 
             /*@Override
@@ -121,9 +125,9 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             super(itemView);
 
             textEventName = itemView.findViewById(R.id.cv_event_name);
-            textEventDate = itemView.findViewById(R.id.cv_date);
-            textEventStart = itemView.findViewById(R.id.cv_start_time);
-            textEventEnd = itemView.findViewById(R.id.cv_end_time);
+            textEventDate = itemView.findViewById(R.id.cv_event_date);
+            textEventStart = itemView.findViewById(R.id.cv_event_start);
+            textEventEnd = itemView.findViewById(R.id.cv_event_end);
         }
 
         public void setName(String eventName){
