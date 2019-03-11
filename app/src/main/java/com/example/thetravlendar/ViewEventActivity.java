@@ -101,23 +101,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             }
         });
 
-        /*if (intent != null) {
-            Object event = intent.getParcelableExtra(CalendarActivity.EVENT);
 
-            if(event instanceof MyEventDay){
-                MyEventDay myEventDay = (MyEventDay)event;
-
-                //getSupportActionBar().setTitle(getFormattedDate(myEventDay.getCalendar().getTime()));
-                //note.setText(myEventDay.getNote());
-
-                return;
-            }
-
-            if(event instanceof EventDay){
-                EventDay eventDay = (EventDay)event;
-                getSupportActionBar().setTitle(getFormattedDate(eventDay.getCalendar().getTime()));
-            }
-        }*/
     }
 
     public static String getFormattedDate(Date date) {

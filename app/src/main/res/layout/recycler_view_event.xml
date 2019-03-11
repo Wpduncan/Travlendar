@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
         android:id="@+id/include"
         layout="@layout/activity_toolbar" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recview"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    </android.support.v7.widget.RecyclerView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_add_24dp"
+        app:layout_anchor="@id/recview"
+        app:layout_anchorGravity="bottom|right|end"
+        />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

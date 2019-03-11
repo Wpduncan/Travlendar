@@ -221,7 +221,7 @@ public class  AddEventActivity extends AppCompatActivity implements
     }
 
     public String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
         String hireDate = sdf.format(date);
         return hireDate;
     }

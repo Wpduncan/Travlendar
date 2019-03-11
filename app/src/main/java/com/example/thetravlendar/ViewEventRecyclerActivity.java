@@ -6,6 +6,8 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.thetravlendar.Utils.ScrollAwareFABBehavior;
 import com.example.thetravlendar.models.Events;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -40,6 +43,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
     private static final String TAG = "checking get event";
     private RecyclerView myEvents;
+    private FloatingActionButton fab;
     private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
     private String online_user_id;
@@ -54,7 +58,6 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
         EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
@@ -62,16 +65,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         query = EventsRef;
 
         myEvents = findViewById(R.id.recview);
-        //myEvents.setHasFixedSize(true);
-
+        fab = findViewById(R.id.fab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        //linearLayoutManager.setReverseLayout(true);
-        //linearLayoutManager.setStackFromEnd(true);
         myEvents.setLayoutManager(linearLayoutManager);
         myEvents.setHasFixedSize(true);
 
-        //linearLayoutManager.setStackFromEnd(true);
-        DisplayAllEvents();
+
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -80,6 +79,28 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
             }
         });
+
+        myEvents.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AddEventActivity.class));
+            }
+        });
+
+        DisplayAllEvents();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -151,14 +172,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 Log.e(TAG,"end = " + model.getEnd_time() + " yikes"  );
             }
 
-            /*@Override
-            protected void populateViewHolder(EventsViewHolder viewHolder, Events model, int position){
-                viewHolder.seteName(model.geteName());
-                Log.e(TAG,"name = " + model.geteName() + " yikes"  );
-                viewHolder.seteDate(model.geteDate());
-                viewHolder.seteStartTime(model.geteStartTime());
-                viewHolder.seteEndTime(model.geteEndTime());
-            }*/
+
 
 
         };
@@ -172,6 +186,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         public TextView textEventDate;
         public TextView textEventStart;
         public TextView textEventEnd;
+
         public EventsViewHolder(View itemView) {
             super(itemView);
 
