@@ -68,10 +68,10 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mEventKey = getIntent().getStringExtra(EXTRA_EVENT_KEY);
+        /*mEventKey = getIntent().getStringExtra(EXTRA_EVENT_KEY);
         if(mEventKey == null){
             throw new IllegalArgumentException("Must pass EXTRA_EVENT_KEY");
-        }
+        }*/
 
         mEventReference = FirebaseDatabase.getInstance().getReference().child("events").
                 child(mEventKey);

@@ -124,7 +124,11 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void previewNote(EventDay eventDay) {
+<<<<<<< HEAD
         Intent intent = new Intent (this, ViewEventActivity.class);
+=======
+        Intent intent = new Intent(this, ViewEventRecyclerActivity.class);
+>>>>>>> 3446619799970072f17517a0cfd03a974323042f
         Events events;
         //final DatabaseReference eventRef = getRef()
         //intent.putExtra(ViewEventActivity.EXTRA_EVENT_KEY, )

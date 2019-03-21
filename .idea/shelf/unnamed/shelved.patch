@@ -1,91 +1,39 @@
-Index: app/src/main/res/layout/activity_add_event.xml
+Index: .idea/runConfigurations.xml
+===================================================================
+--- .idea/runConfigurations.xml	(revision b0a9a20a8e160530015eeaaa1d00a2fcd3574557)
++++ .idea/runConfigurations.xml	(revision b0a9a20a8e160530015eeaaa1d00a2fcd3574557)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RunConfigurationProducerService">
+-    <option name="ignoredProducers">
+-      <set>
+-        <option value="org.jetbrains.plugins.gradle.execution.test.runner.AllInPackageGradleConfigurationProducer" />
+-        <option value="org.jetbrains.plugins.gradle.execution.test.runner.TestClassGradleConfigurationProducer" />
+-        <option value="org.jetbrains.plugins.gradle.execution.test.runner.TestMethodGradleConfigurationProducer" />
+-      </set>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: app/build.gradle
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:id=\"@+id/activity_add_event\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\">\r\n\r\n    <include\r\n        android:id=\"@+id/include\"\r\n        layout=\"@layout/activity_toolbar\" />\r\n\r\n    <!--<com.applandeo.materialcalendarview.CalendarView\r\n        android:id=\"@+id/datePicker\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"370dp\"\r\n        app:abbreviationsLabelsColor=\"@color/colorPrimary\"\r\n        app:datePicker=\"true\"\r\n        app:headerColor=\"@color/colorPrimary\"\r\n        app:selectionColor=\"@color/colorPrimary\"\r\n        app:todayLabelColor=\"@color/colorPrimaryDark\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/noteEditText\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"72dp\"\r\n        android:layout_margin=\"8dp\"\r\n        android:background=\"@null\"\r\n        android:gravity=\"top\"\r\n        android:hint=\"write\"\r\n        app:layout_constraintBottom_toTopOf=\"@id/addEventButton\"\r\n        app:layout_constraintLeft_toLeftOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@id/datePicker\" />\r\n    -->\r\n\r\n    <android.support.v4.widget.NestedScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\">\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"vertical\">\r\n\r\n            <android.support.design.widget.TextInputLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <EditText\r\n                    android:id=\"@+id/event_name\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginBottom=\"10dp\"\r\n                    android:hint=\"@string/event_name\"\r\n                    android:inputType=\"text\"\r\n                    android:textColor=\"@android:color/black\"\r\n                    android:textColorHint=\"@android:color/white\" />\r\n            </android.support.design.widget.TextInputLayout>\r\n\r\n            <android.support.design.widget.TextInputLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <EditText\r\n                    android:id=\"@+id/event_date\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginBottom=\"10dp\"\r\n                    android:hint=\"@string/event_date\"\r\n                    android:autofillHints=\"@string/event_date_auto\"\r\n                    android:inputType=\"date\"\r\n                    android:focusable=\"false\"\r\n                    android:focusableInTouchMode=\"false\"\r\n                    android:textColor=\"@android:color/black\"\r\n                    android:textColorHint=\"@android:color/white\" />\r\n            </android.support.design.widget.TextInputLayout>\r\n\r\n            <android.support.design.widget.TextInputLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <EditText\r\n                    android:id=\"@+id/event_location\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginBottom=\"10dp\"\r\n                    android:hint=\"@string/event_location\"\r\n                    android:inputType=\"textPostalAddress\"\r\n                    android:textColor=\"@android:color/black\"\r\n                    android:textColorHint=\"@android:color/white\" />\r\n            </android.support.design.widget.TextInputLayout>\r\n\r\n            <android.support.design.widget.TextInputLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <EditText\r\n                    android:id=\"@+id/event_start_time\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginBottom=\"10dp\"\r\n                    android:hint=\"@string/event_start_time\"\r\n                    android:inputType=\"time\"\r\n                    android:focusable=\"false\"\r\n                    android:focusableInTouchMode=\"false\"\r\n                    android:textColor=\"@android:color/black\"\r\n                    android:textColorHint=\"@android:color/white\" />\r\n            </android.support.design.widget.TextInputLayout>\r\n\r\n            <android.support.design.widget.TextInputLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <EditText\r\n                    android:id=\"@+id/event_end_time\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginBottom=\"10dp\"\r\n                    android:hint=\"@string/event_end_time\"\r\n                    android:autofillHints=\"@string/event_time_auto\"\r\n                    android:inputType=\"time\"\r\n                    android:focusable=\"false\"\r\n                    android:focusableInTouchMode=\"false\"\r\n                    android:textColor=\"@android:color/black\"\r\n                    android:textColorHint=\"@android:color/white\" />\r\n            </android.support.design.widget.TextInputLayout>\r\n\r\n            <android.support.design.widget.TextInputLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\">\r\n\r\n                <EditText\r\n                    android:id=\"@+id/event_note\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_marginBottom=\"10dp\"\r\n                    android:hint=\"@string/event_note\"\r\n                    android:inputType=\"textMultiLine\"\r\n                    android:textColor=\"@android:color/black\"\r\n                    android:textColorHint=\"@android:color/white\" />\r\n            </android.support.design.widget.TextInputLayout>\r\n\r\n        </LinearLayout>\r\n    </android.support.v4.widget.NestedScrollView>\r\n\r\n            <android.support.v7.widget.AppCompatButton\r\n                android:id=\"@+id/addEventButton\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"@string/event_save\"\r\n                android:textColor=\"@android:color/white\"\r\n                app:backgroundTint=\"@color/colorPrimaryDark\"\r\n                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                app:layout_constraintLeft_toLeftOf=\"parent\"\r\n                app:layout_constraintRight_toRightOf=\"parent\" />\r\n\r\n</LinearLayout>\r\n
+<+>apply plugin: 'com.android.application'\r\n\r\n\r\nandroid {\r\n    compileSdkVersion 28\r\n    defaultConfig {\r\n        applicationId \"com.example.thetravlendar\"\r\n        minSdkVersion 21\r\n        targetSdkVersion 28\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        testInstrumentationRunner \"android.support.test.runner.AndroidJUnitRunner\"\r\n        vectorDrawables.useSupportLibrary = true\r\n    }\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation 'com.android.support:appcompat-v7:28.0.0'\r\n    implementation 'com.google.firebase:firebase-auth:16.1.0'\r\n    implementation 'com.google.android.gms:play-services-auth:16.0.1'\r\n    implementation 'com.google.firebase:firebase-database:16.0.6'\r\n    implementation 'com.google.firebase:firebase-core:16.0.7'\r\n    implementation 'com.android.support:design:28.0.0'\r\n    implementation 'com.google.android.gms:play-services-maps:16.1.0'\r\n    implementation 'com.android.support.constraint:constraint-layout:1.1.3'\r\n    implementation 'com.applandeo:material-calendar-view:1.5.1'\r\n    implementation 'com.android.support:support-v4:28.0.0'\r\n    implementation 'com.github.Ibotta:Supported-Picker-Dialogs:1.0.0'\r\n    implementation 'com.firebaseui:firebase-ui-database:2.1.1'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'com.android.support.test:runner:1.0.2'\r\n    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'\r\n}\r\n\r\napply plugin: 'com.google.gms.google-services'\r\n
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- app/src/main/res/layout/activity_add_event.xml	(revision 9ea30b720b70f3725b2aafa785bc0f021c427142)
-+++ app/src/main/res/layout/activity_add_event.xml	(date 1551657575138)
-@@ -90,41 +90,49 @@
-                     android:textColorHint="@android:color/white" />
-             </android.support.design.widget.TextInputLayout>
- 
--            <android.support.design.widget.TextInputLayout
--                android:layout_width="match_parent"
--                android:layout_height="wrap_content">
-+            <LinearLayout
-+                android:layout_width="wrap_content"
-+                android:layout_height="wrap_content"
-+                android:orientation="horizontal">
-+
-+                <android.support.design.widget.TextInputLayout
-+                    android:layout_width="wrap_content"
-+                    android:layout_height="wrap_content"
-+                    android:layout_weight="1">
- 
--                <EditText
--                    android:id="@+id/event_start_time"
--                    android:layout_width="match_parent"
--                    android:layout_height="wrap_content"
--                    android:layout_marginBottom="10dp"
--                    android:hint="@string/event_start_time"
--                    android:inputType="time"
--                    android:focusable="false"
--                    android:focusableInTouchMode="false"
--                    android:textColor="@android:color/black"
--                    android:textColorHint="@android:color/white" />
--            </android.support.design.widget.TextInputLayout>
-+                    <EditText
-+                        android:id="@+id/event_start_time"
-+                        android:layout_width="wrap_content"
-+                        android:layout_height="wrap_content"
-+                        android:layout_marginBottom="10dp"
-+                        android:hint="@string/event_start_time"
-+                        android:inputType="time"
-+                        android:focusable="false"
-+                        android:focusableInTouchMode="false"
-+                        android:textColor="@android:color/black"
-+                        android:textColorHint="@android:color/white" />
-+                    
-+                </android.support.design.widget.TextInputLayout>
- 
--            <android.support.design.widget.TextInputLayout
--                android:layout_width="match_parent"
--                android:layout_height="wrap_content">
-+                <android.support.design.widget.TextInputLayout
-+                    android:layout_width="wrap_content"
-+                    android:layout_height="wrap_content"
-+                    android:layout_weight="1">
- 
--                <EditText
--                    android:id="@+id/event_end_time"
--                    android:layout_width="match_parent"
--                    android:layout_height="wrap_content"
--                    android:layout_marginBottom="10dp"
--                    android:hint="@string/event_end_time"
--                    android:autofillHints="@string/event_time_auto"
--                    android:inputType="time"
--                    android:focusable="false"
--                    android:focusableInTouchMode="false"
--                    android:textColor="@android:color/black"
--                    android:textColorHint="@android:color/white" />
--            </android.support.design.widget.TextInputLayout>
--
-+                    <EditText
-+                        android:id="@+id/event_end_time"
-+                        android:layout_width="wrap_content"
-+                        android:layout_height="wrap_content"
-+                        android:layout_marginBottom="10dp"
-+                        android:hint="@string/event_end_time"
-+                        android:autofillHints="@string/event_time_auto"
-+                        android:inputType="time"
-+                        android:focusable="false"
-+                        android:focusableInTouchMode="false"
-+                        android:textColor="@android:color/black"
-+                        android:textColorHint="@android:color/white" />
-+                </android.support.design.widget.TextInputLayout>
-+            </LinearLayout>
-             <android.support.design.widget.TextInputLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
+--- app/build.gradle	(revision b0a9a20a8e160530015eeaaa1d00a2fcd3574557)
++++ app/build.gradle	(date 1551933586681)
+@@ -27,9 +27,9 @@
+ dependencies {
+     implementation fileTree(dir: 'libs', include: ['*.jar'])
+     implementation 'com.android.support:appcompat-v7:28.0.0'
+-    implementation 'com.google.firebase:firebase-auth:16.1.0'
++    implementation 'com.google.firebase:firebase-auth:16.0.1'
+     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+-    implementation 'com.google.firebase:firebase-database:16.0.6'
++    implementation 'com.google.firebase:firebase-database:16.0.1'
+     implementation 'com.google.firebase:firebase-core:16.0.7'
+     implementation 'com.android.support:design:28.0.0'
+     implementation 'com.google.android.gms:play-services-maps:16.1.0'

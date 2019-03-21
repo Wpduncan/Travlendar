@@ -1,69 +1,119 @@
 package com.example.thetravlendar.models;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.HashMap;
-import java.util.Map;
 
-@IgnoreExtraProperties
+
 public class Events {
 
-    public String eUid;
-    public String eName;
-    public String eDate;
-    public String eStartTime;
-    public String eEndTime;
-    public String eAddress;
-    public String eCity;
-    public String eState;
-    public String eZip;
-    public String eMod;
-    public String eNote;
+    public String uid;
+    public String name;
+    public String date;
+    public String start_time;
+    public String end_time;
+    public String address;
+    public String city;
+    public String state;
+    public String zip;
+    public String mode_of_transportation;
+    public String note;
     //public Map<String, Boolean> event = new HashMap<>();
 
     public Events(){
 
     }
 
-    public Events(String eUid, String eName, String eDate){
-        this.eUid = eUid;
-        this.eName = eName;
-        this.eDate = eDate;
+    public Events(String uid, String name, String start_time, String end_time){
+        this.name = name;
+        this.uid = uid;
+        this.start_time = start_time;
+        this.end_time = end_time;
     }
 
-    public Events(String eUid, String eName, String eDate, String eStartTime,
-                  String eEndTime, String eAddress, String eCity, String eState,
-                  String eZip, String eMod, String eNote){
-        this.eUid = eUid;
-        this.eName = eName;
-        this.eDate = eDate;
-        this.eStartTime = eStartTime;
-        this.eEndTime = eEndTime;
-        this.eAddress = eAddress;
-        this.eCity = eCity;
-        this.eState = eState;
-        this.eZip = eZip;
-        this.eMod = eMod;
-        this.eNote = eNote;
+    public String getUid() {
+        return uid;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("eventID", eUid);
-        result.put("name", eName);
-        result.put("date", eDate);
-        result.put("start time", eStartTime);
-        result.put("end time", eEndTime);
-        result.put("address", eAddress);
-        result.put("city", eCity);
-        result.put("state", eState);
-        result.put("zip", eZip);
-        result.put("mode of transportation", eMod);
-        result.put("note", eNote);
-        //result.put("events", event);
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
-        return result;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getMode_of_transportation() {
+        return mode_of_transportation;
+    }
+
+    public void setMode_of_transportation(String mode_of_transportation) {
+        this.mode_of_transportation = mode_of_transportation;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
