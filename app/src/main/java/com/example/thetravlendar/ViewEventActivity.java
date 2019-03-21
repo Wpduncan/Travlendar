@@ -3,6 +3,7 @@ package com.example.thetravlendar;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -39,6 +40,7 @@ import java.util.Locale;
 public class ViewEventActivity extends AppCompatActivity {//implements View.OnClickListener{
 
     public static final String EXTRA_EVENT_KEY = "event_key";
+    public static final String TAG = "ViewEventActivity";
 
     EditText editViewEventName;
     EditText editViewEventDate;
@@ -71,7 +73,8 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             throw new IllegalArgumentException("Must pass EXTRA_EVENT_KEY");
         }
 
-        //mEventReference = FirebaseDatabase.getInstance().getReference().child()
+        mEventReference = FirebaseDatabase.getInstance().getReference().child("events").
+                child(mEventKey);
         editViewEventName = findViewById(R.id.view_event_name);
         editViewEventDate = findViewById(R.id.view_event_date);
         editViewEventStartTime = findViewById(R.id.view_event_start_time);
@@ -131,6 +134,45 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         }*/
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Events events = dataSnapshot.getValue(Events.class);
+
+                editViewEventName.setText(events.eName);
+                editViewEventDate.setText(events.eDate);
+                editViewEventStartTime.setText(events.eStartTime);
+                editViewEventEndTime.setText(events.eEndTime);
+                editViewEventAddress.setText(events.eAddress);
+                editViewEventCity.setText(events.eCity);
+                editViewEventState.setText(events.eState);
+                editViewEventZipCode.setText(events.eZip);
+                editViewEventMOD.setText(events.eMod);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "loadEvents:onCancelled", databaseError.toException());
+                Toast.makeText(ViewEventActivity.this, "Failed to load event.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+        mEventReference.addValueEventListener(eventListener);
+        mEventListener = eventListener;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if(mEventListener != null) {
+            mEventReference.removeEventListener(mEventListener);
+        }
+    }
     public static String getFormattedDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
         return simpleDateFormat.format(date);
