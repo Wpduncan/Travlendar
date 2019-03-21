@@ -50,6 +50,7 @@
     <string name="event_state">Event State</string>
     <string name="event_mod_click">Click for MOD</string>
     <string name="event_zipCode">Zip Code</string>
+    <string name="event_location">Location</string>
 
     <!-- Dialog Strings -->
     <string name="time_picker_title">Select Time</string>
