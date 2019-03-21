@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.thetravlendar.Utils.Utility.hideKeyboard;
 
@@ -206,26 +207,15 @@ public class  AddEventActivity extends AppCompatActivity implements
                         }
                     });
                 }
-<<<<<<< HEAD
-        );
         //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
     }
-=======
-            }
->>>>>>> 3446619799970072f17517a0cfd03a974323042f
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-<<<<<<< HEAD
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/events/" + userId + "/", eventValues);
-        childUpdates.put("/users/" + userId + "/" + "events/" + key + "/", eventValues);
-=======
             }
         });
     }
->>>>>>> 3446619799970072f17517a0cfd03a974323042f
 
     private void SendUserToCalendarActivity() {
         Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);

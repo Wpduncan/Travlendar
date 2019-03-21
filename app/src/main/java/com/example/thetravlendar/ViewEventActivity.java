@@ -8,6 +8,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.thetravlendar.Utils.Utility;
+import com.example.thetravlendar.models.Events;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -116,15 +121,15 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Events events = dataSnapshot.getValue(Events.class);
 
-                editViewEventName.setText(events.eName);
-                editViewEventDate.setText(events.eDate);
-                editViewEventStartTime.setText(events.eStartTime);
-                editViewEventEndTime.setText(events.eEndTime);
-                editViewEventAddress.setText(events.eAddress);
-                editViewEventCity.setText(events.eCity);
-                editViewEventState.setText(events.eState);
-                editViewEventZipCode.setText(events.eZip);
-                editViewEventMOD.setText(events.eMod);
+                editViewEventName.setText(events.name);
+                editViewEventDate.setText(events.date);
+                editViewEventStartTime.setText(events.start_time);
+                editViewEventEndTime.setText(events.end_time);
+                editViewEventAddress.setText(events.address);
+                editViewEventCity.setText(events.city);
+                editViewEventState.setText(events.state);
+                editViewEventZipCode.setText(events.zip);
+                editViewEventMOD.setText(events.mode_of_transportation);
             }
 
             @Override
