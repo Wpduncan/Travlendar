@@ -1,4 +1,4 @@
-package com.example.thetravlendar.models;
+package com.example.thetravlendar.Utils;
 
 import android.content.Context;
 import android.view.MotionEvent;

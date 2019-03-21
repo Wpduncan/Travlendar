@@ -20,8 +20,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.thetravlendar.models.Events;
-import com.example.thetravlendar.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -35,9 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
-import static com.example.thetravlendar.models.Utility.hideKeyboard;
+import static com.example.thetravlendar.Utils.Utility.hideKeyboard;
 
 
 public class  AddEventActivity extends AppCompatActivity implements
@@ -149,6 +146,7 @@ public class  AddEventActivity extends AppCompatActivity implements
     private void submitEvent() {
         final String name = editEventName.getText().toString();
         final String date = editEventDate.getText().toString();
+        System.out.println("Date = " + date);
         final String startTime = editEventStart.getText().toString();
         final String endTime = editEventEnd.getText().toString();
         final String address = editEventAddress.getText().toString();
@@ -235,7 +233,7 @@ public class  AddEventActivity extends AppCompatActivity implements
     }
 
     public String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
         String hireDate = sdf.format(date);
         return hireDate;
     }

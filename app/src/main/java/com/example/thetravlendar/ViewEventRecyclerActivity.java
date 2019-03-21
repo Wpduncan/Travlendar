@@ -1,21 +1,33 @@
 package com.example.thetravlendar;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.example.thetravlendar.Utils.ScrollAwareFABBehavior;
 import com.example.thetravlendar.models.Events;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -29,8 +41,10 @@ import com.google.firebase.database.Query;
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
 
+    private OnItemClickListener listener;
     private static final String TAG = "checking get event";
     private RecyclerView myEvents;
+    private FloatingActionButton fab;
     private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
     private String online_user_id;
@@ -42,6 +56,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_view_event);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
@@ -50,16 +66,73 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         query = EventsRef;
 
         myEvents = findViewById(R.id.recview);
-        myEvents.setHasFixedSize(true);
-
+        fab = findViewById(R.id.fab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        //linearLayoutManager.setReverseLayout(true);
-        //linearLayoutManager.setStackFromEnd(true);
         myEvents.setLayoutManager(linearLayoutManager);
         myEvents.setHasFixedSize(true);
 
-        //linearLayoutManager.setStackFromEnd(true);
+
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+            }
+        });
+
+        myEvents.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AddEventActivity.class));
+            }
+        });
+
         DisplayAllEvents();
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_calendar, menu);
+        final SearchView searchView = (SearchView) MenuItemCompat
+                .getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_account_settings:
+                Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
+                        .show();
+                Intent intent = new Intent(this, AccountSettingsActivity.class);
+                startActivity(intent);
+                break;
+            // action with ID action_settings was selected
+            case R.id.action_search:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 
     private void DisplayAllEvents() {
@@ -71,6 +144,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                     public Events parseSnapshot(@NonNull DataSnapshot snapshot) {
                         return new Events(snapshot.child("uid").getValue().toString(),
                                 snapshot.child("name").getValue().toString(),
+                                snapshot.child("date").getValue().toString(),
                                 snapshot.child("start_time").getValue().toString(),
                                 snapshot.child("end_time").getValue().toString());
                     }
@@ -90,20 +164,16 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull EventsViewHolder holder, final int position, @NonNull Events model) {
                 holder.setName(model.getName());
-                //Log.e(TAG,"name = " + model.getName() + " yikes"  );
+                Log.e(TAG,"name = " + model.getName() + " yikes"  );
                 holder.setDate(model.getDate());
+                Log.e(TAG,"date = " + model.getDate() + " yikes"  );
                 holder.setStart_Time(model.getStart_time());
+                Log.e(TAG,"start = " + model.getStart_time() + " yikes"  );
                 holder.setEnd_Time(model.getEnd_time());
+                Log.e(TAG,"end = " + model.getEnd_time() + " yikes"  );
             }
 
-            /*@Override
-            protected void populateViewHolder(EventsViewHolder viewHolder, Events model, int position){
-                viewHolder.seteName(model.geteName());
-                Log.e(TAG,"name = " + model.geteName() + " yikes"  );
-                viewHolder.seteDate(model.geteDate());
-                viewHolder.seteStartTime(model.geteStartTime());
-                viewHolder.seteEndTime(model.geteEndTime());
-            }*/
+
 
 
         };
@@ -111,19 +181,30 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     }
 
 
-    public static class EventsViewHolder extends RecyclerView.ViewHolder {
+    public class EventsViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textEventName;
         public TextView textEventDate;
         public TextView textEventStart;
         public TextView textEventEnd;
+
         public EventsViewHolder(View itemView) {
             super(itemView);
 
             textEventName = itemView.findViewById(R.id.cv_event_name);
-            textEventDate = itemView.findViewById(R.id.cv_date);
-            textEventStart = itemView.findViewById(R.id.cv_start_time);
-            textEventEnd = itemView.findViewById(R.id.cv_end_time);
+            textEventDate = itemView.findViewById(R.id.cv_event_date);
+            textEventStart = itemView.findViewById(R.id.cv_event_start);
+            textEventEnd = itemView.findViewById(R.id.cv_event_end);
+
+            /*itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(FirebaseDatabase.getInstance().getReference().child(position));
+                    }
+                }
+            });*/
         }
 
         public void setName(String eventName){
@@ -143,6 +224,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
             textEventEnd.setText(eventEnd);
         }
+    }
+    public interface OnItemClickListener {
+        void onItemClicked(DataSnapshot dataSnapshot, int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
     @Override
     protected void onStart() {

@@ -8,7 +8,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,21 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applandeo.materialcalendarview.EventDay;
-
-import com.example.thetravlendar.models.Utility;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.thetravlendar.Utils.Utility;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import com.example.thetravlendar.models.Events;
-import com.example.thetravlendar.models.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -115,23 +104,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             }
         });
 
-        /*if (intent != null) {
-            Object event = intent.getParcelableExtra(CalendarActivity.EVENT);
 
-            if(event instanceof MyEventDay){
-                MyEventDay myEventDay = (MyEventDay)event;
-
-                //getSupportActionBar().setTitle(getFormattedDate(myEventDay.getCalendar().getTime()));
-                //note.setText(myEventDay.getNote());
-
-                return;
-            }
-
-            if(event instanceof EventDay){
-                EventDay eventDay = (EventDay)event;
-                getSupportActionBar().setTitle(getFormattedDate(eventDay.getCalendar().getTime()));
-            }
-        }*/
     }
 
     @Override

@@ -22,9 +22,10 @@ public class Events {
 
     }
 
-    public Events(String uid, String name, String start_time, String end_time){
+    public Events(String uid, String name, String date, String start_time, String end_time){
         this.name = name;
         this.uid = uid;
+        this.date = date;
         this.start_time = start_time;
         this.end_time = end_time;
     }
