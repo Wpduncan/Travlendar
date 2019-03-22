@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.thetravlendar.Utils.Utility;
 import com.example.thetravlendar.models.Events;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,9 +53,10 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     Button btnSaveEvent;
     Button btnAddNewEvent;
     private LinearLayout layout;
-    private DatabaseReference mEventReference;
+    private DatabaseReference ViewEventReference;
+    private FirebaseAuth mAuth;
     private ValueEventListener mEventListener;
-    private String mEventKey;
+    private String EventKey, currentUserID, databaseUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +65,11 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*mEventKey = getIntent().getStringExtra(EXTRA_EVENT_KEY);
-        if(mEventKey == null){
-            throw new IllegalArgumentException("Must pass EXTRA_EVENT_KEY");
-        }*/
+        EventKey = getIntent().getExtras().get("EventKey").toString();
+        mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
 
-        mEventReference = FirebaseDatabase.getInstance().getReference().child("events").
-                child(mEventKey);
+        ViewEventReference = FirebaseDatabase.getInstance().getReference().child("events").child(EventKey);
         editViewEventName = findViewById(R.id.view_event_name);
         editViewEventDate = findViewById(R.id.view_event_date);
         editViewEventStartTime = findViewById(R.id.view_event_start_time);
@@ -85,6 +86,41 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         btnAddNewEvent = findViewById(R.id.addNewEventButton);
         layout = findViewById(R.id.act_view_event);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+        ViewEventReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String address = dataSnapshot.child("address").getValue().toString();
+                String city = dataSnapshot.child("city").getValue().toString();
+                String date = dataSnapshot.child("date").getValue().toString();
+                String end_time = dataSnapshot.child("end_time").getValue().toString();
+                String mode_of_transportation = dataSnapshot.child("mode_of_transportation").getValue().toString();
+                String name = dataSnapshot.child("name").getValue().toString();
+                String note = dataSnapshot.child("note").getValue().toString();
+                String start_time = dataSnapshot.child("start_time").getValue().toString();
+                String state = dataSnapshot.child("state").getValue().toString();
+                String zip = dataSnapshot.child("zip").getValue().toString();
+                databaseUserID = dataSnapshot.child("uid").getValue().toString();
+
+                if(currentUserID.equals(databaseUserID))
+
+                editViewEventName.setText(name);
+                editViewEventDate.setText(date);
+                editViewEventStartTime.setText(start_time);
+                editViewEventEndTime.setText(end_time);
+                editViewEventAddress.setText(address);
+                editViewEventCity.setText(city);
+                editViewEventState.setText(state);
+                editViewEventZipCode.setText(zip);
+                editViewEventMOD.setText(mode_of_transportation);
+                editViewEventNote.setText(note);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -116,40 +152,14 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     public void onStart(){
         super.onStart();
 
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Events events = dataSnapshot.getValue(Events.class);
 
-                editViewEventName.setText(events.name);
-                editViewEventDate.setText(events.date);
-                editViewEventStartTime.setText(events.start_time);
-                editViewEventEndTime.setText(events.end_time);
-                editViewEventAddress.setText(events.address);
-                editViewEventCity.setText(events.city);
-                editViewEventState.setText(events.state);
-                editViewEventZipCode.setText(events.zip);
-                editViewEventMOD.setText(events.mode_of_transportation);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "loadEvents:onCancelled", databaseError.toException());
-                Toast.makeText(ViewEventActivity.this, "Failed to load event.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        };
-        mEventReference.addValueEventListener(eventListener);
-        mEventListener = eventListener;
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        if(mEventListener != null) {
-            mEventReference.removeEventListener(mEventListener);
-        }
+
     }
     public static String getFormattedDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());

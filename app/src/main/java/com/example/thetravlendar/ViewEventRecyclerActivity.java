@@ -2,15 +2,11 @@ package com.example.thetravlendar;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -22,12 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.thetravlendar.Utils.ScrollAwareFABBehavior;
 import com.example.thetravlendar.models.Events;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -41,7 +35,6 @@ import com.google.firebase.database.Query;
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
 
-    private OnItemClickListener listener;
     private static final String TAG = "checking get event";
     private RecyclerView myEvents;
     private FloatingActionButton fab;
@@ -63,7 +56,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         online_user_id = mAuth.getCurrentUser().getUid();
         EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         UserRef = FirebaseDatabase.getInstance().getReference().child("users");
-        query = EventsRef;
+        query = EventsRef.orderByChild("uid").equalTo(online_user_id);
 
         myEvents = findViewById(R.id.recview);
         fab = findViewById(R.id.fab);
@@ -163,48 +156,49 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull EventsViewHolder holder, final int position, @NonNull Events model) {
-                holder.setName(model.getName());
-                Log.e(TAG,"name = " + model.getName() + " yikes"  );
-                holder.setDate(model.getDate());
-                Log.e(TAG,"date = " + model.getDate() + " yikes"  );
-                holder.setStart_Time(model.getStart_time());
-                Log.e(TAG,"start = " + model.getStart_time() + " yikes"  );
-                holder.setEnd_Time(model.getEnd_time());
-                Log.e(TAG,"end = " + model.getEnd_time() + " yikes"  );
+                final String EventKey = getRef(position).getKey();
+                if (model.uid.equals(online_user_id)) {
+                    holder.setName(model.getName());
+                    Log.e(TAG, "name = " + model.getName() + " yikes");
+                    holder.setDate(model.getDate());
+                    Log.e(TAG, "date = " + model.getDate() + " yikes");
+                    holder.setStart_Time(model.getStart_time());
+                    Log.e(TAG, "start = " + model.getStart_time() + " yikes");
+                    holder.setEnd_Time(model.getEnd_time());
+                    Log.e(TAG, "end = " + model.getEnd_time() + " yikes");
+                }
+
+                EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent clickEvent = new Intent(ViewEventRecyclerActivity.this, ViewEventActivity.class);
+                        clickEvent.putExtra("EventKey", EventKey);
+                        startActivity(clickEvent);
+                    }
+                });
             }
-
-
-
-
         };
         myEvents.setAdapter(firebaseRecyclerAdapter);
     }
 
 
-    public class EventsViewHolder extends RecyclerView.ViewHolder {
+    public static class EventsViewHolder extends RecyclerView.ViewHolder {
 
+        //public static Object mView;
         public TextView textEventName;
         public TextView textEventDate;
         public TextView textEventStart;
         public TextView textEventEnd;
+        static View mView;
 
         public EventsViewHolder(View itemView) {
             super(itemView);
-
+            mView= itemView;
             textEventName = itemView.findViewById(R.id.cv_event_name);
             textEventDate = itemView.findViewById(R.id.cv_event_date);
             textEventStart = itemView.findViewById(R.id.cv_event_start);
             textEventEnd = itemView.findViewById(R.id.cv_event_end);
 
-            /*itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(FirebaseDatabase.getInstance().getReference().child(position));
-                    }
-                }
-            });*/
         }
 
         public void setName(String eventName){
@@ -225,12 +219,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             textEventEnd.setText(eventEnd);
         }
     }
-    public interface OnItemClickListener {
-        void onItemClicked(DataSnapshot dataSnapshot, int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -242,9 +231,3 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         firebaseRecyclerAdapter.stopListening();
     }
 }
-
-
-    /*public static class EventsViewHolder extends RecyclerView.ViewHolder {
-
-    }
-}*/

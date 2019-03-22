@@ -161,7 +161,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
         String saveCurrentDate = currentDate.format(calfordDate.getTime());
 
-        Calendar calfordTime = Calendar.getInstance();
+        //Calendar calfordTime = Calendar.getInstance();
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
         String saveCurrentTime = currentTime.format(calfordDate.getTime());
 
@@ -182,7 +182,9 @@ public class  AddEventActivity extends AppCompatActivity implements
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    HashMap eventMap = new HashMap();
+                    DatabaseReference pushKey = mEventRef.push();
+                    String key = pushKey.getKey();
+                    HashMap<String, Object> eventMap = new HashMap<>();
                     eventMap.put("uid", userId);
                     eventMap.put("name", name);
                     eventMap.put("date", date);
@@ -195,7 +197,11 @@ public class  AddEventActivity extends AppCompatActivity implements
                     eventMap.put("mode_of_transportation", mod);
                     eventMap.put("note", note);
 
-                    mEventRef.child((userId + eventRandom)).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
+                    //HashMap<String, Object> childUpdates = new HashMap<>();
+                    //childUpdates.put("/users/" + userId + "/" + key + "/", eventMap);
+
+                    //mUserRef.updateChildren(childUpdates);
+                    mEventRef.child(key).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
