@@ -177,6 +177,16 @@ public class  AddEventActivity extends AppCompatActivity implements
             return;
         }
 
+        if (TextUtils.isEmpty(startTime)) {
+            editEventStart.setError(REQUIRED);
+            return;
+        }
+
+        if (TextUtils.isEmpty(endTime)) {
+            editEventEnd.setError(REQUIRED);
+            return;
+        }
+
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
