@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -60,6 +61,8 @@ public class  AddEventActivity extends AppCompatActivity implements
     EditText editEventZipCode;
     EditText editEventMOD;
     EditText editEventNote;
+    EditText editEventLocation;
+    ImageView imageAddLocation;
 
     private DatabaseReference mUserRef, mEventRef;
     private FirebaseAuth mAuth;
@@ -84,6 +87,8 @@ public class  AddEventActivity extends AppCompatActivity implements
         editEventZipCode = findViewById(R.id.event_zip_code);
         editEventMOD = findViewById(R.id.event_mod);
         editEventNote = findViewById(R.id.event_note);
+        editEventLocation = findViewById(R.id.event_location);
+        imageAddLocation = findViewById(R.id.event_add_location);
 
         mAuth = FirebaseAuth.getInstance();
         mUserRef = FirebaseDatabase.getInstance().getReference();
@@ -146,6 +151,20 @@ public class  AddEventActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 submitEvent();
+            }
+        });
+
+        editEventLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        imageAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

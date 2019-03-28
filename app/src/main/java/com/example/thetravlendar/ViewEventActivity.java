@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     EditText editViewEventZipCode;
     EditText editViewEventMOD;
     EditText editViewEventNote;
+    EditText editViewEventLocation;
+    ImageView imageViewEventAddLocation;
     Button btnEditEvent;
     Button btnDeleteEvent;
     Button btnSaveEvent;
@@ -238,6 +241,20 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
                 dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_dark);*/
             }
 
+        });
+
+        editViewEventLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        imageViewEventAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
         });
     }
 
