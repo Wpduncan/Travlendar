@@ -26,6 +26,7 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.thetravlendar.models.Events;
+import com.google.firebase.database.DatabaseReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -172,6 +173,8 @@ public class CalendarActivity extends AppCompatActivity {
     private void previewNote(EventDay eventDay) {
         Intent intent = new Intent(this, ViewEventRecyclerActivity.class);
         Events events;
+        //final DatabaseReference eventRef = getRef()
+        //intent.putExtra(ViewEventActivity.EXTRA_EVENT_KEY, )
         //Map<String, Object> eventValues = events.toMap();
         Log.d("testing", "previewNote");
         if(eventDay instanceof MyEventDay){
