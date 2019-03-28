@@ -147,6 +147,8 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,20 +169,9 @@
                         android:textColorHint="@android:color/white" />
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/view_event_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:hint="@string/event_location"
-                        android:inputType="textPostalAddress"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="@android:color/white" />
-                </android.support.design.widget.TextInputLayout>
+
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
@@ -199,6 +190,21 @@
                         android:textColorHint="@android:color/white" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/view_event_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/event_location"
+                    android:inputType="textPostalAddress"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.example.thetravlendar;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ import com.google.firebase.database.Query;
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
 
-    private OnItemClickListener listener;
+    //private OnItemClickListener listener;
     private static final String TAG = "checking get event";
     private RecyclerView myEvents;
     private FloatingActionButton fab;
@@ -50,6 +51,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     private String online_user_id;
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
     private Query query;
+    private String Date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,10 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         myEvents.setLayoutManager(linearLayoutManager);
         myEvents.setHasFixedSize(true);
 
+        //receiving date from calendarview
+        Intent intent = getIntent();
+        Date = intent.getExtras().getString("sendingDate");
+        Log.d("testing", Date);
 
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -196,15 +202,19 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             textEventStart = itemView.findViewById(R.id.cv_event_start);
             textEventEnd = itemView.findViewById(R.id.cv_event_end);
 
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(FirebaseDatabase.getInstance().getReference().child(position));
-                    }
+                    //Intent i = new Intent(getApplicationContext(), ViewEventActivity.class);
+                    //String eventID =
+                    //i.putExtra("uid", );
+                    //startActivity(i);
+                    //startActivity(new Intent(getApplicationContext(),AddEventActivity.class));
+                    //int position = getAdapterPosition();
+                    //if (position != RecyclerView.NO_POSITION && listener != null) {
+                    //    listener.onItemClick(FirebaseDatabase.getInstance().getReference().child(position));
                 }
-            });*/
+            });
         }
 
         public void setName(String eventName){
@@ -225,12 +235,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             textEventEnd.setText(eventEnd);
         }
     }
-    public interface OnItemClickListener {
+    /*public interface OnItemClickListener {
         void onItemClicked(DataSnapshot dataSnapshot, int position);
     }
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
-    }
+    }*/
     @Override
     protected void onStart() {
         super.onStart();

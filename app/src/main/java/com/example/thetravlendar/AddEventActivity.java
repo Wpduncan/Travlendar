@@ -43,6 +43,7 @@ public class  AddEventActivity extends AppCompatActivity implements
 
     private static final String TAG = "AddToDatabase";
     private static final String REQUIRED = "Required";
+    private String Date;
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
@@ -70,6 +71,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         buttonSaveEvent = findViewById(R.id.addEventButton);
         editEventName = findViewById(R.id.event_name);
         editEventDate = findViewById(R.id.event_date);
@@ -87,6 +89,10 @@ public class  AddEventActivity extends AppCompatActivity implements
         mEventRef = FirebaseDatabase.getInstance().getReference().child("events");
 
         layout = (LinearLayout) findViewById(R.id.act_add_event);
+        //accepts the date from the calendar activity and sets date text field
+        Intent intent = getIntent();
+        Date = intent.getExtras().getString("sendingDate");
+        editEventDate.setText(Date);
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

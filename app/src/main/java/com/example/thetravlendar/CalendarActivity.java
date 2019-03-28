@@ -2,6 +2,9 @@ package com.example.thetravlendar;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
@@ -24,8 +27,11 @@ import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.thetravlendar.models.Events;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +39,11 @@ public class CalendarActivity extends AppCompatActivity {
     public static final String RESULT = "result";
     public static final String EVENT = "event";
     private static final int ADD_NOTE = 44;
+    private String Date;
+    private boolean longClick = false;
     private CalendarView calendarView;
     private List<EventDay> eventDays = new ArrayList<>();
+    List<EventDay> events = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +53,9 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
 
         calendarView.showCurrentMonthPage();
+        Date = formatDate(Calendar.getInstance().getTime().toString());
+        Log.d("testing", Date);
+
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -60,10 +72,44 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
+                String date = eventDay.getCalendar().getTime().toString();
+
+                Log.d("testing", date);
+                Date = formatDate(date);
+                Log.d("testing", Date);
+                //Toast.makeText(CalendarActivity.this.getApplicationContext(),
+                //        eventDay.getCalendar().toString() + " "
+                //               + eventDay.isEnabled(),
+                //        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CalendarActivity.this.getApplicationContext(),
+                //        date,Toast.LENGTH_SHORT);
+                /*Calendar clickedDayCalendar = eventDay.getCalendar();
+                //Date date =
+                //Calendar selectedDate = calendarView.getFirstSelectedDate();
                 Log.d("testing", "onDayClick");
+                System.out.println(clickedDayCalendar);
+                //System.out.println(selectedDate);
+                */
+                //if () {}
                 previewNote(eventDay);
+
             }
+
         });
+
+        //calendarView.;
+    }
+    public String formatDate(String sdate) {
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd yyyy");
+        String newDate = sdate.substring(4);
+        String date1 = newDate.substring(0,6);
+        String date2 = newDate.substring(20,24);
+        String date3 = date1 + " " + date2;
+        Log.d("testing", newDate);
+        Log.d("testing", date1);
+        Log.d("testing", date2);
+        Log.d("testing", date3);
+        return date3;
     }
 
     @Override
@@ -118,7 +164,8 @@ public class CalendarActivity extends AppCompatActivity {
     private void addNote() {
         Intent intent = new Intent(this, AddEventActivity.class);
         Log.d("testing", "add note");
-        startActivityForResult(intent, ADD_NOTE);
+        intent.putExtra("sendingDate", Date);
+        startActivity(intent);
         Log.d("testing", "add note - after exec");
     }
 
@@ -130,6 +177,7 @@ public class CalendarActivity extends AppCompatActivity {
         if(eventDay instanceof MyEventDay){
             intent.putExtra(EVENT, (MyEventDay) eventDay);
         }
+        intent.putExtra("sendingDate", Date);
         startActivity(intent);
     }
 }
@@ -145,16 +193,10 @@ class MyEventDay extends EventDay implements Parcelable {
     String getNote() {
         return mNote;
     }
-    public int getImageResource() { return imageResource;}
-    //    mImageResource = imageResource;
-    //    mNote = note;
-
 
     private MyEventDay(Parcel in) {
         super((Calendar) in.readSerializable(), in.readInt());
         mNote = in.readString();
-        //    mImageResource = in.readInt();
-        //    mNote = in.readString();
     }
 
     public static final Creator<MyEventDay> CREATOR = new Creator<MyEventDay>() {
@@ -170,14 +212,16 @@ class MyEventDay extends EventDay implements Parcelable {
     };
 
     @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeSerializable(getCalendar());
+        parcel.writeInt(i);
+        parcel.writeString(mNote);
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeSerializable(getCalendar());
-        dest.writeInt(getImageResource());
-        dest.writeString(mNote);
-    }
+
 }
