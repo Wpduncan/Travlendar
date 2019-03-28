@@ -36,10 +36,10 @@ import com.google.firebase.database.Query;
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
+
     //private OnItemClickListener listener;
-=======
->>>>>>> master
+
+
     private static final String TAG = "checking get event";
     private RecyclerView myEvents;
     private FloatingActionButton fab;
@@ -209,7 +209,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             textEventStart = itemView.findViewById(R.id.cv_event_start);
             textEventEnd = itemView.findViewById(R.id.cv_event_end);
 
-<<<<<<< HEAD
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -223,8 +223,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                     //    listener.onItemClick(FirebaseDatabase.getInstance().getReference().child(position));
                 }
             });
-=======
->>>>>>> master
+
         }
 
         public void setName(String eventName){
@@ -245,16 +244,14 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             textEventEnd.setText(eventEnd);
         }
     }
-<<<<<<< HEAD
+
     /*public interface OnItemClickListener {
         void onItemClicked(DataSnapshot dataSnapshot, int position);
     }
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }*/
-=======
 
->>>>>>> master
     @Override
     protected void onStart() {
         super.onStart();
