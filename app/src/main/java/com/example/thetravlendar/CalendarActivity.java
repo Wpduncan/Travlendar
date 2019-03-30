@@ -43,6 +43,7 @@ public class CalendarActivity extends AppCompatActivity {
     private String Date;
     private boolean longClick = false;
     private CalendarView calendarView;
+
     private List<EventDay> eventDays = new ArrayList<>();
     List<EventDay> events = new ArrayList<>();
     @Override

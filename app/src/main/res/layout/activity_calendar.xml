@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,31 +29,156 @@
 
 
 
-    <com.applandeo.materialcalendarview.CalendarView
-        android:id="@+id/calendarView"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/actionBarSize">
 
-        app:datePicker="true"
-        app:type="one_day_picker"
-        app:headerColor="#00b8d4"
-        app:abbreviationsBarColor="#62ebff"
-        app:abbreviationsLabelsColor="#212121"
-        app:selectionColor="#ffffff"
-        app:selectionLabelColor="#000000"
-        app:pagesColor="#00b8d4"
-        app:daysLabelsColor="#212121"
-        app:todayLabelColor="#ffffff"
-        />
+        <com.applandeo.materialcalendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
+
+            app:layout_anchor="@id/toolbar"
+            app:layout_anchorGravity="bottom"
+
+            app:datePicker="true"
+            app:type="one_day_picker"
+            app:headerColor="#00b8d4"
+            app:abbreviationsBarColor="#62ebff"
+            app:abbreviationsLabelsColor="#212121"
+            app:selectionColor="#ffffff"
+            app:selectionLabelColor="#000000"
+            app:pagesColor="#00b8d4"
+            app:daysLabelsColor="#212121"
+            app:todayLabelColor="#ffffff"
+            />
+
+
+        <!--Upcoming event-->
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_marginTop="400dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+
+            card_view:cardCornerRadius="10dp"
+            card_view:cardElevation="5dp"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:id="@+id/eventLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:layout_anchorGravity="bottom|end"
+
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textEventName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="NAME"/>
+
+                <TextView
+                    android:id="@+id/textEventTravelTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="TRAVEL TIME" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/textEventLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="LOCATION"/>
+
+                    <ImageView
+                        android:id="@+id/imageEventLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:src="@drawable/ic_add_location_grey_24dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textEventStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="START"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="TO" />
+
+                    <TextView
+                        android:id="@+id/textEventEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="END"/>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#8d8d8d"
-        app:layout_anchorGravity=""
-        android:layout_gravity="bottom|right"
+        app:layout_anchor="@id/calendarView"
+        app:layout_anchorGravity="bottom|end"
+
         android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_add_24dp" />
 
