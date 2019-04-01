@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -181,8 +182,11 @@ public class  AddEventActivity extends AppCompatActivity implements
         final String zip = editEventZipCode.getText().toString();
         final String mod = editEventMOD.getText().toString();
         final String note = editEventNote.getText().toString();
+        final String location = editEventLocation.getText().toString();
 
-        Calendar calfordDate = Calendar.getInstance();
+        //Query query = mEventRef.orderByChild("start_time").
+
+        /*Calendar calfordDate = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
         String saveCurrentDate = currentDate.format(calfordDate.getTime());
 
@@ -190,7 +194,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
         String saveCurrentTime = currentTime.format(calfordDate.getTime());
 
-        String eventRandom = saveCurrentDate + saveCurrentTime;
+        //String eventRandom = saveCurrentDate + saveCurrentTime;*/
 
         if (TextUtils.isEmpty(name)) {
             editEventName.setError(REQUIRED);
@@ -223,14 +227,30 @@ public class  AddEventActivity extends AppCompatActivity implements
                     eventMap.put("uid", userId);
                     eventMap.put("name", name);
                     eventMap.put("date", date);
-                    eventMap.put("start_time", startTime);
-                    eventMap.put("end_time", endTime);
+                    eventMap.put("startTime", startTime);
+                    eventMap.put("endTime", endTime);
                     eventMap.put("address", address);
                     eventMap.put("city", city);
                     eventMap.put("state", state);
                     eventMap.put("zip", zip);
-                    eventMap.put("mode_of_transportation", mod);
+                    eventMap.put("location", location);
+                    eventMap.put("mod", mod);
                     eventMap.put("note", note);
+                    eventMap.put("uid_name", userId + "_" + name);
+                    eventMap.put("uid_date", userId + "_" + date);
+                    eventMap.put("uid_startTime", userId + "_" + startTime);
+                    eventMap.put("uid_endTime", userId + "_" + endTime);
+                    eventMap.put("uid_address", userId + "_" + address);
+                    eventMap.put("uid_city", userId + "_" + city);
+                    eventMap.put("uid_state", userId + "_" + state);
+                    eventMap.put("uid_zip", userId + "_" + zip);
+                    eventMap.put("uid_location", userId + "_" + location);
+                    eventMap.put("uid_mod", userId + "_" + mod);
+                    eventMap.put("uid_note", userId + "_" + note);
+
+                    //eventMap.put("startTime", startTime);
+                    eventMap.put("uid_date_startTime", userId + "_" + date + "_" + startTime);
+                    eventMap.put("uid_date_endTime", userId + "_" + date + "_" + endTime);
 
                     //HashMap<String, Object> childUpdates = new HashMap<>();
                     //childUpdates.put("/users/" + userId + "/" + key + "/", eventMap);
@@ -322,7 +342,18 @@ public class  AddEventActivity extends AppCompatActivity implements
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+
+    }
 
 
 }

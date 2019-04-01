@@ -38,14 +38,13 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
 
     //private OnItemClickListener listener;
-
-
     private static final String TAG = "checking get event";
     private RecyclerView myEvents;
     private FloatingActionButton fab;
     private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
     private String online_user_id;
+    private String startTimes;
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
     private Query query;
     private String Date;
@@ -62,7 +61,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         online_user_id = mAuth.getCurrentUser().getUid();
         EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         UserRef = FirebaseDatabase.getInstance().getReference().child("users");
-        query = EventsRef.orderByChild("uid").equalTo(online_user_id);
+        //startTimes = EventsRef.child("uid").
+        //startTimes = EventsRef.child("startTime").getValue().toString();
 
         myEvents = findViewById(R.id.recview);
         fab = findViewById(R.id.fab);
@@ -74,6 +74,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Date = intent.getExtras().getString("sendingDate");
         Log.d("testing", Date);
+        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
 
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -99,7 +100,9 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AddEventActivity.class));
+                Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
+                intent.putExtra("sendingDate", Date);
+                startActivity(intent);
             }
         });
 
@@ -140,6 +143,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
     private void DisplayAllEvents() {
         //query = FirebaseDatabase.getInstance().getReference().child("events").limitToLast(50);
+        //Log.e(TAG, "uid = " + EventsRef.child("uid") + " yikes");
+        //Log.e(TAG, "name = " + EventsRef.child("name").toString() + " yikes");
         FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
                 .setQuery(query, new SnapshotParser<Events>() {
                     @NonNull
@@ -148,8 +153,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                         return new Events(snapshot.child("uid").getValue().toString(),
                                 snapshot.child("name").getValue().toString(),
                                 snapshot.child("date").getValue().toString(),
-                                snapshot.child("start_time").getValue().toString(),
-                                snapshot.child("end_time").getValue().toString());
+                                snapshot.child("startTime").getValue().toString(),
+                                snapshot.child("endTime").getValue().toString());
                     }
                 })
                 .build();
@@ -168,14 +173,14 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull EventsViewHolder holder, final int position, @NonNull Events model) {
                 final String EventKey = getRef(position).getKey();
                 if (model.uid.equals(online_user_id)) {
-                    holder.setName(model.getName());
-                    Log.e(TAG, "name = " + model.getName() + " yikes");
-                    holder.setDate(model.getDate());
-                    Log.e(TAG, "date = " + model.getDate() + " yikes");
-                    holder.setStart_Time(model.getStart_time());
-                    Log.e(TAG, "start = " + model.getStart_time() + " yikes");
-                    holder.setEnd_Time(model.getEnd_time());
-                    Log.e(TAG, "end = " + model.getEnd_time() + " yikes");
+                    holder.setName(model.getUid_name());
+                    Log.e(TAG, "name = " + model.getUid_name() + " yikes");
+                    holder.setDate(model.getUid_date());
+                    Log.e(TAG, "date = " + model.getUid_date() + " yikes");
+                    holder.setStart_Time(model.getUid_startTime());
+                    Log.e(TAG, "start = " + model.getUid_startTime() + " yikes");
+                    holder.setEnd_Time(model.getUid_endTime());
+                    Log.e(TAG, "end = " + model.getUid_endTime() + " yikes");
                 }
 
                 EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
