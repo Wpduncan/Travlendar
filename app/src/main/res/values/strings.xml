@@ -141,4 +141,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Test1">Opening maps</string>
+    <string name="locatiion_test">It worked</string>
+    <string name="api_keu">AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8</string>
 </resources>

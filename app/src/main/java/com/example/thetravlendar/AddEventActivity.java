@@ -181,12 +181,14 @@ public class  AddEventActivity extends AppCompatActivity implements
             String state = extras.getString("state");
             String zip = extras.getString("zip");
             String name = extras.getString("name");
+            String travel = extras.getString("time");
             //The key argument here must match that used in the other activity
             editEventAddress.setText(street);
             editEventCity.setText(city);
             editEventState.setText(state);
             editEventZipCode.setText(zip);
             editEventLocation.setText(name);
+            editEventNote.setText(travel);
 
         }
 
