@@ -70,7 +70,7 @@
     <string name="view_event_zip">View Event Zip Code</string>
     <string name="view_event_mod">View Event MOD</string>
     <string name="view_event_note">View Event Note</string>
-    <string name="edit_event_btn">Edit</string>
+    <string name="cancel_event_btn">Cancel</string>
     <string name="delete_event_btn">Delete</string>
     <string name="save_event_btn">Save</string>
     <string name="add_new_event_btn">Add New Event</string>

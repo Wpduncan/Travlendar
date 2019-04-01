@@ -242,11 +242,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/editEventButton"
+            android:id="@+id/saveEventButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/edit_event_btn"
+            android:text="@string/save_event_btn"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -266,11 +266,11 @@
             app:layout_constraintRight_toRightOf="parent" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/saveEventButton"
+            android:id="@+id/cancelEventButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/save_event_btn"
+            android:text="@string/cancel_event_btn"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
