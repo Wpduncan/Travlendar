@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -54,7 +55,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     EditText editViewEventNote;
     EditText editViewEventLocation;
     ImageView imageViewEventAddLocation;
-    Button btnEditEvent;
+    Button btnCancelEvent;
     Button btnDeleteEvent;
     Button btnSaveEvent;
     Button btnAddNewEvent;
@@ -63,7 +64,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     private FirebaseAuth mAuth;
     private ValueEventListener mEventListener;
     private String EventKey, currentUserID, databaseUserID, name, date, start, end, address, state,
-            city, zip, mod, note;
+            city, zip, mod, note, Date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +88,15 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         editViewEventZipCode = findViewById(R.id.view_event_zip_code);
         editViewEventMOD = findViewById(R.id.view_event_mod);
         editViewEventNote = findViewById(R.id.view_event_note);
-        btnEditEvent = findViewById(R.id.editEventButton);
-        btnDeleteEvent = findViewById(R.id.deleteEventButton);
+        editViewEventLocation = findViewById(R.id.view_event_location);
+        imageViewEventAddLocation = findViewById(R.id.view_event_add_location);
         btnSaveEvent = findViewById(R.id.saveEventButton);
+        btnDeleteEvent = findViewById(R.id.deleteEventButton);
+        btnCancelEvent = findViewById(R.id.cancelEventButton);
         btnAddNewEvent = findViewById(R.id.addNewEventButton);
         layout = findViewById(R.id.act_view_event);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        Date = formatDate(Calendar.getInstance().getTime().toString());
 
         ViewEventReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,11 +105,11 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
                     address = dataSnapshot.child("address").getValue().toString();
                     city = dataSnapshot.child("city").getValue().toString();
                     date = dataSnapshot.child("date").getValue().toString();
-                    end = dataSnapshot.child("end_time").getValue().toString();
-                    mod = dataSnapshot.child("mode_of_transportation").getValue().toString();
+                    end = dataSnapshot.child("endTime").getValue().toString();
+                    mod = dataSnapshot.child("mod").getValue().toString();
                     name = dataSnapshot.child("name").getValue().toString();
                     note = dataSnapshot.child("note").getValue().toString();
-                    start = dataSnapshot.child("start_time").getValue().toString();
+                    start = dataSnapshot.child("startTime").getValue().toString();
                     state = dataSnapshot.child("state").getValue().toString();
                     zip = dataSnapshot.child("zip").getValue().toString();
                     databaseUserID = dataSnapshot.child("uid").getValue().toString();
@@ -167,80 +171,28 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             public void onClick(View v) {
                 ViewEventReference.child("name").setValue(editViewEventName.getText().toString());
                 ViewEventReference.child("date").setValue(editViewEventDate.getText().toString());
-                ViewEventReference.child("start_time").setValue(editViewEventStartTime.getText().toString());
-                ViewEventReference.child("end_time").setValue(editViewEventEndTime.getText().toString());
+                ViewEventReference.child("startTime").setValue(editViewEventStartTime.getText().toString());
+                ViewEventReference.child("endTime").setValue(editViewEventEndTime.getText().toString());
                 ViewEventReference.child("address").setValue(editViewEventAddress.getText().toString());
                 ViewEventReference.child("state").setValue(editViewEventState.getText().toString());
                 ViewEventReference.child("city").setValue(editViewEventCity.getText().toString());
-                ViewEventReference.child("mode_of_transportation").setValue(editViewEventMOD.getText().toString());
+                ViewEventReference.child("mod").setValue(editViewEventMOD.getText().toString());
                 ViewEventReference.child("note").setValue(editViewEventNote.getText().toString());
                 ViewEventReference.child("zip").setValue(editViewEventZipCode.getText().toString());
+                ViewEventReference.child("location").setValue(editViewEventLocation.getText().toString());
 
                 Toast.makeText(ViewEventActivity.this, "Event Updated Successfully", Toast.LENGTH_SHORT).show();
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventActivity.this);
-                builder.setTitle("Edit Event:");
-
-                final EditText inputName = new EditText(ViewEventActivity.this);
-                inputName.setText(name);
-
-                final EditText inputDate = new EditText(ViewEventActivity.this);
-                inputDate.setText(date);
-
-                final EditText inputStart = new EditText(ViewEventActivity.this);
-                inputStart.setText(start);
-
-                final EditText inputEnd = new EditText(ViewEventActivity.this);
-                inputEnd.setText(end);
-
-                final EditText inputAddress = new EditText(ViewEventActivity.this);
-                inputAddress.setText(address);
-
-                final EditText inputState = new EditText(ViewEventActivity.this);
-                inputState.setText(state);
-
-                final EditText inputZip = new EditText(ViewEventActivity.this);
-                inputZip.setText(zip);
-
-                final EditText inputMod = new EditText(ViewEventActivity.this);
-                inputMod.setText(mod);
-
-                final EditText inputNote = new EditText(ViewEventActivity.this);
-                inputNote.setText(note);
-
-                final EditText inputCity = new EditText(ViewEventActivity.this);
-                inputCity.setText(city);
-
-                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ViewEventReference.child("name").setValue(inputName.getText().toString());
-                        ViewEventReference.child("date").setValue(inputDate.getText().toString());
-                        ViewEventReference.child("start_time").setValue(inputStart.getText().toString());
-                        ViewEventReference.child("end_time").setValue(inputEnd.getText().toString());
-                        ViewEventReference.child("address").setValue(inputAddress.getText().toString());
-                        ViewEventReference.child("state").setValue(inputState.getText().toString());
-                        ViewEventReference.child("city").setValue(inputCity.getText().toString());
-                        ViewEventReference.child("mode_of_transportation").setValue(inputMod.getText().toString());
-                        ViewEventReference.child("note").setValue(inputNote.getText().toString());
-                        ViewEventReference.child("zip").setValue(inputZip.getText().toString());
-
-                        Toast.makeText(ViewEventActivity.this, "Event Updated Successfully", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                Dialog dialog = builder.create();
-                dialog.show();
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_dark);*/
             }
+        });
 
+        btnCancelEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
+                intent.putExtra("sendingDate", Date);
+                startActivity(intent);
+                Toast.makeText(ViewEventActivity.this, "Cacnelled editing the event", Toast.LENGTH_SHORT).show();
+            }
         });
 
         editViewEventLocation.setOnClickListener(new View.OnClickListener() {
@@ -277,6 +229,18 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         super.onStop();
 
 
+    }
+    public String formatDate(String sdate) {
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd yyyy");
+        String newDate = sdate.substring(4);
+        String date1 = newDate.substring(0,6);
+        String date2 = newDate.substring(20,24);
+        String date3 = date1 + " " + date2;
+        Log.d("testing", newDate);
+        Log.d("testing", date1);
+        Log.d("testing", date2);
+        Log.d("testing", date3);
+        return date3;
     }
     public static String getFormattedDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
