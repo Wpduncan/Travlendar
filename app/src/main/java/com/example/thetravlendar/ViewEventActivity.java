@@ -101,7 +101,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         ViewEventReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     address = dataSnapshot.child("address").getValue().toString();
                     city = dataSnapshot.child("city").getValue().toString();
                     date = dataSnapshot.child("date").getValue().toString();
@@ -139,7 +139,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Utility.hideKeyboard(v,getApplicationContext());
+                Utility.hideKeyboard(v, getApplicationContext());
                 return false;
             }
         });
@@ -147,7 +147,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+                startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
             }
         });
 
@@ -205,9 +205,28 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         imageViewEventAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent myIntent = new Intent(ViewEventActivity.this,MapsActivity.class);
+                startActivity(myIntent);
             }
         });
+
+        // For Maps Activity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String street = extras.getString("street");
+            String city = extras.getString("city");
+            String state = extras.getString("state");
+            String zip = extras.getString("zip");
+            String name = extras.getString("name");
+            String travel = extras.getString("time");
+            //The key argument here must match that used in the other activity
+            editViewEventAddress.setText(street);
+            editViewEventCity.setText(city);
+            editViewEventState.setText(state);
+            editViewEventZipCode.setText(zip);
+            editViewEventLocation.setText(name);
+            editViewEventNote.setText(travel);
+        }
     }
 
     private void DeleteCurrentEvent() {
