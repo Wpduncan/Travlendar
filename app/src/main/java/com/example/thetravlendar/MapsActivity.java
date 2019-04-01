@@ -226,6 +226,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLocationPermission();
         updateLocationUI();
 
+        LatLng USA = new LatLng(39.381266, -97.922211);
+        float zoom = 3.5f;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USA, zoom));
+
+
         /*mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(10, 10))
                 .title("Hello world"));*/
