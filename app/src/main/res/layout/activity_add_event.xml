@@ -226,15 +226,17 @@
                         android:hint="@string/event_location"
                         android:inputType="textPostalAddress"
                         android:textColor="@android:color/white"
-                        android:textColorHint="@android:color/white" />
+                        android:textColorHint="@android:color/white"/>
                 </android.support.design.widget.TextInputLayout>
+
                 <ImageView
                     android:id="@+id/event_add_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_weight="0.5"
-                    android:src="@drawable/ic_add_location_grey_24dp"/>
+                    android:src="@drawable/ic_add_location_grey_24dp"
+                    android:onClick="showTest"/>
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout

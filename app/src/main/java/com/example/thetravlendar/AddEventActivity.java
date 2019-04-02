@@ -101,6 +101,8 @@ public class  AddEventActivity extends AppCompatActivity implements
         Date = intent.getExtras().getString("sendingDate");
         editEventDate.setText(Date);
 
+
+
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,9 +167,36 @@ public class  AddEventActivity extends AppCompatActivity implements
         imageAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                displayToast(getString(R.string.Test1));
+                Intent myIntent = new Intent(AddEventActivity.this,MapsActivity.class);
+                startActivity(myIntent);
             }
         });
+
+
+        // For Maps Activity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String street = extras.getString("street");
+            String city = extras.getString("city");
+            String state = extras.getString("state");
+            String zip = extras.getString("zip");
+            String name = extras.getString("name");
+            String travel = extras.getString("time");
+            //The key argument here must match that used in the other activity
+            editEventAddress.setText(street);
+            editEventCity.setText(city);
+            editEventState.setText(state);
+            editEventZipCode.setText(zip);
+            editEventLocation.setText(name);
+            editEventNote.setText(travel);
+
+        }
+
+    }
+    public void displayToast(String message) {
+        Toast.makeText(getApplicationContext(), message,
+                Toast.LENGTH_SHORT).show();
     }
 
     private void submitEvent() {
