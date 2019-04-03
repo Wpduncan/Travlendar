@@ -232,6 +232,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
     private void DeleteCurrentEvent() {
         ViewEventReference.removeValue();
         Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
+        intent.putExtra("sendingDate", Date);
         startActivity(intent);
         Toast.makeText(this, "Event has been Deleted.", Toast.LENGTH_SHORT).show();
     }
