@@ -1,6 +1,7 @@
 package com.example.thetravlendar;
 
 import android.app.SearchManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,6 +51,7 @@ public class  AddEventActivity extends AppCompatActivity implements
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
+    private String ename;
     LinearLayout layout;
     Button buttonSaveEvent;
     EditText editEventName;
@@ -372,16 +374,48 @@ public class  AddEventActivity extends AppCompatActivity implements
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
+   /*@Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        //savedInstanceState.putInt(STATE_SCORE, currentScore);
+        //savedInstanceState.putInt(STATE_LEVEL, currentLevel);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("EventName", editEventName.getText().toString());
+    }
+
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        //currentScore = savedInstanceState.getInt(STATE_SCORE);
+        //currentLevel = savedInstanceState.getInt(STATE_LEVEL);
+        editEventName.setText(savedInstanceState.getString("EventName"));
+    }*/
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
     @Override
     public void onStart(){
         super.onStart();
-
+        //editEventName.setText(ename);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
+        //ename = editEventName.getText().toString();
 
     }
 
