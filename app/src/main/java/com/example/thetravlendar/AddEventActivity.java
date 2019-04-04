@@ -169,9 +169,9 @@ public class  AddEventActivity extends AppCompatActivity implements
         imageAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayToast(getString(R.string.Test1));
+                /*displayToast(getString(R.string.Test1));
                 Intent myIntent = new Intent(AddEventActivity.this,MapsActivity.class);
-                startActivity(myIntent);
+                startActivity(myIntent);*/
             }
         });
 
@@ -248,7 +248,8 @@ public class  AddEventActivity extends AppCompatActivity implements
         }
 
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+        mUserRef.child("users").child(userId)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -299,8 +300,8 @@ public class  AddEventActivity extends AppCompatActivity implements
                         }
                     });
                 }
-        //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
-    }
+                //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
