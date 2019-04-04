@@ -74,7 +74,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Date = intent.getExtras().getString("sendingDate");
         Log.d("testing", Date);
-        query = EventsRef.orderByChild("uid_date").startAt(online_user_id+"_"+Date);
+        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
                                         //.endAt(online_user_id+"_"+Date+"_11:59 PM");
 
 
@@ -261,11 +261,15 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
+        DisplayAllEvents();
         firebaseRecyclerAdapter.startListening();
+
     }
     @Override
     protected void onStop() {
         super.onStop();
+        DisplayAllEvents();
         firebaseRecyclerAdapter.stopListening();
     }
 }

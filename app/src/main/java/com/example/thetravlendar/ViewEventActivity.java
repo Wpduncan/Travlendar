@@ -219,6 +219,9 @@ public class ViewEventActivity extends AppCompatActivity implements
                 ViewEventReference.child("location").setValue(editViewEventLocation.getText().toString());
 
                 Toast.makeText(ViewEventActivity.this, "Event Updated Successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
+                intent.putExtra("sendingDate", Date);
+                startActivity(intent);
             }
         });
 
