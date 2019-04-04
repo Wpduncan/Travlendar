@@ -38,8 +38,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ViewEventActivity extends AppCompatActivity {//implements View.OnClickListener{
+public class ViewEventActivity extends AppCompatActivity implements
+        DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
+        EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
 
+    private static final String DIALOG_TIME = "ViewEventActvity.TimeDialog";
+    private static final String DIALOG_DATE = "ViewEventActivity.DateDialog";
+    private static final String DIALOG_MOD = "ViewEventActivity.MOD";
     public static final String EXTRA_EVENT_KEY = "event_key";
     public static final String TAG = "ViewEventActivity";
 
@@ -93,7 +98,7 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         btnSaveEvent = findViewById(R.id.saveEventButton);
         btnDeleteEvent = findViewById(R.id.deleteEventButton);
         btnCancelEvent = findViewById(R.id.cancelEventButton);
-        btnAddNewEvent = findViewById(R.id.addNewEventButton);
+        //btnAddNewEvent = findViewById(R.id.addNewEventButton);
         layout = findViewById(R.id.act_view_event);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         Date = formatDate(Calendar.getInstance().getTime().toString());
@@ -151,13 +156,45 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
             }
         });
 
-        btnAddNewEvent.setOnClickListener(new View.OnClickListener() {
+        editViewEventDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(getSupportFragmentManager(), DIALOG_DATE);
+            }
+        });
+
+        editViewEventStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartTimePickerFragment dialog = new StartTimePickerFragment();
+                dialog.show(getSupportFragmentManager(),DIALOG_TIME);
+            }
+        });
+
+        editViewEventEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EndTimePickerFragment dialog = new EndTimePickerFragment();
+                dialog.show(getSupportFragmentManager(),DIALOG_TIME);
+            }
+        });
+
+        editViewEventMOD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ModeOfTransportationFragment dialog = new ModeOfTransportationFragment();
+                dialog.show(getSupportFragmentManager(), DIALOG_MOD);
+            }
+        });
+
+        /*btnAddNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ViewEventActivity.this,
                         AddEventActivity.class));
             }
-        });
+        });*/
 
         btnDeleteEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +271,31 @@ public class ViewEventActivity extends AppCompatActivity {//implements View.OnCl
         Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Event has been Deleted.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFinishMODDialog(String mod){
+        editViewEventMOD.setText(mod);
+    }
+    @Override
+    public void onFinishDateDialog(Date date){
+        editViewEventDate.setText(formatDate(date));
+    }
+    @Override
+    public void onFinishStartDialog(String time) {
+        Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
+        editViewEventStartTime.setText(time);
+    }
+    @Override
+    public void onFinishEndDialog(String time) {
+        Toast.makeText(this, "Selected Time : "+ time, Toast.LENGTH_SHORT).show();
+        editViewEventEndTime.setText(time);
+    }
+
+    public String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+        String hireDate = sdf.format(date);
+        return hireDate;
     }
 
     @Override
