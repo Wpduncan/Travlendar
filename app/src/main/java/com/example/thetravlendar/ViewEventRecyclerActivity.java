@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,19 +20,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.thetravlendar.models.Events;
+import com.example.thetravlendar.models.RecviewEvents;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static afu.org.checkerframework.checker.units.UnitsTools.s;
 
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
@@ -39,13 +50,15 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
     //private OnItemClickListener listener;
     private static final String TAG = "checking get event";
+    private List<Events> eList = new ArrayList<>();
     private RecyclerView myEvents;
     private FloatingActionButton fab;
     private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
     private String online_user_id;
     private String startTimes;
-    private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
+    private EventRecyclerAdapter adapter;
+    //private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
     private Query query;
     private String Date;
 
@@ -74,15 +87,18 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Date = intent.getExtras().getString("sendingDate");
         Log.d("testing", Date);
-        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
-                                        //.endAt(online_user_id+"_"+Date+"_11:59 PM");
+
+        adapter = new EventRecyclerAdapter(eList, this);
+
+        //query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
+        //.endAt(online_user_id+"_"+Date+"_11:59 PM");
 
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),CalendarActivity.class));
+                startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
             }
         });
 
@@ -110,6 +126,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         DisplayAllEvents();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -120,6 +137,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -143,6 +161,43 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     }
 
     private void DisplayAllEvents() {
+
+        EventsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Events event = dataSnapshot.getValue(Events.class);
+                adapter.notifyDataSetChanged();
+                if (event.getDate() == Date && event.getUid() == online_user_id) {
+                    eList.add(event);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        adapter.notifyDataSetChanged();
+        myEvents.setAdapter(adapter);
+    }
+}
+        /*
         //query = FirebaseDatabase.getInstance().getReference().child("events").limitToLast(50);
         //Log.e(TAG, "uid = " + EventsRef.child("uid") + " yikes");
         //Log.e(TAG, "name = " + EventsRef.child("name").toString() + " yikes");
@@ -258,7 +313,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         this.listener = listener;
     }*/
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
@@ -271,5 +326,5 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         super.onStop();
         DisplayAllEvents();
         firebaseRecyclerAdapter.stopListening();
-    }
-}
+    }*/
+

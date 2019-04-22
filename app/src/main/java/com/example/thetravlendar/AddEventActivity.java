@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.thetravlendar.models.Events;
+import com.example.thetravlendar.models.RecviewEvents;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +35,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.thetravlendar.Utils.Utility.hideKeyboard;
@@ -52,6 +56,7 @@ public class  AddEventActivity extends AppCompatActivity implements
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
     private String ename;
+    private List<Events> eList = new ArrayList<>();
     LinearLayout layout;
     Button buttonSaveEvent;
     EditText editEventName;
@@ -205,8 +210,10 @@ public class  AddEventActivity extends AppCompatActivity implements
         final String name = editEventName.getText().toString();
         final String date = editEventDate.getText().toString();
         System.out.println("Date = " + date);
-        final String startTime = editEventStart.getText().toString();
-        final String endTime = editEventEnd.getText().toString();
+        final String sTime = editEventStart.getText().toString();
+        final String eTime = editEventEnd.getText().toString();
+        //final Double startTime = Double.parseDouble(editEventStart.getText().toString());
+        //final Double endTime = Double.parseDouble((editEventEnd.getText().toString()));
         final String address = editEventAddress.getText().toString();
         final String city = editEventCity.getText().toString();
         final String state = editEventState.getText().toString();
@@ -229,26 +236,63 @@ public class  AddEventActivity extends AppCompatActivity implements
 
         if (TextUtils.isEmpty(name)) {
             editEventName.setError(REQUIRED);
+            editEventName.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(date)) {
             editEventDate.setError(REQUIRED);
+            editEventDate.requestFocus();
             return;
         }
 
-        if (TextUtils.isEmpty(startTime)) {
+        if (TextUtils.isEmpty(sTime)) {
             editEventStart.setError(REQUIRED);
+            editEventStart.requestFocus();
             return;
         }
 
-        if (TextUtils.isEmpty(endTime)) {
+        if (TextUtils.isEmpty(eTime)) {
             editEventEnd.setError(REQUIRED);
+            editEventEnd.requestFocus();
             return;
         }
 
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserRef.child("users").child(userId)
+        Events events = new Events();
+        RecviewEvents revents = new RecviewEvents();
+
+       /*revents.setUid(userId);
+        revents.setName(name);
+        revents.setDate(date);
+        revents.seteTime(eTime);
+        revents.setsTime(sTime);*/
+
+        events.setUid(userId);
+        events.setDate(date);
+        //events.setStartTime(startTime);
+        //events.setEndTime(endTime);
+        events.seteTime(eTime);
+        events.setsTime(sTime);
+        events.setAddress(address);
+        events.setCity(city);
+        events.setState(state);
+        events.setZip(zip);
+        events.setLocation(location);
+        events.setMod(mod);
+        events.setNote(note);
+        mEventRef.push().setValue(events).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    SendUserToCalendarActivity();
+                    Toast.makeText(AddEventActivity.this, "new event updated.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddEventActivity.this, "error occurred updating event", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        /*mUserRef.child("users").child(userId)
                 .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -268,7 +312,7 @@ public class  AddEventActivity extends AppCompatActivity implements
                     eventMap.put("location", location);
                     eventMap.put("mod", mod);
                     eventMap.put("note", note);
-                    eventMap.put("uid_name", userId + "_" + name);
+                    /*eventMap.put("uid_name", userId + "_" + name);
                     eventMap.put("uid_date", userId + "_" + date);
                     eventMap.put("uid_startTime", userId + "_" + startTime);
                     eventMap.put("uid_endTime", userId + "_" + endTime);
@@ -282,13 +326,13 @@ public class  AddEventActivity extends AppCompatActivity implements
 
                     //eventMap.put("startTime", startTime);
                     eventMap.put("uid_date_startTime", userId + "_" + date + "_" + startTime);
-                    eventMap.put("uid_date_endTime", userId + "_" + date + "_" + endTime);
+                    eventMap.put("uid_date_endTime", userId + "_" + date + "_" + endTime);*/
 
                     //HashMap<String, Object> childUpdates = new HashMap<>();
                     //childUpdates.put("/users/" + userId + "/" + key + "/", eventMap);
 
                     //mUserRef.updateChildren(childUpdates);
-                    mEventRef.child(key).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
+                    /*mEventRef.child(key).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
@@ -307,7 +351,7 @@ public class  AddEventActivity extends AppCompatActivity implements
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     private void SendUserToCalendarActivity() {
