@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.Ibotta:Supported-Picker-Dialogs:1.0.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/Supported-Picker-Dialogs-1.0.0.aar/36785a71b634451b6523f5d600a0650e/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/Supported-Picker-Dialogs-1.0.0.aar/36785a71b634451b6523f5d600a0650e/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Ibotta/Supported-Picker-Dialogs/1.0.0/fde7b2764868469eb285757ce4f4b939e76eada0/Supported-Picker-Dialogs-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

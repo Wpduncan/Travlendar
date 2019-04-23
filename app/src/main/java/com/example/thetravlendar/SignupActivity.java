@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,18 +17,28 @@ import android.widget.Toast;
 import com.example.thetravlendar.models.User;
 import com.example.thetravlendar.Utils.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
+
+    private static final String TAG = "AddToDatabase";
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
     private DatabaseReference mDatabase;
     private CoordinatorLayout layout;
 
@@ -37,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         btnSignIn = findViewById(R.id.sign_in_button);
@@ -119,6 +131,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void onAuthSuccess(FirebaseUser user) {
+
         String username = usernameFromEmail(user.getEmail());
 
         writeNewUser(user.getUid(), username, user.getEmail());
@@ -137,8 +150,24 @@ public class SignupActivity extends AppCompatActivity {
 
     private void writeNewUser(String userId, String name, String email){
         User user = new User(name, email);
-
-        mDatabase.child("users").child(userId).setValue(user);
+        Map<String, Object> users = new HashMap<>();
+        //users.put("uid",userId);
+        users.put("username", name);
+        users.put("email", email);
+        db.collection("users").document(userId).set(users)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(SignupActivity.this, "Successfully added user", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error adding document", e);
+            }
+        });
+        //mDatabase.child("users").child(userId).setValue(user);
     }
 
     @Override

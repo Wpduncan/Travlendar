@@ -1,9 +1,9 @@
 package com.example.thetravlendar.models;
 
 
+import java.io.Serializable;
 
-
-public class Events {
+public class Events implements Serializable {
 
     public String uid;
     public String name;
@@ -16,6 +16,7 @@ public class Events {
     public String zip;
     public String mode_of_transportation;
     public String note;
+    public String location;
     //public Map<String, Boolean> event = new HashMap<>();
 
     public Events(){
@@ -116,5 +117,13 @@ public class Events {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

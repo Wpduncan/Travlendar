@@ -68,7 +68,7 @@
                 android:value=".CalendarActivity" />
         </activity>
         <activity
-            android:name=".ViewEventActivity"
+            android:name=".UpdateEventActivity"
             android:parentActivityName=".CalendarActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

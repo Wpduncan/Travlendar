@@ -1,7 +1,6 @@
 package com.example.thetravlendar;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,16 +21,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.thetravlendar.models.Events;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
@@ -41,13 +47,19 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
 
     private static final String TAG = "checking get event";
-    private RecyclerView myEvents;
+    private List<Events> eventList;
+    private String online_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference eventsRef = db.collection("users").document(online_user_id)
+            .collection("events");
+    //private RecyclerView myEvents;
     private FloatingActionButton fab;
-    private DatabaseReference EventsRef, UserRef;
+   //private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
-    private String online_user_id;
+    private EventsAdapter adapter;
+    //private FirestoreRecyclerAdapter adapter;
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
-    private Query query;
+    //private Query query;
     private String Date;
 
     @Override
@@ -59,21 +71,58 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+        //db = FirebaseFirestore.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
-        EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        UserRef = FirebaseDatabase.getInstance().getReference().child("users");
-        query = EventsRef.orderByChild("uid").equalTo(online_user_id);
+                //adapter = new
+        //EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
+        //UserRef = FirebaseDatabase.getInstance().getReference().child("users");
+        //query = EventsRef.orderByChild("uid").equalTo(online_user_id);
+        //String eventDocId = db.collection("users").document(online_user_id)
+                //.collection("events").document().getId();
+        //Log.d(TAG, "event doc id"+ eventDocId);
+        //System.out.println("event doc id = " + eventDocId);
 
-        myEvents = findViewById(R.id.recview);
+
+        //myEvents = findViewById(R.id.recview);
         fab = findViewById(R.id.fab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        myEvents.setLayoutManager(linearLayoutManager);
-        myEvents.setHasFixedSize(true);
+        //myEvents.setLayoutManager(linearLayoutManager);
+        //myEvents.setHasFixedSize(true);
+
+
+
+        //myEvents.setAdapter(adapter);
 
         //receiving date from calendarview
         Intent intent = getIntent();
         Date = intent.getExtras().getString("sendingDate");
+        /*eventList = new ArrayList<>();
+        adapter = new EventsAdapter(this, eventList, Date);
         Log.d("testing", Date);
+
+        db.collection("users").document(online_user_id)
+                .collection("events").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        if(!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                            for(DocumentSnapshot d : list) {
+                                Events e = d.toObject(Events.class);
+                                e.setUid(d.getId());
+                                eventList.add(e);
+                            }
+
+
+                        }
+                    }
+                });*/
+        //query = db.collection("users").document(online_user_id)
+                //.collection("events").whereEqualTo("date",Date);
+                //.orderBy("startTime", Query.Direction.DESCENDING);
+
 
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -84,7 +133,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             }
         });
 
-        myEvents.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*myEvents.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -94,12 +143,14 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                     fab.show();
                 }
             }
-        });
+        });*/
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AddEventActivity.class));
+                Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
+                intent.putExtra("sendingDate", Date);
+                startActivity(intent);
             }
         });
 
@@ -139,8 +190,65 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     }
 
     private void DisplayAllEvents() {
+        Query query = eventsRef.whereEqualTo("date",Date).orderBy("start_time",
+                Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
+                .setQuery(query, Events.class)
+                .build();
+
+        adapter = new EventsAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.recview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    /*private void DisplayAllEvents() {
         //query = FirebaseDatabase.getInstance().getReference().child("events").limitToLast(50);
-        FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
+        FirestoreRecyclerOptions<Events> events = new FirestoreRecyclerOptions.Builder<Events>()
+                .setQuery(query, new SnapshotParser<Events>() {
+                    @NonNull
+                    @Override
+                    public Events parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        Events event = snapshot.toObject(Events.class);
+                        event.setUid(snapshot.getId());
+                        //event.setName(snapshot.g)
+                        return event;
+                    }
+                })
+                .setLifecycleOwner(this)
+                .build();
+        adapter = new FirestoreRecyclerAdapter<Events, EventsViewHolder>(events) {
+            @Override
+            public EventsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+                View view = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.cardview_event, viewGroup, false);
+                return new EventsViewHolder(view);
+            }
+            @Override
+            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull Events model) {
+                //holder.itemView.setTag(model.getUid());
+                holder.setName(model.getName());
+                holder.setDate(model.getDate());
+                holder.setStart_Time(model.getStart_time());
+                holder.setEnd_Time(model.getEnd_time());
+
+                EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String EventKey = model.getUid();
+                        Intent clickEvent = new Intent(ViewEventRecyclerActivity.this, UpdateEventActivity.class);
+                        clickEvent.putExtra("EventKey", EventKey);
+                        startActivity(clickEvent);
+                    }
+                });
+            }
+        };
+        myEvents.setAdapter(adapter);
+    }
+        /*FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
                 .setQuery(query, new SnapshotParser<Events>() {
                     @NonNull
                     @Override
@@ -181,18 +289,17 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent clickEvent = new Intent(ViewEventRecyclerActivity.this, ViewEventActivity.class);
+                        Intent clickEvent = new Intent(ViewEventRecyclerActivity.this, UpdateEventActivity.class);
                         clickEvent.putExtra("EventKey", EventKey);
                         startActivity(clickEvent);
                     }
                 });
             }
         };
-        myEvents.setAdapter(firebaseRecyclerAdapter);
-    }
+        myEvents.setAdapter(firebaseRecyclerAdapter);*/
 
 
-    public static class EventsViewHolder extends RecyclerView.ViewHolder {
+    /*public static class EventsViewHolder extends RecyclerView.ViewHolder {
 
         //public static Object mView;
         public TextView textEventName;
@@ -213,7 +320,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Intent i = new Intent(getApplicationContext(), ViewEventActivity.class);
+                    //Intent i = new Intent(getApplicationContext(), UpdateEventActivity.class);
                     //String eventID =
                     //i.putExtra("uid", );
                     //startActivity(i);
@@ -255,11 +362,11 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseRecyclerAdapter.startListening();
+        adapter.startListening();
     }
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseRecyclerAdapter.stopListening();
+        adapter.stopListening();
     }
 }

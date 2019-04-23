@@ -175,7 +175,7 @@ public class CalendarActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ViewEventRecyclerActivity.class);
         Events events;
         //final DatabaseReference eventRef = getRef()
-        //intent.putExtra(ViewEventActivity.EXTRA_EVENT_KEY, )
+        //intent.putExtra(UpdateEventActivity.EXTRA_EVENT_KEY, )
         //Map<String, Object> eventValues = events.toMap();
         Log.d("testing", "previewNote");
         if(eventDay instanceof MyEventDay){

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +30,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Document;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,6 +71,7 @@ public class  AddEventActivity extends AppCompatActivity implements
 
     private DatabaseReference mUserRef, mEventRef;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         editEventLocation = findViewById(R.id.event_location);
         imageAddLocation = findViewById(R.id.event_add_location);
 
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUserRef = FirebaseDatabase.getInstance().getReference();
         mEventRef = FirebaseDatabase.getInstance().getReference().child("events");
@@ -212,8 +219,31 @@ public class  AddEventActivity extends AppCompatActivity implements
             return;
         }
 
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+        String user = mAuth.getCurrentUser().getUid();
+        Map<String, Object> eventMap = new HashMap<>();
+        eventMap.put("name", name);
+        eventMap.put("date", date);
+        eventMap.put("start_time", startTime);
+        eventMap.put("end_time", endTime);
+        eventMap.put("address", address);
+        eventMap.put("city", city);
+        eventMap.put("state", state);
+        eventMap.put("zip", zip);
+        eventMap.put("mod", mod);
+        eventMap.put("note", note);
+        //DocumentReference userId = db.collection("users").document(user).collection("events").document();
+        //System.out.println("userid" + userId);
+        db.collection("users").document(user)
+                .collection("events").document()
+                .set(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                SendUserToCalendarActivity();
+                Toast.makeText(AddEventActivity.this, "Successfully added event", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -255,7 +285,7 @@ public class  AddEventActivity extends AppCompatActivity implements
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     private void SendUserToCalendarActivity() {
