@@ -28,7 +28,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
-    //implementation 'com.android.support:design-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.firebase:firebase-auth:16.2.1'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.google.android.libraries.places:places:1.0.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
 
     implementation 'com.google.maps:google-maps-services:0.1.20'

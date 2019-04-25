@@ -227,6 +227,7 @@ public class UpdateEventActivity extends AppCompatActivity implements
         btnSaveEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateEvent();
                 /*updateEvent();
 
                 ViewEventReference.child("name").setValue(editViewEventName.getText().toString());
@@ -275,6 +276,9 @@ public class UpdateEventActivity extends AppCompatActivity implements
         });
     }
 
+    private void updateEvent() {
+
+    }
     /*private void updateEvent() {
         String eName = editViewEventName.getText().toString().trim();
         String eDate = editViewEventDate.getText().toString().trim();
@@ -288,7 +292,7 @@ public class UpdateEventActivity extends AppCompatActivity implements
         });*/
 
         // For Maps Activity
-        Bundle extras = getIntent().getExtras();
+        /*Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String street = extras.getString("street");
             String city = extras.getString("city");
@@ -303,7 +307,7 @@ public class UpdateEventActivity extends AppCompatActivity implements
             editViewEventZipCode.setText(zip);
             editViewEventLocation.setText(name);
             editViewEventNote.setText(travel);
-        }
+        }*/
 
 
     /*private void DeleteCurrentEvent() {
