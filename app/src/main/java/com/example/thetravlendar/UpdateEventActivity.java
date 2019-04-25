@@ -2,6 +2,7 @@ package com.example.thetravlendar;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,12 +23,18 @@ import com.example.thetravlendar.Utils.Utility;
 import com.example.thetravlendar.models.Events;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class UpdateEventActivity extends AppCompatActivity {//implements View.OnClickListener{
 
@@ -50,7 +57,10 @@ public class UpdateEventActivity extends AppCompatActivity {//implements View.On
     Button btnDeleteEvent;
     Button btnSaveEvent;
     Button btnAddNewEvent;
+    private DocumentSnapshot documentSnapshot;
+    private CollectionReference eventsRef;
     private Events events;
+    private EventsAdapter adapter;
     private LinearLayout layout;
     private DocumentReference ViewEventReference;
     private FirebaseAuth mAuth;
@@ -66,14 +76,14 @@ public class UpdateEventActivity extends AppCompatActivity {//implements View.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        EventKey = getIntent().getExtras().get("EventKey").toString();
+        //EventKey = getIntent().getExtras().get("EventKey").toString();
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
 
-        Events event = new Events();
-        ViewEventReference = db.collection("users").document(currentUserID)
-                .collection("events").document(EventKey);
+        //Events event = new Events();
+        //ViewEventReference = db.collection("users").document(currentUserID)
+          //      .collection("events").document(EventKey);
         //ViewEventReference = FirebaseDatabase.getInstance().getReference().child("events").child(EventKey);
         editViewEventName = findViewById(R.id.view_event_name);
         editViewEventDate = findViewById(R.id.view_event_date);
@@ -92,17 +102,24 @@ public class UpdateEventActivity extends AppCompatActivity {//implements View.On
         layout = findViewById(R.id.act_view_event);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
-        editViewEventName.setText(event.getName());
-        editViewEventAddress.setText(event.getAddress());
-        //editViewEventLocation.setText(event.getLocation());
-        editViewEventCity.setText(event.getCity());
-        editViewEventDate.setText(event.getDate());
-        editViewEventEndTime.setText(event.getEnd_time());
-        editViewEventStartTime.setText(event.getStart_time());
-        editViewEventMOD.setText(event.getMode_of_transportation());
-        editViewEventNote.setText(event.getNote());
-        editViewEventState.setText(event.getState());
-        editViewEventZipCode.setText(event.getZip());
+        Intent intent = getIntent();
+        String path = getIntent().getExtras().get("path").toString();
+        //eventsRef = path;
+        //Events events = documentSnapshot.toObject(Events.class);
+        HashMap eventMap = (HashMap<String,String>)intent.getSerializableExtra("map");
+        editViewEventName.setText(eventMap.get("name").toString());
+        editViewEventAddress.setText(eventMap.get("address").toString());
+        //editViewEventLocation.setText(eventMap.get("location").toString());
+        editViewEventCity.setText(eventMap.get("city").toString());
+        editViewEventDate.setText(eventMap.get("date").toString());
+        editViewEventEndTime.setText(eventMap.get("end_time").toString());
+        editViewEventStartTime.setText(eventMap.get("start_time").toString());
+        //editViewEventMOD.setText(eventMap.get("mod").toString());
+        editViewEventNote.setText(eventMap.get("note").toString());
+        editViewEventState.setText(eventMap.get("state").toString());
+        editViewEventZipCode.setText(eventMap.get("zip").toString());
+
+        //ViewEventReference.addS
 
        /*ViewEventReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -165,13 +182,6 @@ public class UpdateEventActivity extends AppCompatActivity {//implements View.On
             }
         });
 
-        btnDeleteEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DeleteCurrentEvent();
-            }
-        });
-
         btnSaveEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,19 +190,19 @@ public class UpdateEventActivity extends AppCompatActivity {//implements View.On
 
         });
 
-        editViewEventLocation.setOnClickListener(new View.OnClickListener() {
+        /*editViewEventLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
-        imageViewEventAddLocation.setOnClickListener(new View.OnClickListener() {
+        /*imageViewEventAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
     }
 
     private void updateEvent() {
@@ -204,13 +214,6 @@ public class UpdateEventActivity extends AppCompatActivity {//implements View.On
         String eCity = editViewEventCity.getText().toString().trim();
         String eState = editViewEventState.getText().toString().trim();
         String eZip = editViewEventZipCode.getText().toString().trim();
-    }
-
-    private void DeleteCurrentEvent() {
-        /*ViewEventReference.removeValue();
-        Intent intent = new Intent(UpdateEventActivity.this, ViewEventRecyclerActivity.class);
-        startActivity(intent);
-        Toast.makeText(this, "Event has been Deleted.", Toast.LENGTH_SHORT).show();*/
     }
 
     @Override

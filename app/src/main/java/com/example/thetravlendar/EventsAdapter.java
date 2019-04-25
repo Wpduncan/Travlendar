@@ -12,11 +12,13 @@ import android.widget.TextView;
 import com.example.thetravlendar.models.Events;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
 //RecyclerView.Adapter<EventsAdapter.EventViewHolder> {
 public class EventsAdapter extends FirestoreRecyclerAdapter<Events, EventsAdapter.EventHolder> {
+    private OnEventClickListener listener;
 
     public EventsAdapter(@NonNull FirestoreRecyclerOptions<Events> options) {
         super(options);
@@ -38,6 +40,10 @@ public class EventsAdapter extends FirestoreRecyclerAdapter<Events, EventsAdapte
         return new EventHolder((v));
     }
 
+    public void deleteEvent(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
+
     class EventHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName, textViewDate, textViewStart, textViewEnd;
@@ -49,7 +55,25 @@ public class EventsAdapter extends FirestoreRecyclerAdapter<Events, EventsAdapte
             textViewDate = itemView.findViewById(R.id.cv_event_date);
             textViewStart = itemView.findViewById(R.id.cv_event_start);
             textViewEnd = itemView.findViewById(R.id.cv_event_end);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onEventclick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnEventClickListener {
+        void onEventclick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnEventClickListener(OnEventClickListener listener) {
+        this.listener = listener;
     }
 }
 

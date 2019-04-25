@@ -187,6 +187,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         final String state = editEventState.getText().toString();
         final String zip = editEventZipCode.getText().toString();
         final String mod = editEventMOD.getText().toString();
+        final String location = editEventLocation.getText().toString();
         final String note = editEventNote.getText().toString();
 
         Calendar calfordDate = Calendar.getInstance();
@@ -230,6 +231,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         eventMap.put("state", state);
         eventMap.put("zip", zip);
         eventMap.put("mod", mod);
+        eventMap.put("location", location);
         eventMap.put("note", note);
         //DocumentReference userId = db.collection("users").document(user).collection("events").document();
         //System.out.println("userid" + userId);
@@ -352,9 +354,11 @@ public class  AddEventActivity extends AppCompatActivity implements
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
-
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        
+    }
 }
 
 

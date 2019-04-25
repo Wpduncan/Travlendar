@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,8 +37,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ViewEventRecyclerActivity extends AppCompatActivity {
@@ -47,19 +51,14 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
 
     private static final String TAG = "checking get event";
-    private List<Events> eventList;
     private String online_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference eventsRef = db.collection("users").document(online_user_id)
             .collection("events");
-    //private RecyclerView myEvents;
     private FloatingActionButton fab;
-   //private DatabaseReference EventsRef, UserRef;
     private FirebaseAuth mAuth;
     private EventsAdapter adapter;
-    //private FirestoreRecyclerAdapter adapter;
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
-    //private Query query;
     private String Date;
 
     @Override
@@ -85,7 +84,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
         //myEvents = findViewById(R.id.recview);
         fab = findViewById(R.id.fab);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         //myEvents.setLayoutManager(linearLayoutManager);
         //myEvents.setHasFixedSize(true);
 
@@ -157,6 +156,61 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         DisplayAllEvents();
 
     }
+
+    private void DisplayAllEvents() {
+        Query query = eventsRef.whereEqualTo("date",Date).orderBy("start_time",
+                Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
+                .setQuery(query, Events.class)
+                .build();
+
+        adapter = new EventsAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.recview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                adapter.deleteEvent(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        adapter.setOnEventClickListener(new EventsAdapter.OnEventClickListener() {
+            @Override
+            public void onEventclick(DocumentSnapshot documentSnapshot, int position) {
+                Events events = documentSnapshot.toObject(Events.class);
+                //String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                HashMap<String, String> eventMap = new HashMap<>();
+                eventMap.put("name", events.getName());
+                eventMap.put("date", events.getDate());
+                eventMap.put("start_time", events.getStart_time());
+                eventMap.put("end_time", events.getEnd_time());
+                eventMap.put("address", events.getAddress());
+                eventMap.put("city", events.getCity());
+                eventMap.put("state", events.getState());
+                eventMap.put("zip", events.getZip());
+                eventMap.put("mod", events.getMode_of_transportation());
+                eventMap.put("location", events.getLocation());
+                eventMap.put("note", events.getNote());
+                Intent intent = new Intent(ViewEventRecyclerActivity.this, UpdateEventActivity.class);
+                intent.putExtra("map", eventMap);
+                intent.putExtra("path", path);
+                startActivity(intent);
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -189,23 +243,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         return true;
     }
 
-    private void DisplayAllEvents() {
-        Query query = eventsRef.whereEqualTo("date",Date).orderBy("start_time",
-                Query.Direction.ASCENDING);
-
-        FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
-                .setQuery(query, Events.class)
-                .build();
-
-        adapter = new EventsAdapter(options);
-
-        RecyclerView recyclerView = findViewById(R.id.recview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-    }
-
-    /*private void DisplayAllEvents() {
+        /*private void DisplayAllEvents() {
         //query = FirebaseDatabase.getInstance().getReference().child("events").limitToLast(50);
         FirestoreRecyclerOptions<Events> events = new FirestoreRecyclerOptions.Builder<Events>()
                 .setQuery(query, new SnapshotParser<Events>() {
