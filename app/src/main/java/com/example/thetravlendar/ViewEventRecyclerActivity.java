@@ -55,12 +55,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             .collection("events");
     private FloatingActionButton fab;
     private FirebaseAuth mAuth;
-<<<<<<< HEAD
     private EventsAdapter adapter;
-=======
-    private String online_user_id;
-    private String startTimes;
->>>>>>> master
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
     private String Date;
 
@@ -75,7 +70,6 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //db = FirebaseFirestore.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
-<<<<<<< HEAD
                 //adapter = new
         //EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         //UserRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -84,12 +78,6 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 //.collection("events").document().getId();
         //Log.d(TAG, "event doc id"+ eventDocId);
         //System.out.println("event doc id = " + eventDocId);
-=======
-        EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        UserRef = FirebaseDatabase.getInstance().getReference().child("users");
-        //startTimes = EventsRef.child("uid").
-        //startTimes = EventsRef.child("startTime").getValue().toString();
->>>>>>> master
 
 
         //myEvents = findViewById(R.id.recview);
@@ -418,23 +406,11 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-<<<<<<< HEAD
         adapter.startListening();
-=======
-        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
-        DisplayAllEvents();
-        firebaseRecyclerAdapter.startListening();
-
->>>>>>> master
     }
     @Override
     protected void onStop() {
         super.onStop();
-<<<<<<< HEAD
         adapter.stopListening();
-=======
-        DisplayAllEvents();
-        firebaseRecyclerAdapter.stopListening();
->>>>>>> master
     }
 }

@@ -221,7 +221,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         final String mod = editEventMOD.getText().toString();
         final String location = editEventLocation.getText().toString();
         final String note = editEventNote.getText().toString();
-        final String location = editEventLocation.getText().toString();
+        //final String location = editEventLocation.getText().toString();
 
         //Query query = mEventRef.orderByChild("start_time").
 
@@ -255,7 +255,6 @@ public class  AddEventActivity extends AppCompatActivity implements
             return;
         }
 
-<<<<<<< HEAD
         String user = mAuth.getCurrentUser().getUid();
         Map<String, Object> eventMap = new HashMap<>();
         eventMap.put("name", name);
@@ -411,13 +410,11 @@ public class  AddEventActivity extends AppCompatActivity implements
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
-<<<<<<< HEAD
-    @Override
-    protected void onStart() {
-        super.onStart();
+    //@Override
+    //protected void onStart() {
+    //    super.onStart();
         
-    }
-=======
+    //}
    /*@Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the user's current game state
@@ -462,9 +459,6 @@ public class  AddEventActivity extends AppCompatActivity implements
         //ename = editEventName.getText().toString();
 
     }
-
-
->>>>>>> master
 }
 
 

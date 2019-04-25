@@ -1,11 +1,8 @@
 package com.example.thetravlendar.models;
 
-public class Events {
-
 import java.io.Serializable;
 
-<<<<<<< HEAD
-public class Events implements Serializable {
+public class Events {
 
     public String uid;
     public String name;
@@ -19,33 +16,17 @@ public class Events implements Serializable {
     public String mode_of_transportation;
     public String note;
     public String location;
-=======
-
-    public String uid;
-    public String uid_name;
-    public String uid_date;
-    public String uid_startTime;
-    public String uid_endTime;
-    public String uid_address;
-    public String uid_city;
-    public String uid_state;
-    public String uid_zip;
-    public String uid_mod;
-    public String uid_note;
-    public String uid_location;
->>>>>>> master
     //public Map<String, Boolean> event = new HashMap<>();
 
     public Events() {
 
     }
 
-    public Events(String uid, String uid_name, String uid_date, String uid_startTime, String uid_endTime) {
-        this.uid_name = uid_name;
-        this.uid = uid;
-        this.uid_date = uid_date;
-        this.uid_startTime = uid_startTime;
-        this.uid_endTime = uid_endTime;
+    public Events (String name, String date, String start_time, String end_time) {
+        this.name = name;
+        this.date = date;
+        this.start_time = start_time;
+        this.end_time = end_time;
     }
 
     public String getUid() {
@@ -56,92 +37,84 @@ public class Events implements Serializable {
         this.uid = uid;
     }
 
-    public String getUid_name() {
-        return uid_name;
+    public String getName() {
+        return name;
     }
 
-    public void setUid_name(String uid_name) {
-        this.uid_name = uid_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUid_date() {
-        return uid_date;
+    public String getDate() {
+        return date;
     }
 
-    public void setUid_date(String uid_date) {
-        this.uid_date = uid_date;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getUid_startTime() {
-        return uid_startTime;
+    public String getStart_time() {
+        return start_time;
     }
 
-    public void setUid_startTime(String uid_startTime) {
-        this.uid_startTime = uid_startTime;
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
     }
 
-    public String getUid_endTime() {
-        return uid_endTime;
+    public String getEnd_time() {
+        return end_time;
     }
 
-    public void setUid_endTime(String uid_endTime) {
-        this.uid_endTime = uid_endTime;
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
     }
 
-    public String getUid_address() {
-        return uid_address;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUid_address(String uid_address) {
-        this.uid_address = uid_address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getUid_city() {
-        return uid_city;
+    public String getCity() {
+        return city;
     }
 
-    public void setUid_city(String uid_city) {
-        this.uid_city = uid_city;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getUid_state() {
-        return uid_state;
+    public String getState() {
+        return state;
     }
 
-    public void setUid_state(String uid_state) {
-        this.uid_state = uid_state;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getUid_zip() {
-        return uid_zip;
+    public String getZip() {
+        return zip;
     }
 
-    public void setUid_zip(String uid_zip) {
-        this.uid_zip = uid_zip;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
-    public String getUid_mod() {
-        return uid_mod;
+    public String getMode_of_transportation() {
+        return mode_of_transportation;
     }
 
-    public void setUid_mod(String uid_mod) {
-        this.uid_mod = uid_mod;
+    public void setMode_of_transportation(String mode_of_transportation) {
+        this.mode_of_transportation = mode_of_transportation;
     }
 
-    public String getUid_note() {
-        return uid_note;
+    public String getNote() {
+        return note;
     }
 
-    public void setUid_note(String uid_note) {
-        this.uid_note = uid_note;
-    }
-
-    public String getUid_location() {
-        return uid_location;
-    }
-
-    public void setUid_location(String uid_location) {
-        this.uid_location = uid_location;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getLocation() {

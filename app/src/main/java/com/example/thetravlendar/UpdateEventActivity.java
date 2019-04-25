@@ -8,6 +8,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,13 +38,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-<<<<<<< HEAD:app/src/main/java/com/example/thetravlendar/UpdateEventActivity.java
-public class UpdateEventActivity extends AppCompatActivity {//implements View.OnClickListener{
-=======
-public class ViewEventActivity extends AppCompatActivity implements
+public class UpdateEventActivity extends AppCompatActivity implements
         DatePickerFragment.DateDialogListener, StartTimePickerFragment.TimeDialogListener,
         EndTimePickerFragment.TimeDialogListener, ModeOfTransportationFragment.MODDialogListener {
->>>>>>> master:app/src/main/java/com/example/thetravlendar/ViewEventActivity.java
 
     private static final String DIALOG_TIME = "ViewEventActvity.TimeDialog";
     private static final String DIALOG_DATE = "ViewEventActivity.DateDialog";
@@ -230,9 +227,8 @@ public class ViewEventActivity extends AppCompatActivity implements
         btnSaveEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD:app/src/main/java/com/example/thetravlendar/UpdateEventActivity.java
-                updateEvent();
-=======
+                /*updateEvent();
+
                 ViewEventReference.child("name").setValue(editViewEventName.getText().toString());
                 ViewEventReference.child("date").setValue(editViewEventDate.getText().toString());
                 ViewEventReference.child("startTime").setValue(editViewEventStartTime.getText().toString());
@@ -249,11 +245,11 @@ public class ViewEventActivity extends AppCompatActivity implements
                 Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
                 intent.putExtra("sendingDate", Date);
                 startActivity(intent);
->>>>>>> master:app/src/main/java/com/example/thetravlendar/ViewEventActivity.java
+>>>>>>> master:app/src/main/java/com/example/thetravlendar/ViewEventActivity.java*/
             }
         });
 
-        btnCancelEvent.setOnClickListener(new View.OnClickListener() {
+        /*btnCancelEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
@@ -261,26 +257,25 @@ public class ViewEventActivity extends AppCompatActivity implements
                 startActivity(intent);
                 Toast.makeText(ViewEventActivity.this, "Cacnelled editing the event", Toast.LENGTH_SHORT).show();
             }
+        });*/
+
+        editViewEventLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
         });
 
-        /*editViewEventLocation.setOnClickListener(new View.OnClickListener() {
+        imageViewEventAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });*/
-
-        /*imageViewEventAddLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ViewEventActivity.this,MapsActivity.class);
+                Intent myIntent = new Intent(UpdateEventActivity.this,MapsActivity.class);
                 startActivity(myIntent);
             }
-<<<<<<< HEAD:app/src/main/java/com/example/thetravlendar/UpdateEventActivity.java
-        });*/
+        });
     }
 
-    private void updateEvent() {
+    /*private void updateEvent() {
         String eName = editViewEventName.getText().toString().trim();
         String eDate = editViewEventDate.getText().toString().trim();
         String eStartTime = editViewEventStartTime.getText().toString().trim();
@@ -290,7 +285,7 @@ public class ViewEventActivity extends AppCompatActivity implements
         String eState = editViewEventState.getText().toString().trim();
         String eZip = editViewEventZipCode.getText().toString().trim();
 =======
-        });
+        });*/
 
         // For Maps Activity
         Bundle extras = getIntent().getExtras();
@@ -309,16 +304,16 @@ public class ViewEventActivity extends AppCompatActivity implements
             editViewEventLocation.setText(name);
             editViewEventNote.setText(travel);
         }
-    }
 
-    private void DeleteCurrentEvent() {
+
+    /*private void DeleteCurrentEvent() {
         ViewEventReference.removeValue();
         Intent intent = new Intent(ViewEventActivity.this, ViewEventRecyclerActivity.class);
         intent.putExtra("sendingDate", Date);
         startActivity(intent);
         Toast.makeText(this, "Event has been Deleted.", Toast.LENGTH_SHORT).show();
 >>>>>>> master:app/src/main/java/com/example/thetravlendar/ViewEventActivity.java
-    }
+    }*/
 
     @Override
     public void onFinishMODDialog(String mod){
