@@ -176,11 +176,13 @@ public class  AddEventActivity extends AppCompatActivity implements
         imageAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*displayToast(getString(R.string.Test1));
+                displayToast(getString(R.string.Test1));
                 Intent myIntent = new Intent(AddEventActivity.this,MapsActivity.class);
-                startActivity(myIntent);*/
+                startActivity(myIntent);
             }
         });
+
+
 
 
         // For Maps Activity
