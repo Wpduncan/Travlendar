@@ -66,7 +66,7 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity_view extends FragmentActivity implements OnMapReadyCallback {
     String TAG = "placeautocomplete";
     TextView txtView;
     EditText eventView;
@@ -151,12 +151,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                 /*https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8
-                */
-                Intent i = new Intent(MapsActivity.this, AddEventActivity.class);
+                 */
+                Intent i = new Intent(MapsActivity_view.this, AddEventActivity.class);
                 String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + "West Texas A&M University" + "&destinations=" + place.getAddress() + "&mode=driving&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 /*String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
-                */
-                new getData(MapsActivity.this).execute(stringUrl);
+                 */
+                new getData(MapsActivity_view.this).execute(stringUrl);
                 /*
                 String time = txtView.getText().toString();
                 displayToast(time); */
@@ -226,14 +226,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLocationPermission();
         updateLocationUI();
 
-        LatLng USA = new LatLng(39.381266, -97.922211);
-        float zoom = 3.5f;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USA, zoom));
-
-
-        /*mMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(10, 10))
-                .title("Hello world"));*/
+                .title("Hello world"));
 
 
         /*LatLng current = new LatLng(mLastKnownLocation.getLatitude(),
@@ -249,7 +244,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Double min=Double.parseDouble(res[0])/60;
         traveltime = (int) (min / 60) + " hr " + (int) (min % 60) + " mins";
         /*txtView.setText(traveltime);
-        * */
+         * */
 
 
     }
@@ -336,30 +331,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /** @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.map_options, menu);
-        return true;
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.map_options, menu);
+    return true;
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Change the map type based on the user's selection.
-        switch (item.getItemId()) {
-            case R.id.normal_map:
-                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                return true;
-            case R.id.hybrid_map:
-                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                return true;
-            case R.id.satellite_map:
-                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                return true;
-            case R.id.terrain_map:
-                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+     // Change the map type based on the user's selection.
+     switch (item.getItemId()) {
+     case R.id.normal_map:
+     mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+     return true;
+     case R.id.hybrid_map:
+     mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+     return true;
+     case R.id.satellite_map:
+     mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+     return true;
+     case R.id.terrain_map:
+     mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+     return true;
+     default:
+     return super.onOptionsItemSelected(item);
+     }
+     }*/
 
 
 

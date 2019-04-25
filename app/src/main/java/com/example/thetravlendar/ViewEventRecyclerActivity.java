@@ -48,8 +48,6 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
 
     //private OnItemClickListener listener;
-
-
     private static final String TAG = "checking get event";
     private String online_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -57,7 +55,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             .collection("events");
     private FloatingActionButton fab;
     private FirebaseAuth mAuth;
+<<<<<<< HEAD
     private EventsAdapter adapter;
+=======
+    private String online_user_id;
+    private String startTimes;
+>>>>>>> master
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
     private String Date;
 
@@ -72,6 +75,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //db = FirebaseFirestore.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
+<<<<<<< HEAD
                 //adapter = new
         //EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         //UserRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -80,6 +84,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 //.collection("events").document().getId();
         //Log.d(TAG, "event doc id"+ eventDocId);
         //System.out.println("event doc id = " + eventDocId);
+=======
+        EventsRef = FirebaseDatabase.getInstance().getReference().child("events");
+        UserRef = FirebaseDatabase.getInstance().getReference().child("users");
+        //startTimes = EventsRef.child("uid").
+        //startTimes = EventsRef.child("startTime").getValue().toString();
+>>>>>>> master
 
 
         //myEvents = findViewById(R.id.recview);
@@ -98,6 +108,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         /*eventList = new ArrayList<>();
         adapter = new EventsAdapter(this, eventList, Date);
         Log.d("testing", Date);
+        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
+                                        //.endAt(online_user_id+"_"+Date+"_11:59 PM");
 
         db.collection("users").document(online_user_id)
                 .collection("events").get()
@@ -245,6 +257,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
         /*private void DisplayAllEvents() {
         //query = FirebaseDatabase.getInstance().getReference().child("events").limitToLast(50);
+<<<<<<< HEAD
         FirestoreRecyclerOptions<Events> events = new FirestoreRecyclerOptions.Builder<Events>()
                 .setQuery(query, new SnapshotParser<Events>() {
                     @NonNull
@@ -287,6 +300,11 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
         myEvents.setAdapter(adapter);
     }
         /*FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
+=======
+        //Log.e(TAG, "uid = " + EventsRef.child("uid") + " yikes");
+        //Log.e(TAG, "name = " + EventsRef.child("name").toString() + " yikes");
+        FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
+>>>>>>> master
                 .setQuery(query, new SnapshotParser<Events>() {
                     @NonNull
                     @Override
@@ -294,8 +312,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                         return new Events(snapshot.child("uid").getValue().toString(),
                                 snapshot.child("name").getValue().toString(),
                                 snapshot.child("date").getValue().toString(),
-                                snapshot.child("start_time").getValue().toString(),
-                                snapshot.child("end_time").getValue().toString());
+                                snapshot.child("startTime").getValue().toString(),
+                                snapshot.child("endTime").getValue().toString());
                     }
                 })
                 .build();
@@ -314,14 +332,14 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull EventsViewHolder holder, final int position, @NonNull Events model) {
                 final String EventKey = getRef(position).getKey();
                 if (model.uid.equals(online_user_id)) {
-                    holder.setName(model.getName());
-                    Log.e(TAG, "name = " + model.getName() + " yikes");
-                    holder.setDate(model.getDate());
-                    Log.e(TAG, "date = " + model.getDate() + " yikes");
-                    holder.setStart_Time(model.getStart_time());
-                    Log.e(TAG, "start = " + model.getStart_time() + " yikes");
-                    holder.setEnd_Time(model.getEnd_time());
-                    Log.e(TAG, "end = " + model.getEnd_time() + " yikes");
+                    holder.setName(model.getUid_name());
+                    Log.e(TAG, "name = " + model.getUid_name() + " yikes");
+                    holder.setDate(model.getUid_date());
+                    Log.e(TAG, "date = " + model.getUid_date() + " yikes");
+                    holder.setStart_Time(model.getUid_startTime());
+                    Log.e(TAG, "start = " + model.getUid_startTime() + " yikes");
+                    holder.setEnd_Time(model.getUid_endTime());
+                    Log.e(TAG, "end = " + model.getUid_endTime() + " yikes");
                 }
 
                 EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -400,11 +418,23 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+<<<<<<< HEAD
         adapter.startListening();
+=======
+        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
+        DisplayAllEvents();
+        firebaseRecyclerAdapter.startListening();
+
+>>>>>>> master
     }
     @Override
     protected void onStop() {
         super.onStop();
+<<<<<<< HEAD
         adapter.stopListening();
+=======
+        DisplayAllEvents();
+        firebaseRecyclerAdapter.stopListening();
+>>>>>>> master
     }
 }
