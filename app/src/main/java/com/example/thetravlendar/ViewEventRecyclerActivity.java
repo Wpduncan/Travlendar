@@ -149,6 +149,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
                 intent.putExtra("sendingDate", Date);
+                intent.putExtra("actID", "calendar");
                 startActivity(intent);
             }
         });
@@ -189,7 +190,8 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             @Override
             public void onEventclick(DocumentSnapshot documentSnapshot, int position) {
                 Events events = documentSnapshot.toObject(Events.class);
-                //String id = documentSnapshot.getId();
+                System.out.println("addr" + events.getAddress());
+                String id = documentSnapshot.getId();
                 String path = documentSnapshot.getReference().getPath();
                 HashMap<String, String> eventMap = new HashMap<>();
                 eventMap.put("name", events.getName());
@@ -203,9 +205,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 eventMap.put("mod", events.getMode_of_transportation());
                 eventMap.put("location", events.getLocation());
                 eventMap.put("note", events.getNote());
-                Intent intent = new Intent(ViewEventRecyclerActivity.this, UpdateEventActivity.class);
+                System.out.println("address " + eventMap.get("address"));
+                Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
                 intent.putExtra("map", eventMap);
                 intent.putExtra("path", path);
+                intent.putExtra("date", Date);
+                intent.putExtra("actID", "recycler");
                 startActivity(intent);
             }
         });

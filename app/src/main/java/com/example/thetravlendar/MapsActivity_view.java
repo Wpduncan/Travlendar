@@ -153,6 +153,7 @@ public class MapsActivity_view extends FragmentActivity implements OnMapReadyCal
                 /*https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8
                  */
                 Intent i = new Intent(MapsActivity_view.this, AddEventActivity.class);
+                i.putExtra("actID", "mapsView");
                 String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + "West Texas A&M University" + "&destinations=" + place.getAddress() + "&mode=driving&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 /*String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                  */
@@ -190,6 +191,7 @@ public class MapsActivity_view extends FragmentActivity implements OnMapReadyCal
                 i.putExtra("state", state);
                 i.putExtra("zip", zip);
                 i.putExtra("name", place.getName());
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
                 startActivity(i);
             }

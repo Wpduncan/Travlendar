@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/event_address"
-                    android:inputType="textPostalAddress"
+                    android:inputType="text"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
             </android.support.design.widget.TextInputLayout>

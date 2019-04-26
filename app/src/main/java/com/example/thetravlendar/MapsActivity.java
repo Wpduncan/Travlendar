@@ -153,6 +153,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 /*https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8
                 */
                 Intent i = new Intent(MapsActivity.this, AddEventActivity.class);
+                i.putExtra("actID", "mapsActivity");
                 String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + "West Texas A&M University" + "&destinations=" + place.getAddress() + "&mode=driving&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 /*String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 */
@@ -190,6 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 i.putExtra("state", state);
                 i.putExtra("zip", zip);
                 i.putExtra("name", place.getName());
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
                 startActivity(i);
             }
@@ -261,7 +263,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          * cases when a location is not available.
 
         try {
-            displayToast(getString(R.string.locatiion_test));
+            displayToast(getString(R.string.location_test));
             if (mLocationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {

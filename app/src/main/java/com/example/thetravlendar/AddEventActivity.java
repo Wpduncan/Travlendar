@@ -33,7 +33,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
 
@@ -53,6 +55,7 @@ public class  AddEventActivity extends AppCompatActivity implements
     private static final String TAG = "AddToDatabase";
     private static final String REQUIRED = "Required";
     private String Date;
+    private String path;
     private static final String DIALOG_TIME = "AddEventActivity.TimeDialog";
     private static final String DIALOG_DATE = "AddEventActivity.DateDialog";
     private static final String DIALOG_MOD = "AddEventActivity.";
@@ -75,6 +78,8 @@ public class  AddEventActivity extends AppCompatActivity implements
     private DatabaseReference mUserRef, mEventRef;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private DocumentSnapshot snapshot;
+    private DocumentReference docIdRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +115,24 @@ public class  AddEventActivity extends AppCompatActivity implements
         Date = intent.getExtras().getString("sendingDate");
         editEventDate.setText(Date);
 
-
+        String actID = intent.getExtras().getString("actID");
+        if(actID.equals("recycler")){
+            System.out.println("recycler " + actID);
+            path = getIntent().getExtras().get("path").toString();
+            HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
+            editEventName.setText(eventMap.get("name").toString());
+            editEventAddress.setText(eventMap.get("address").toString());
+            editEventLocation.setText(eventMap.get("location").toString());
+            editEventCity.setText(eventMap.get("city").toString());
+            editEventDate.setText(eventMap.get("date").toString());
+            editEventEnd.setText(eventMap.get("end_time").toString());
+            editEventStart.setText(eventMap.get("start_time").toString());
+            //editEventMOD.setText(eventMap.get("mod").toString());
+            editEventNote.setText(eventMap.get("note").toString());
+            editEventState.setText(eventMap.get("state").toString());
+            editEventZipCode.setText(eventMap.get("zip").toString());
+            System.out.println("address " + eventMap.get("address").toString());
+        }
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -176,9 +198,9 @@ public class  AddEventActivity extends AppCompatActivity implements
         imageAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*displayToast(getString(R.string.Test1));
+                displayToast(getString(R.string.Test1));
                 Intent myIntent = new Intent(AddEventActivity.this,MapsActivity.class);
-                startActivity(myIntent);*/
+                startActivity(myIntent);
             }
         });
 
@@ -207,6 +229,54 @@ public class  AddEventActivity extends AppCompatActivity implements
         Toast.makeText(getApplicationContext(), message,
                 Toast.LENGTH_SHORT).show();
     }
+
+    /*private void updateEvent() {
+
+        final String name = editEventName.getText().toString();
+        final String date = editEventDate.getText().toString();
+        final String startTime = editEventStart.getText().toString();
+        final String endTime = editEventEnd.getText().toString();
+        final String address = editEventAddress.getText().toString();
+        final String city = editEventCity.getText().toString();
+        final String state = editEventState.getText().toString();
+        final String zip = editEventZipCode.getText().toString();
+        final String mod = editEventMOD.getText().toString();
+        final String location = editEventLocation.getText().toString();
+        final String note = editEventNote.getText().toString();
+
+        if (TextUtils.isEmpty(name)) {
+            editEventName.setError(REQUIRED);
+            return;
+        }
+
+        if (TextUtils.isEmpty(date)) {
+            editEventDate.setError(REQUIRED);
+            return;
+        }
+
+        if (TextUtils.isEmpty(startTime)) {
+            editEventStart.setError(REQUIRED);
+            return;
+        }
+
+        if (TextUtils.isEmpty(endTime)) {
+            editEventEnd.setError(REQUIRED);
+            return;
+        }
+
+        Map<String, Object> eventMap = new HashMap<>();
+        eventMap.put("name", name);
+        eventMap.put("date", date);
+        eventMap.put("start_time", startTime);
+        eventMap.put("end_time", endTime);
+        eventMap.put("address", address);
+        eventMap.put("city", city);
+        eventMap.put("state", state);
+        eventMap.put("zip", zip);
+        eventMap.put("mod", mod);
+        eventMap.put("location", location);
+        eventMap.put("note", note);
+    }*/
 
     private void submitEvent() {
         final String name = editEventName.getText().toString();
@@ -270,15 +340,43 @@ public class  AddEventActivity extends AppCompatActivity implements
         eventMap.put("note", note);
         //DocumentReference userId = db.collection("users").document(user).collection("events").document();
         //System.out.println("userid" + userId);
-        db.collection("users").document(user)
-                .collection("events").document()
-                .set(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                SendUserToCalendarActivity();
-                Toast.makeText(AddEventActivity.this, "Successfully added event", Toast.LENGTH_SHORT).show();
-            }
-        });
+        /*db.collection("users").document(user)
+                .collection("events").whereEqualTo("date", date)
+                .whereEqualTo("end_time", startTime)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(AddEventActivity.this, "Start time conflicts with another event", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                });*/
+        if (path == null) {
+            db.collection("users").document(user)
+                    .collection("events").document()
+                    .set(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    SendUserToCalendarActivity();
+                    Toast.makeText(AddEventActivity.this, "Successfully added event", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            System.out.println("path " + path);
+            System.out.println("date " + date);
+            db.document(path).update(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Intent intent = new Intent(this, CalendarActivity.class);
+                    intent.putExtra("date", Date);
+                    startActivity(intent);
+                    Toast.makeText(AddEventActivity.this, "Successfully updated event", Toast.LENGTH_SHORT).show();                    
+                }
+            });
+        }
 
         /*mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
 =======

@@ -167,6 +167,7 @@ public class CalendarActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddEventActivity.class);
         Log.d("testing", "add note");
         intent.putExtra("sendingDate", Date);
+        intent.putExtra("actID", "calendar");
         startActivity(intent);
         Log.d("testing", "add note - after exec");
     }
