@@ -205,6 +205,8 @@ public class  AddEventActivity extends AppCompatActivity implements
         });
 
 
+
+
         // For Maps Activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
