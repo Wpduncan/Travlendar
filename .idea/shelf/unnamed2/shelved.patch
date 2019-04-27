@@ -1,0 +1,102 @@
+Index: app/src/main/java/com/example/thetravlendar/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.thetravlendar;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.support.annotation.NonNull;\r\nimport android.support.design.widget.CoordinatorLayout;\r\nimport android.support.v7.app.AppCompatActivity;\r\nimport android.text.TextUtils;\r\nimport android.util.Log;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.thetravlendar.Utils.Utility;\r\nimport com.google.android.gms.auth.api.Auth;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignIn;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInAccount;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInClient;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions;\r\nimport com.google.android.gms.auth.api.signin.GoogleSignInResult;\r\nimport com.google.android.gms.common.ConnectionResult;\r\nimport com.google.android.gms.common.SignInButton;\r\nimport com.google.android.gms.common.api.ApiException;\r\nimport com.google.android.gms.common.api.GoogleApiClient;\r\nimport com.google.android.gms.tasks.OnCompleteListener;\r\nimport com.google.android.gms.tasks.Task;\r\nimport com.google.firebase.auth.AuthCredential;\r\nimport com.google.firebase.auth.AuthResult;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.auth.GoogleAuthProvider;\r\n\r\npublic class LoginActivity extends AppCompatActivity {\r\n\r\n    private static final String TAG = \"LoginActivity\";\r\n    private static Context instance;\r\n    private EditText inputEmail, inputPassword;\r\n    private FirebaseAuth mAuth;\r\n    private ProgressBar progressBar;\r\n    private Button btnSignup, btnLogin, btnReset;\r\n    private SignInButton btnGoogle;\r\n    private GoogleApiClient mGoogleSignInClient;\r\n    CoordinatorLayout layout;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n\r\n        //Get Firebase auth instance\r\n        mAuth = FirebaseAuth.getInstance();\r\n\r\n        if (mAuth.getCurrentUser() != null) {\r\n            //startActivity(new Intent(LoginActivity.this, AccountSettingsActivity.class));\r\n            startActivity(new Intent(LoginActivity.this, CalendarActivity.class));\r\n            finish();\r\n        }\r\n\r\n        // set the view now\r\n        setContentView(R.layout.activity_login);\r\n        layout = findViewById(R.id.act_login);\r\n        layout.setOnTouchListener(new View.OnTouchListener() {\r\n            @Override\r\n            public boolean onTouch(View v, MotionEvent event) {\r\n                Utility.hideKeyboard(v,getApplicationContext());\r\n                return false;\r\n            }\r\n        });\r\n        //Toolbar toolbar = findViewById(R.id.toolbar);\r\n        //setSupportActionBar(toolbar);\r\n\r\n        inputEmail = findViewById(R.id.email);\r\n        inputPassword = findViewById(R.id.password);\r\n        progressBar = findViewById(R.id.progressBar);\r\n        btnSignup = findViewById(R.id.btn_signup);\r\n        btnLogin = findViewById(R.id.btn_login);\r\n        btnReset = findViewById(R.id.btn_reset_password);\r\n        btnGoogle = findViewById(R.id.btn_google_login);\r\n\r\n        //Get Firebase auth instance\r\n        mAuth = FirebaseAuth.getInstance();\r\n        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\r\n                .requestIdToken(getString(R.string.default_web_client_id))\r\n                .requestEmail()\r\n                .build();\r\n\r\n        mGoogleSignInClient = new GoogleApiClient.Builder(this)\r\n                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {\r\n                    @Override\r\n                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {\r\n                        Toast.makeText(LoginActivity.this, \"Connection to Google Failed...\",Toast.LENGTH_SHORT).show();\r\n                    }\r\n                })\r\n                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)\r\n                .build();\r\n\r\n        btnGoogle.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);\r\n                startActivityForResult(signInIntent, 101);\r\n            }\r\n        });\r\n\r\n        btnSignup.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(LoginActivity.this, SignupActivity.class));\r\n            }\r\n        });\r\n\r\n        btnReset.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));\r\n            }\r\n        });\r\n\r\n        btnLogin.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                String email = inputEmail.getText().toString();\r\n                final String password = inputPassword.getText().toString();\r\n\r\n                if (TextUtils.isEmpty(email)) {\r\n                    Toast.makeText(getApplicationContext(), \"Enter email address!\", Toast.LENGTH_SHORT).show();\r\n                    return;\r\n                }\r\n\r\n                if (TextUtils.isEmpty(password)) {\r\n                    Toast.makeText(getApplicationContext(), \"Enter password!\", Toast.LENGTH_SHORT).show();\r\n                    return;\r\n                }\r\n\r\n                progressBar.setVisibility(View.VISIBLE);\r\n\r\n                //authenticate user\r\n                mAuth.signInWithEmailAndPassword(email, password)\r\n                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {\r\n                            @Override\r\n                            public void onComplete(@NonNull Task<AuthResult> task) {\r\n                                // If sign in fails, display a message to the user. If sign in succeeds\r\n                                // the auth state listener will be notified and logic to handle the\r\n                                // signed in user can be handled in the listener.\r\n                                progressBar.setVisibility(View.GONE);\r\n                                if (!task.isSuccessful()) {\r\n                                    // there was an error\r\n                                    if (password.length() < 6) {\r\n                                        inputPassword.setError(getString(R.string.minimum_password));\r\n                                    } else {\r\n                                        String message = task.getException().getMessage();\r\n                                        Toast.makeText(LoginActivity.this, \"Error occured: \" + message, Toast.LENGTH_LONG).show();\r\n                                    }\r\n                                } else {\r\n                                    Intent intent = new Intent(LoginActivity.this, CalendarActivity.class);\r\n                                    startActivity(intent);\r\n                                    finish();\r\n                                }\r\n                            }\r\n                        });\r\n            }\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n        super.onActivityResult(requestCode, resultCode, data);\r\n\r\n        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);\r\n        if (requestCode == 101) {\r\n            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);\r\n            \r\n            if(result.isSuccess()){\r\n                GoogleSignInAccount account = result.getSignInAccount();\r\n                firebaseAuthWithGoogle(account);\r\n                Toast.makeText(this, \"Please wait, while we are getting your auth result...\", Toast.LENGTH_SHORT).show();\r\n            }\r\n            else {\r\n                Toast.makeText(this, \"Can't get Auth result.\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        }\r\n    }\r\n\r\n    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {\r\n        //Log.d(TAG, \"firebaseAuthWithGoogle:\" + acct.getId());\r\n\r\n        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);\r\n        mAuth.signInWithCredential(credential)\r\n                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {\r\n                    @Override\r\n                    public void onComplete(@NonNull Task<AuthResult> task) {\r\n                        if (task.isSuccessful()) {\r\n                            // Sign in success, update UI with the signed-in user's information\r\n                            Log.d(TAG, \"signInWithCredential:success\");\r\n                            //FirebaseUser user = mAuth.getCurrentUser();\r\n                            //Intent intent = new Intent(getApplicationContext(), AccountSettingsActivity.class);\r\n                            Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);\r\n                            startActivity(intent);\r\n                            finish();\r\n                            Toast.makeText(getApplicationContext(), \"User Logged in Successfully\", Toast.LENGTH_SHORT).show();\r\n                            //updateUI(user);\r\n                        } else {\r\n                            // If sign in fails, display a message to the user.\r\n                            //Log.w(TAG, \"signInWithCredential:failure\", task.getException());\r\n                            //Snackbar.make(findViewById(R.id.main_layout), \"Authentication Failed.\", Snackbar.LENGTH_SHORT).show();\r\n                            Toast.makeText(getApplicationContext(), \"Failed to log in\", Toast.LENGTH_SHORT).show();\r\n                            //updateUI(null);\r\n                        }\r\n\r\n                        // ...\r\n                    }\r\n                });\r\n    }\r\n\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/thetravlendar/LoginActivity.java	(revision f5a4c62af93eec45b6504eeea60ea66f5c0311d9)
++++ app/src/main/java/com/example/thetravlendar/LoginActivity.java	(date 1556320232474)
+@@ -16,6 +16,7 @@
+ import android.widget.Toast;
+ 
+ import com.example.thetravlendar.Utils.Utility;
++import com.example.thetravlendar.models.User;
+ import com.google.android.gms.auth.api.Auth;
+ import com.google.android.gms.auth.api.signin.GoogleSignIn;
+ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+@@ -27,16 +28,24 @@
+ import com.google.android.gms.common.api.ApiException;
+ import com.google.android.gms.common.api.GoogleApiClient;
+ import com.google.android.gms.tasks.OnCompleteListener;
++import com.google.android.gms.tasks.OnFailureListener;
++import com.google.android.gms.tasks.OnSuccessListener;
+ import com.google.android.gms.tasks.Task;
+ import com.google.firebase.auth.AuthCredential;
+ import com.google.firebase.auth.AuthResult;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.auth.GoogleAuthProvider;
++import com.google.firebase.firestore.FirebaseFirestore;
++
++import java.util.HashMap;
++import java.util.Map;
+ 
+ public class LoginActivity extends AppCompatActivity {
+ 
+     private static final String TAG = "LoginActivity";
++    private FirebaseFirestore db;
++
+     private static Context instance;
+     private EditText inputEmail, inputPassword;
+     private FirebaseAuth mAuth;
+@@ -161,6 +170,7 @@
+                                 }
+                             }
+                         });
++
+             }
+         });
+     }
+@@ -188,11 +198,37 @@
+         //Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+ 
+         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
++
+         mAuth.signInWithCredential(credential)
+                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
++                            String personEmail = acct.getEmail();
++                            System.out.println("email " + personEmail);
++                            String userName = usernameFromEmail(personEmail);
++                            System.out.println("userName " + userName);
++                            String userID = mAuth.getUid();
++                            System.out.println("uid " + userID);
++
++                            User user = new User(userName, personEmail);
++                            Map<String, Object> googleCred = new HashMap<>();
++                            googleCred.put("username", userName);
++                            googleCred.put("email", personEmail);
++                            db.collection("users").document(userID).set(googleCred)
++                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
++                                        @Override
++                                        public void onSuccess(Void aVoid) {
++                                            Toast.makeText(LoginActivity.this, "Successfully added user", Toast.LENGTH_SHORT).show();
++                                        }
++                                    })
++                                    .addOnFailureListener(new OnFailureListener() {
++                                        @Override
++                                        public void onFailure(@NonNull Exception e) {
++                                            Log.w(TAG, "Error adding document", e);
++                                        }
++                                    });
++
+                             // Sign in success, update UI with the signed-in user's information
+                             Log.d(TAG, "signInWithCredential:success");
+                             //FirebaseUser user = mAuth.getCurrentUser();
+@@ -214,6 +250,13 @@
+                     }
+                 });
+     }
++    private String usernameFromEmail(String email) {
++        if (email.contains("@")) {
++            return email.split("@")[0];
++        } else {
++            return email;
++        }
++    }
+ 
+ 
+ 

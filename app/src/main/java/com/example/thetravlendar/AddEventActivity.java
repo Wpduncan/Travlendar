@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.thetravlendar.models.Events;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,7 +35,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
@@ -44,6 +48,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import static com.example.thetravlendar.Utils.Utility.hideKeyboard;
 
@@ -75,11 +81,11 @@ public class  AddEventActivity extends AppCompatActivity implements
     EditText editEventLocation;
     ImageView imageAddLocation;
 
-    private DatabaseReference mUserRef, mEventRef;
+    //private DatabaseReference mUserRef, mEventRef;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private DocumentSnapshot snapshot;
-    private DocumentReference docIdRef;
+    private DocumentReference docRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +111,11 @@ public class  AddEventActivity extends AppCompatActivity implements
         imageAddLocation = findViewById(R.id.event_add_location);
 
         db = FirebaseFirestore.getInstance();
+        //docRef = db.collection("users").document(mAuth.getUid())
+        //        .collection("events").document();
         mAuth = FirebaseAuth.getInstance();
-        mUserRef = FirebaseDatabase.getInstance().getReference();
-        mEventRef = FirebaseDatabase.getInstance().getReference().child("events");
+        //mUserRef = FirebaseDatabase.getInstance().getReference();
+        //mEventRef = FirebaseDatabase.getInstance().getReference().child("events");
 
         layout = (LinearLayout) findViewById(R.id.act_add_event);
         //accepts the date from the calendar activity and sets date text field
@@ -120,8 +128,9 @@ public class  AddEventActivity extends AppCompatActivity implements
             System.out.println("recycler " + actID);
             path = getIntent().getExtras().get("path").toString();
             HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
+            String address = eventMap.get("address").toString();
             editEventName.setText(eventMap.get("name").toString());
-            editEventAddress.setText(eventMap.get("address").toString());
+            editEventAddress.setText(address);
             editEventLocation.setText(eventMap.get("location").toString());
             editEventCity.setText(eventMap.get("city").toString());
             editEventDate.setText(eventMap.get("date").toString());
@@ -131,7 +140,8 @@ public class  AddEventActivity extends AppCompatActivity implements
             editEventNote.setText(eventMap.get("note").toString());
             editEventState.setText(eventMap.get("state").toString());
             editEventZipCode.setText(eventMap.get("zip").toString());
-            System.out.println("address " + eventMap.get("address").toString());
+            System.out.println("address " + address);
+            System.out.println("name " + eventMap.get("name").toString());//+ eventMap.get("address").toString());
         }
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -342,7 +352,9 @@ public class  AddEventActivity extends AppCompatActivity implements
         eventMap.put("note", note);
         //DocumentReference userId = db.collection("users").document(user).collection("events").document();
         //System.out.println("userid" + userId);
-        /*db.collection("users").document(user)
+
+        /*
+        db.collection("users").document(user)
                 .collection("events").whereEqualTo("date", date)
                 .whereEqualTo("end_time", startTime)
                 .get()
@@ -354,96 +366,59 @@ public class  AddEventActivity extends AppCompatActivity implements
                             return;
                         }
                     }
-                });*/
+                });
+                */
         if (path == null) {
+            final int[] flag = {0};
             db.collection("users").document(user)
-                    .collection("events").document()
-                    .set(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    SendUserToCalendarActivity();
-                    Toast.makeText(AddEventActivity.this, "Successfully added event", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    .collection("events").whereEqualTo("date", Date).get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                Events events = documentSnapshot.toObject(Events.class);
+                                if (startTime.equals(events.getEnd_time())) {
+                                    SendUserToRecycler();
+                                    Toast.makeText(AddEventActivity.this, "Conflict with " + events.getName() + " event.", Toast.LENGTH_SHORT).show();
+                                    flag[0] = 1;
+                                }
+                                if (endTime.equals(events.getStart_time())) {
+                                    SendUserToRecycler();
+                                    Toast.makeText(AddEventActivity.this, "Conflict with " + events.getName() + " event.", Toast.LENGTH_SHORT).show();
+                                    flag[0] = 1;
+                                }
+                            }
+                        }
+                    });
+            if (flag[0] == 0) {
+                db.collection("users").document(user)
+                        .collection("events").document()
+                        .set(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        SendUserToCalendarActivity();
+                        Toast.makeText(AddEventActivity.this, "Successfully added event", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
         else{
             System.out.println("path " + path);
-            System.out.println("date " + date);
+            System.out.println("date " + Date);
             db.document(path).update(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Intent intent = new Intent(this, CalendarActivity.class);
-                    intent.putExtra("date", Date);
-                    startActivity(intent);
+                    SendUserToCalendarActivity();
                     Toast.makeText(AddEventActivity.this, "Successfully updated event", Toast.LENGTH_SHORT).show();                    
                 }
             });
         }
+    }
 
-        /*mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
-=======
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserRef.child("users").child(userId)
-                .addValueEventListener(new ValueEventListener() {
->>>>>>> master
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    DatabaseReference pushKey = mEventRef.push();
-                    String key = pushKey.getKey();
-                    HashMap<String, Object> eventMap = new HashMap<>();
-                    eventMap.put("uid", userId);
-                    eventMap.put("name", name);
-                    eventMap.put("date", date);
-                    eventMap.put("startTime", startTime);
-                    eventMap.put("endTime", endTime);
-                    eventMap.put("address", address);
-                    eventMap.put("city", city);
-                    eventMap.put("state", state);
-                    eventMap.put("zip", zip);
-                    eventMap.put("location", location);
-                    eventMap.put("mod", mod);
-                    eventMap.put("note", note);
-                    eventMap.put("uid_name", userId + "_" + name);
-                    eventMap.put("uid_date", userId + "_" + date);
-                    eventMap.put("uid_startTime", userId + "_" + startTime);
-                    eventMap.put("uid_endTime", userId + "_" + endTime);
-                    eventMap.put("uid_address", userId + "_" + address);
-                    eventMap.put("uid_city", userId + "_" + city);
-                    eventMap.put("uid_state", userId + "_" + state);
-                    eventMap.put("uid_zip", userId + "_" + zip);
-                    eventMap.put("uid_location", userId + "_" + location);
-                    eventMap.put("uid_mod", userId + "_" + mod);
-                    eventMap.put("uid_note", userId + "_" + note);
-
-                    //eventMap.put("startTime", startTime);
-                    eventMap.put("uid_date_startTime", userId + "_" + date + "_" + startTime);
-                    eventMap.put("uid_date_endTime", userId + "_" + date + "_" + endTime);
-
-                    //HashMap<String, Object> childUpdates = new HashMap<>();
-                    //childUpdates.put("/users/" + userId + "/" + key + "/", eventMap);
-
-                    //mUserRef.updateChildren(childUpdates);
-                    mEventRef.child(key).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (task.isSuccessful()) {
-                                SendUserToCalendarActivity();
-                                Toast.makeText(AddEventActivity.this, "new event updated.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AddEventActivity.this, "error occurred updating event", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
+    private void SendUserToRecycler() {
+        Intent intent = new Intent(AddEventActivity.this, ViewEventRecyclerActivity.class);
+        intent.putExtra("date", Date);
+        startActivity(intent);
     }
 
     private void SendUserToCalendarActivity() {
@@ -550,6 +525,12 @@ public class  AddEventActivity extends AppCompatActivity implements
     @Override
     public void onStart(){
         super.onStart();
+        /*docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+            }
+        });*/
         //editEventName.setText(ename);
     }
 
