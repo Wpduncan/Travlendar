@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -62,17 +63,17 @@ public class  AddEventActivity extends AppCompatActivity implements
     private String ename;
     LinearLayout layout;
     Button buttonSaveEvent;
-    EditText editEventName;
-    EditText editEventDate;
-    EditText editEventStart;
-    EditText editEventEnd;
-    EditText editEventAddress;
-    EditText editEventCity;
-    EditText editEventState;
-    EditText editEventZipCode;
-    EditText editEventMOD;
-    EditText editEventNote;
-    EditText editEventLocation;
+    TextInputEditText editEventName;
+    TextInputEditText editEventDate;
+    TextInputEditText editEventStart;
+    TextInputEditText editEventEnd;
+    TextInputEditText editEventAddress;
+    TextInputEditText editEventCity;
+    TextInputEditText editEventState;
+    TextInputEditText editEventZipCode;
+    TextInputEditText editEventMOD;
+    TextInputEditText editEventNote;
+    TextInputEditText editEventLocation;
     ImageView imageAddLocation;
 
     private DatabaseReference mUserRef, mEventRef;
@@ -117,21 +118,8 @@ public class  AddEventActivity extends AppCompatActivity implements
 
         String actID = intent.getExtras().getString("actID");
         if(actID.equals("recycler")){
+            updateEvent();
             System.out.println("recycler " + actID);
-            path = getIntent().getExtras().get("path").toString();
-            HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
-            editEventName.setText(eventMap.get("name").toString());
-            editEventAddress.setText(eventMap.get("address").toString());
-            editEventLocation.setText(eventMap.get("location").toString());
-            editEventCity.setText(eventMap.get("city").toString());
-            editEventDate.setText(eventMap.get("date").toString());
-            editEventEnd.setText(eventMap.get("end_time").toString());
-            editEventStart.setText(eventMap.get("start_time").toString());
-            //editEventMOD.setText(eventMap.get("mod").toString());
-            editEventNote.setText(eventMap.get("note").toString());
-            editEventState.setText(eventMap.get("state").toString());
-            editEventZipCode.setText(eventMap.get("zip").toString());
-            System.out.println("address " + eventMap.get("address").toString());
         }
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -208,14 +196,14 @@ public class  AddEventActivity extends AppCompatActivity implements
 
 
         // For Maps Activity
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String street = extras.getString("street");
-            String city = extras.getString("city");
-            String state = extras.getString("state");
-            String zip = extras.getString("zip");
-            String name = extras.getString("name");
-            String travel = extras.getString("time");
+        //Bundle extras = getIntent().getExtras();
+        if (actID.equals("mapsActivity")) {
+            String street = intent.getExtras().getString("address");
+            String city = intent.getExtras().getString("city");
+            String state = intent.getExtras().getString("state");
+            String zip = intent.getExtras().getString("zip");
+            String name = intent.getExtras().getString("name");
+            String travel = intent.getExtras().getString("time");
             //The key argument here must match that used in the other activity
             editEventAddress.setText(street);
             editEventCity.setText(city);
@@ -232,6 +220,24 @@ public class  AddEventActivity extends AppCompatActivity implements
                 Toast.LENGTH_SHORT).show();
     }
 
+    private void updateEvent(){
+        path = getIntent().getExtras().get("path").toString();
+        HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
+        editEventName.setText(eventMap.get("name").toString());
+        editEventDate.setText(eventMap.get("date").toString());
+        editEventStart.setText(eventMap.get("start_time").toString());
+        editEventEnd.setText(eventMap.get("end_time").toString());
+        editEventAddress.setText(eventMap.get("address").toString());
+        //editEventAddress.setText(eventMap.get("address").toString());
+        editEventLocation.setText(eventMap.get("location").toString());
+        editEventCity.setText(eventMap.get("city").toString());
+
+        //editEventMOD.setText(eventMap.get("mod").toString());
+        editEventNote.setText(eventMap.get("note").toString());
+        editEventState.setText(eventMap.get("state").toString());
+        editEventZipCode.setText(eventMap.get("zip").toString());
+        System.out.println("address " + eventMap.get("address").toString());
+    }
     /*private void updateEvent() {
 
         final String name = editEventName.getText().toString();
@@ -372,7 +378,7 @@ public class  AddEventActivity extends AppCompatActivity implements
             db.document(path).update(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Intent intent = new Intent(this, CalendarActivity.class);
+                    Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);
                     intent.putExtra("date", Date);
                     startActivity(intent);
                     Toast.makeText(AddEventActivity.this, "Successfully updated event", Toast.LENGTH_SHORT).show();                    
@@ -381,11 +387,11 @@ public class  AddEventActivity extends AppCompatActivity implements
         }
 
         /*mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
-=======
+
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mUserRef.child("users").child(userId)
                 .addValueEventListener(new ValueEventListener() {
->>>>>>> master
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
