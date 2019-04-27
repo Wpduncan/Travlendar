@@ -128,25 +128,6 @@ public class  AddEventActivity extends AppCompatActivity implements
         if(actID.equals("recycler")){
             updateEvent();
             System.out.println("recycler " + actID);
-<<<<<<< HEAD
-            path = getIntent().getExtras().get("path").toString();
-            HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
-            String address = eventMap.get("address").toString();
-            editEventName.setText(eventMap.get("name").toString());
-            editEventAddress.setText(address);
-            editEventLocation.setText(eventMap.get("location").toString());
-            editEventCity.setText(eventMap.get("city").toString());
-            editEventDate.setText(eventMap.get("date").toString());
-            editEventEnd.setText(eventMap.get("end_time").toString());
-            editEventStart.setText(eventMap.get("start_time").toString());
-            //editEventMOD.setText(eventMap.get("mod").toString());
-            editEventNote.setText(eventMap.get("note").toString());
-            editEventState.setText(eventMap.get("state").toString());
-            editEventZipCode.setText(eventMap.get("zip").toString());
-            System.out.println("address " + address);
-            System.out.println("name " + eventMap.get("name").toString());//+ eventMap.get("address").toString());
-=======
->>>>>>> 50fe68054bb2a7a39e2cc2297aab515af0176a6c
         }
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -431,90 +412,17 @@ public class  AddEventActivity extends AppCompatActivity implements
             db.document(path).update(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-<<<<<<< HEAD
                     SendUserToCalendarActivity();
-=======
-                    Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);
-                    intent.putExtra("date", Date);
-                    startActivity(intent);
->>>>>>> 50fe68054bb2a7a39e2cc2297aab515af0176a6c
-                    Toast.makeText(AddEventActivity.this, "Successfully updated event", Toast.LENGTH_SHORT).show();                    
+                    Toast.makeText(AddEventActivity.this, "Successfully updated event", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
-<<<<<<< HEAD
     private void SendUserToRecycler() {
         Intent intent = new Intent(AddEventActivity.this, ViewEventRecyclerActivity.class);
         intent.putExtra("date", Date);
         startActivity(intent);
-=======
-        /*mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
-
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserRef.child("users").child(userId)
-                .addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    DatabaseReference pushKey = mEventRef.push();
-                    String key = pushKey.getKey();
-                    HashMap<String, Object> eventMap = new HashMap<>();
-                    eventMap.put("uid", userId);
-                    eventMap.put("name", name);
-                    eventMap.put("date", date);
-                    eventMap.put("startTime", startTime);
-                    eventMap.put("endTime", endTime);
-                    eventMap.put("address", address);
-                    eventMap.put("city", city);
-                    eventMap.put("state", state);
-                    eventMap.put("zip", zip);
-                    eventMap.put("location", location);
-                    eventMap.put("mod", mod);
-                    eventMap.put("note", note);
-                    eventMap.put("uid_name", userId + "_" + name);
-                    eventMap.put("uid_date", userId + "_" + date);
-                    eventMap.put("uid_startTime", userId + "_" + startTime);
-                    eventMap.put("uid_endTime", userId + "_" + endTime);
-                    eventMap.put("uid_address", userId + "_" + address);
-                    eventMap.put("uid_city", userId + "_" + city);
-                    eventMap.put("uid_state", userId + "_" + state);
-                    eventMap.put("uid_zip", userId + "_" + zip);
-                    eventMap.put("uid_location", userId + "_" + location);
-                    eventMap.put("uid_mod", userId + "_" + mod);
-                    eventMap.put("uid_note", userId + "_" + note);
-
-                    //eventMap.put("startTime", startTime);
-                    eventMap.put("uid_date_startTime", userId + "_" + date + "_" + startTime);
-                    eventMap.put("uid_date_endTime", userId + "_" + date + "_" + endTime);
-
-                    //HashMap<String, Object> childUpdates = new HashMap<>();
-                    //childUpdates.put("/users/" + userId + "/" + key + "/", eventMap);
-
-                    //mUserRef.updateChildren(childUpdates);
-                    mEventRef.child(key).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (task.isSuccessful()) {
-                                SendUserToCalendarActivity();
-                                Toast.makeText(AddEventActivity.this, "new event updated.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AddEventActivity.this, "error occurred updating event", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
->>>>>>> 50fe68054bb2a7a39e2cc2297aab515af0176a6c
     }
 
     private void SendUserToCalendarActivity() {
