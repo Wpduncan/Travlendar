@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -68,17 +69,17 @@ public class  AddEventActivity extends AppCompatActivity implements
     private String ename;
     LinearLayout layout;
     Button buttonSaveEvent;
-    EditText editEventName;
-    EditText editEventDate;
-    EditText editEventStart;
-    EditText editEventEnd;
-    EditText editEventAddress;
-    EditText editEventCity;
-    EditText editEventState;
-    EditText editEventZipCode;
-    EditText editEventMOD;
-    EditText editEventNote;
-    EditText editEventLocation;
+    TextInputEditText editEventName;
+    TextInputEditText editEventDate;
+    TextInputEditText editEventStart;
+    TextInputEditText editEventEnd;
+    TextInputEditText editEventAddress;
+    TextInputEditText editEventCity;
+    TextInputEditText editEventState;
+    TextInputEditText editEventZipCode;
+    TextInputEditText editEventMOD;
+    TextInputEditText editEventNote;
+    TextInputEditText editEventLocation;
     ImageView imageAddLocation;
 
     //private DatabaseReference mUserRef, mEventRef;
@@ -125,7 +126,9 @@ public class  AddEventActivity extends AppCompatActivity implements
 
         String actID = intent.getExtras().getString("actID");
         if(actID.equals("recycler")){
+            updateEvent();
             System.out.println("recycler " + actID);
+<<<<<<< HEAD
             path = getIntent().getExtras().get("path").toString();
             HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
             String address = eventMap.get("address").toString();
@@ -142,6 +145,8 @@ public class  AddEventActivity extends AppCompatActivity implements
             editEventZipCode.setText(eventMap.get("zip").toString());
             System.out.println("address " + address);
             System.out.println("name " + eventMap.get("name").toString());//+ eventMap.get("address").toString());
+=======
+>>>>>>> 50fe68054bb2a7a39e2cc2297aab515af0176a6c
         }
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -218,14 +223,14 @@ public class  AddEventActivity extends AppCompatActivity implements
 
 
         // For Maps Activity
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String street = extras.getString("street");
-            String city = extras.getString("city");
-            String state = extras.getString("state");
-            String zip = extras.getString("zip");
-            String name = extras.getString("name");
-            String travel = extras.getString("time");
+        //Bundle extras = getIntent().getExtras();
+        if (actID.equals("mapsActivity")) {
+            String street = intent.getExtras().getString("address");
+            String city = intent.getExtras().getString("city");
+            String state = intent.getExtras().getString("state");
+            String zip = intent.getExtras().getString("zip");
+            String name = intent.getExtras().getString("name");
+            String travel = intent.getExtras().getString("time");
             //The key argument here must match that used in the other activity
             editEventAddress.setText(street);
             editEventCity.setText(city);
@@ -242,6 +247,24 @@ public class  AddEventActivity extends AppCompatActivity implements
                 Toast.LENGTH_SHORT).show();
     }
 
+    private void updateEvent(){
+        path = getIntent().getExtras().get("path").toString();
+        HashMap eventMap = (HashMap<String,String>)getIntent().getSerializableExtra("map");
+        editEventName.setText(eventMap.get("name").toString());
+        editEventDate.setText(eventMap.get("date").toString());
+        editEventStart.setText(eventMap.get("start_time").toString());
+        editEventEnd.setText(eventMap.get("end_time").toString());
+        editEventAddress.setText(eventMap.get("address").toString());
+        //editEventAddress.setText(eventMap.get("address").toString());
+        editEventLocation.setText(eventMap.get("location").toString());
+        editEventCity.setText(eventMap.get("city").toString());
+
+        //editEventMOD.setText(eventMap.get("mod").toString());
+        editEventNote.setText(eventMap.get("note").toString());
+        editEventState.setText(eventMap.get("state").toString());
+        editEventZipCode.setText(eventMap.get("zip").toString());
+        System.out.println("address " + eventMap.get("address").toString());
+    }
     /*private void updateEvent() {
 
         final String name = editEventName.getText().toString();
@@ -408,17 +431,90 @@ public class  AddEventActivity extends AppCompatActivity implements
             db.document(path).update(eventMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+<<<<<<< HEAD
                     SendUserToCalendarActivity();
+=======
+                    Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);
+                    intent.putExtra("date", Date);
+                    startActivity(intent);
+>>>>>>> 50fe68054bb2a7a39e2cc2297aab515af0176a6c
                     Toast.makeText(AddEventActivity.this, "Successfully updated event", Toast.LENGTH_SHORT).show();                    
                 }
             });
         }
     }
 
+<<<<<<< HEAD
     private void SendUserToRecycler() {
         Intent intent = new Intent(AddEventActivity.this, ViewEventRecyclerActivity.class);
         intent.putExtra("date", Date);
         startActivity(intent);
+=======
+        /*mUserRef.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mUserRef.child("users").child(userId)
+                .addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    DatabaseReference pushKey = mEventRef.push();
+                    String key = pushKey.getKey();
+                    HashMap<String, Object> eventMap = new HashMap<>();
+                    eventMap.put("uid", userId);
+                    eventMap.put("name", name);
+                    eventMap.put("date", date);
+                    eventMap.put("startTime", startTime);
+                    eventMap.put("endTime", endTime);
+                    eventMap.put("address", address);
+                    eventMap.put("city", city);
+                    eventMap.put("state", state);
+                    eventMap.put("zip", zip);
+                    eventMap.put("location", location);
+                    eventMap.put("mod", mod);
+                    eventMap.put("note", note);
+                    eventMap.put("uid_name", userId + "_" + name);
+                    eventMap.put("uid_date", userId + "_" + date);
+                    eventMap.put("uid_startTime", userId + "_" + startTime);
+                    eventMap.put("uid_endTime", userId + "_" + endTime);
+                    eventMap.put("uid_address", userId + "_" + address);
+                    eventMap.put("uid_city", userId + "_" + city);
+                    eventMap.put("uid_state", userId + "_" + state);
+                    eventMap.put("uid_zip", userId + "_" + zip);
+                    eventMap.put("uid_location", userId + "_" + location);
+                    eventMap.put("uid_mod", userId + "_" + mod);
+                    eventMap.put("uid_note", userId + "_" + note);
+
+                    //eventMap.put("startTime", startTime);
+                    eventMap.put("uid_date_startTime", userId + "_" + date + "_" + startTime);
+                    eventMap.put("uid_date_endTime", userId + "_" + date + "_" + endTime);
+
+                    //HashMap<String, Object> childUpdates = new HashMap<>();
+                    //childUpdates.put("/users/" + userId + "/" + key + "/", eventMap);
+
+                    //mUserRef.updateChildren(childUpdates);
+                    mEventRef.child(key).updateChildren(eventMap).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if (task.isSuccessful()) {
+                                SendUserToCalendarActivity();
+                                Toast.makeText(AddEventActivity.this, "new event updated.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(AddEventActivity.this, "error occurred updating event", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                //startActivity(new Intent(AddEventActivity.this, CalendarActivity.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+>>>>>>> 50fe68054bb2a7a39e2cc2297aab515af0176a6c
     }
 
     private void SendUserToCalendarActivity() {
