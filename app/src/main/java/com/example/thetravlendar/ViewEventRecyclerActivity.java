@@ -191,10 +191,11 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 eventMap.put("city", events.getCity());
                 eventMap.put("state", events.getState());
                 eventMap.put("zip", events.getZip());
-                eventMap.put("mod", events.getMode_of_transportation());
+                eventMap.put("mod", events.getMod());
                 eventMap.put("location", events.getLocation());
                 eventMap.put("note", events.getNote());
                 System.out.println("address " + eventMap.get("address"));
+                System.out.println("mod " + eventMap.get("mod"));
                 Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
                 intent.putExtra("map", eventMap);
                 intent.putExtra("path", path);

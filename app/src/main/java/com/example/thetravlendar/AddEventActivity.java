@@ -104,6 +104,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         Date = intent.getExtras().getString("date");
         editEventDate.setText(Date);
+        editEventMOD.setText("Car");
 
         String actID = intent.getExtras().getString("actID");
         if(actID.equals("recycler")){
@@ -257,7 +258,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         editEventAddress.setText(eventMap.get("address").toString());
         editEventLocation.setText(eventMap.get("location").toString());
         editEventCity.setText(eventMap.get("city").toString());
-        //editEventMOD.setText(eventMap.get("mod").toString());
+        editEventMOD.setText(eventMap.get("mod").toString());
         editEventNote.setText(eventMap.get("note").toString());
         editEventState.setText(eventMap.get("state").toString());
         editEventZipCode.setText(eventMap.get("zip").toString());
@@ -277,56 +278,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         final String location = editEventLocation.getText().toString();
         final String note = editEventNote.getText().toString();
 
-        // start time
-        int SHOUR = startTime.indexOf(":");
-        int SMIN  = startTime.indexOf(" ");
-        String sHour = startTime.substring(0, SHOUR);
-        System.out.println("hour = " + sHour);
-        String sMin = startTime.substring(SHOUR+1, SMIN);
-        System.out.println("min = " + sMin);
-        String sME = startTime.substring(SMIN+1);
-        System.out.println("sME = " + sME);
-        int sTime1 = parseInt(sHour+sMin);
-        //int sTime;
 
-        // end time
-        int EHOUR = endTime.indexOf(":");
-        int EMIN  = endTime.indexOf(" ");
-        String eHour = endTime.substring(0, EHOUR);
-        System.out.println("hour = " + eHour);
-        String eMin = endTime.substring(EHOUR+1, EMIN);
-        System.out.println("min = " + eMin);
-        String eME = endTime.substring(EMIN+1);
-        System.out.println("eME = " + eME);
-        int eTime1 = parseInt(eHour+eMin);
-        //int eTime;
-
-        if(sME.equals("AM")) {
-            if (sTime1 >= 1200 && sTime1 <= 1259) { // || eTimeH <= 1259){
-                sHour = "00";
-                sTime1 = parseInt(sHour + sMin);
-                //System.out.println("stime = " + sTime1);
-            }
-        }
-        if(eME.equals("AM")) {
-                if (eTime1 >= 1200 && eTime1 <= 1259) {
-                eHour = "00";
-                eTime1 = parseInt(eHour + eMin);
-                //System.out.println("etime = "+ eTime1);
-                }
-        }
-        if(sME.equals("PM") && sTime1 < 1200) {
-            sTime1 += 1200;
-            //System.out.println("stime = " + sTime1);
-        }
-        if(eME.equals("PM") && eTime1 < 1200) {
-            eTime1 += 1200;
-            //System.out.println("etime = "+ eTime1);
-        }
-        final Integer sTime = sTime1;
-        final Integer eTime = eTime1;
-        System.out.println("sTime = " + sTime);
-        System.out.println("eTime = " + eTime);
 
 
         //final String location = editEventLocation.getText().toString();
@@ -362,6 +314,57 @@ public class  AddEventActivity extends AppCompatActivity implements
             editEventEnd.setError(REQUIRED);
             return;
         }
+
+        // start time
+        int SHOUR = startTime.indexOf(":");
+        int SMIN  = startTime.indexOf(" ");
+        String sHour = startTime.substring(0, SHOUR);
+        System.out.println("hour = " + sHour);
+        String sMin = startTime.substring(SHOUR+1, SMIN);
+        System.out.println("min = " + sMin);
+        String sME = startTime.substring(SMIN+1);
+        System.out.println("sME = " + sME);
+        int sTime1 = parseInt(sHour+sMin);
+        //int sTime;
+
+        // end time
+        int EHOUR = endTime.indexOf(":");
+        int EMIN  = endTime.indexOf(" ");
+        String eHour = endTime.substring(0, EHOUR);
+        System.out.println("hour = " + eHour);
+        String eMin = endTime.substring(EHOUR+1, EMIN);
+        System.out.println("min = " + eMin);
+        String eME = endTime.substring(EMIN+1);
+        System.out.println("eME = " + eME);
+        int eTime1 = parseInt(eHour+eMin);
+        //int eTime;
+
+        if(sME.equals("AM")) {
+            if (sTime1 >= 1200 && sTime1 <= 1259) { // || eTimeH <= 1259){
+                sHour = "00";
+                sTime1 = parseInt(sHour + sMin);
+                //System.out.println("stime = " + sTime1);
+            }
+        }
+        if(eME.equals("AM")) {
+            if (eTime1 >= 1200 && eTime1 <= 1259) {
+                eHour = "00";
+                eTime1 = parseInt(eHour + eMin);
+                //System.out.println("etime = "+ eTime1);
+            }
+        }
+        if(sME.equals("PM") && sTime1 < 1200) {
+            sTime1 += 1200;
+            //System.out.println("stime = " + sTime1);
+        }
+        if(eME.equals("PM") && eTime1 < 1200) {
+            eTime1 += 1200;
+            //System.out.println("etime = "+ eTime1);
+        }
+        final Integer sTime = sTime1;
+        final Integer eTime = eTime1;
+        System.out.println("sTime = " + sTime);
+        System.out.println("eTime = " + eTime);
         if(sTime > eTime){
             Toast.makeText(this, "End Time error.", Toast.LENGTH_SHORT).show();
             editEventEnd.setError(REQUIRED);

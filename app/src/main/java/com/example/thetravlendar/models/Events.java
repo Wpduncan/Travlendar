@@ -14,7 +14,7 @@ public class Events {
     public String city;
     public String state;
     public String zip;
-    public String mode_of_transportation;
+    public String mod;
     public String note;
     public String location;
     public Integer sTime;
@@ -112,12 +112,12 @@ public class Events {
         this.zip = zip;
     }
 
-    public String getMode_of_transportation() {
-        return mode_of_transportation;
+    public String getMod() {
+        return mod;
     }
 
-    public void setMode_of_transportation(String mode_of_transportation) {
-        this.mode_of_transportation = mode_of_transportation;
+    public void setMod(String mod) {
+        this.mod = mod;
     }
 
     public String getNote() {
