@@ -315,6 +315,10 @@ public class  AddEventActivity extends AppCompatActivity implements
             editEventEnd.setError(REQUIRED);
             return;
         }
+        if (TextUtils.isEmpty(location)){
+            editEventLocation.setError(REQUIRED);
+            return;
+        }
 
         // start time
         int SHOUR = startTime.indexOf(":");
@@ -436,16 +440,24 @@ public class  AddEventActivity extends AppCompatActivity implements
                                 if (startTime.equals(events.getStart_time())) {
                                     System.out.println("start time == start time conflict");
                                     //SendUserToRecycler();
-                                    conflictToast(events.getName());
-                                    conflict = "true";
-                                    return;
+                                    if (path == null) {
+                                        conflict = "true";
+                                        conflictToast(events.getName());
+                                        return;
+                                    }
+                                    else
+                                        conflict = "false";
                                 }
                                 if (endTime.equals(events.getEnd_time())) {
                                     System.out.println("end time == end time conflict");
                                     //SendUserToRecycler();
-                                    conflictToast(events.getName());
-                                    conflict = "true";
-                                    return;
+                                    if (path == null) {
+                                        conflict = "true";
+                                        conflictToast(events.getName());
+                                        return;
+                                    }
+                                    else
+                                        conflict = "false";
                                 }
                                 /*if(sTime >= (events.getsTime()) && sTime <= (events.geteTime())){
                                     System.out.println("nested event conflict");

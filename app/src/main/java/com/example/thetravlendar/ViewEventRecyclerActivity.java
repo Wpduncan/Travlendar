@@ -197,6 +197,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 System.out.println("address " + eventMap.get("address"));
                 System.out.println("mod " + eventMap.get("mod"));
                 Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
+                intent.putExtra("updating", "update");
                 intent.putExtra("map", eventMap);
                 intent.putExtra("path", path);
                 intent.putExtra("date", Date);

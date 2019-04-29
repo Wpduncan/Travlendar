@@ -30,6 +30,8 @@ public class EventsAdapter extends FirestoreRecyclerAdapter<Events, EventsAdapte
         holder.textViewDate.setText(model.getDate());
         holder.textViewStart.setText(model.getStart_time());
         holder.textViewEnd.setText(model.getEnd_time());
+        holder.textViewTravel.setText("Travel Time: " + model.getNote());
+        holder.textViewLocation.setText(model.getLocation());
     }
 
     @NonNull
@@ -46,7 +48,8 @@ public class EventsAdapter extends FirestoreRecyclerAdapter<Events, EventsAdapte
 
     class EventHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewName, textViewDate, textViewStart, textViewEnd;
+        TextView textViewName, textViewDate, textViewStart,
+                textViewEnd, textViewTravel, textViewLocation;
 
         public EventHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,6 +58,8 @@ public class EventsAdapter extends FirestoreRecyclerAdapter<Events, EventsAdapte
             textViewDate = itemView.findViewById(R.id.cv_event_date);
             textViewStart = itemView.findViewById(R.id.cv_event_start);
             textViewEnd = itemView.findViewById(R.id.cv_event_end);
+            textViewTravel = itemView.findViewById(R.id.cv_travel_time);
+            textViewLocation = itemView.findViewById(R.id.cv_location);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
