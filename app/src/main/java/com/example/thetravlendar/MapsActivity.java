@@ -28,6 +28,7 @@ import com.android.volley.toolbox.HttpResponse;
 import com.example.thetravlendar.Utils.getData;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -87,6 +88,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
     private Marker mCurrentMarker;
+    String streetNum;
+    String city;
+    String state;
+    String zip;
+    String name;
+
+    Double lat = 0.0;
+    Double longt = 0.0;
 
     private String traveltime;
 
@@ -98,6 +107,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
 
 
         txtView = findViewById(R.id.txtView);
@@ -129,11 +140,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                 StringTokenizer address = new StringTokenizer(place.getAddress(), ",");
-                String streetNum = address.nextToken();  // Street name and number
-                String city = address.nextToken(); // City name
+                streetNum = address.nextToken();  // Street name and number
+                city = address.nextToken(); // City name
                 StringTokenizer stateZip = new StringTokenizer(address.nextToken(), " ");
-                String state = stateZip.nextToken(); // State Name
-                String zip = stateZip.nextToken(); // Zip code
+                state = stateZip.nextToken(); // State Name
+                zip = stateZip.nextToken(); // Zip code
+                name = place.getName();
                 locationEntered = place.getLatLng();
 
 
@@ -152,8 +164,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 /*https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8
                 */
-                Intent i = new Intent(MapsActivity.this, AddEventActivity.class);
-                String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + "West Texas A&M University" + "&destinations=" + place.getAddress() + "&mode=driving&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
+                String lat2 = Double.toString(lat);
+                String longt2 = Double.toString(longt);
+                String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + lat2 + "," + longt2 + "&destinations=" + place.getAddress() + "&mode=driving&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 /*String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 */
                 new getData(MapsActivity.this).execute(stringUrl);
@@ -185,13 +198,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-                i.putExtra("street", streetNum);
-                i.putExtra("city", city);
-                i.putExtra("state", state);
-                i.putExtra("zip", zip);
-                i.putExtra("name", place.getName());
 
-                startActivity(i);
             }
 
             @Override
@@ -225,8 +232,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getLocationPermission();
         updateLocationUI();
+        getDeviceLocation();
 
-        LatLng USA = new LatLng(39.381266, -97.922211);
+        LatLng USA = new LatLng(lat, longt);
         float zoom = 3.5f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USA, zoom));
 
@@ -248,17 +256,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String res[]=result.split(",");
         Double min=Double.parseDouble(res[0])/60;
         traveltime = (int) (min / 60) + " hr " + (int) (min % 60) + " mins";
+        txtView.setText(streetNum);
+        Intent i = new Intent(MapsActivity.this, AddEventActivity.class);
+        i.putExtra("street", streetNum);
+        i.putExtra("city", city);
+        i.putExtra("state", state);
+        i.putExtra("zip", zip);
+        i.putExtra("name", name);
+        i.putExtra("time", traveltime);
+        setResult(RESULT_OK, i);
+        finish();
+
+        txtView.setText(traveltime);
         /*txtView.setText(traveltime);
         * */
 
 
     }
-   /*
-    *Needs testing
-    * private void getDeviceLocation() {
 
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
+    private void getDeviceLocation() {
+
+
 
         try {
             displayToast(getString(R.string.locatiion_test));
@@ -273,6 +291,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            lat = mLastKnownLocation.getLatitude();
+                            longt = mLastKnownLocation.getLongitude();
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -287,7 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Log.e("Exception: %s", e.getMessage());
         }
-    }*/
+    }
 
     private void getLocationPermission() {
         /*
