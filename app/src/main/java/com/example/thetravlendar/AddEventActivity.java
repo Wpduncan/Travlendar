@@ -104,7 +104,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         Date = intent.getExtras().getString("date");
         editEventDate.setText(Date);
-        editEventMOD.setText("driving");
+        editEventMOD.setText("Driving");
 
         String actID = intent.getExtras().getString("actID");
         if(actID.equals("recycler")){
