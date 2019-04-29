@@ -94,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String state;
     String zip;
     String name;
+    String MOD;
 
     Double lat = 0.0;
     Double longt = 0.0;
@@ -104,6 +105,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Intent intent = getIntent();
+        MOD = intent.getStringExtra("MOD");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -127,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,
                 Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.LAT_LNG));
+        txtView.setText(MOD);
 
         // Set up a PlaceSelectionListener to handle the response.
 
@@ -167,7 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                  */
                 String lat2 = Double.toString(lat);
                 String longt2 = Double.toString(longt);
-                String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + lat2 + "," + longt2 + "&destinations=" + place.getAddress() + "&mode=driving&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
+                String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + lat2 + "," + longt2 + "&destinations=" + place.getAddress() + "&mode=" + MOD + "&language=fr-FR&avoid=tolls&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                 /*String stringUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR&key=AIzaSyDAhzX0Vvqd5Xnv7eyUHr5drHWdQwZgeq8";
                  */
                 new getData(MapsActivity.this).execute(stringUrl);
