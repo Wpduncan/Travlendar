@@ -181,6 +181,7 @@ public class MapsActivity_view extends FragmentActivity implements OnMapReadyCal
 
 
                 String test = "test " + traveltime;
+                System.out.println("test: " + test);
 
                 //displayToast(traveltime);
 

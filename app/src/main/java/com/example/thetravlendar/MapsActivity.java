@@ -179,8 +179,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
+                traveltime = getTravel();
                 String test = "test " + traveltime;
+                System.out.println("test: " + test);
 
                 //displayToast(traveltime);
 
@@ -250,10 +251,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String res[]=result.split(",");
         Double min=Double.parseDouble(res[0])/60;
         traveltime = (int) (min / 60) + " hr " + (int) (min % 60) + " mins";
+        System.out.println("test1 + " + traveltime);
         /*txtView.setText(traveltime);
         * */
 
 
+    }
+    public String getTravel(){
+        return traveltime;
     }
    /*
     *Needs testing

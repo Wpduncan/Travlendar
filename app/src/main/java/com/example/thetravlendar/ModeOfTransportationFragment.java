@@ -27,9 +27,9 @@ public class ModeOfTransportationFragment extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getActivity(), "You selected !! \n "
+                        /*Toast.makeText(getActivity(), "You selected !! \n "
                                 + getResources().getStringArray(R.array.MOD_array)[mSelectedItem],
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();*/
                         MODDialogListener activity = (MODDialogListener) getActivity();
                         activity.onFinishMODDialog(getResources().
                                 getStringArray(R.array.MOD_array)[mSelectedItem]);

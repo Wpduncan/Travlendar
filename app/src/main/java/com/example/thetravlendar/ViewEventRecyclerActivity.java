@@ -58,6 +58,9 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     private EventsAdapter adapter;
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
     private String Date;
+    private HashMap<String, Object> eventMap = new HashMap<>();
+    private String actID;
+    private Query query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,37 +95,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
         //receiving date from calendarview
         Intent intent = getIntent();
-        Date = intent.getExtras().getString("sendingDate");
-        /*eventList = new ArrayList<>();
-        adapter = new EventsAdapter(this, eventList, Date);
-        Log.d("testing", Date);
-        query = EventsRef.orderByChild("uid_date").equalTo(online_user_id+"_"+Date);
-                                        //.endAt(online_user_id+"_"+Date+"_11:59 PM");
-
-        db.collection("users").document(online_user_id)
-                .collection("events").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                        if(!queryDocumentSnapshots.isEmpty()) {
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                            for(DocumentSnapshot d : list) {
-                                Events e = d.toObject(Events.class);
-                                e.setUid(d.getId());
-                                eventList.add(e);
-                            }
-
-
-                        }
-                    }
-                });*/
-        //query = db.collection("users").document(online_user_id)
-                //.collection("events").whereEqualTo("date",Date);
-                //.orderBy("startTime", Query.Direction.DESCENDING);
-
-
+        Date = intent.getExtras().getString("date");
+        actID = intent.getExtras().getString("actID");
+        System.out.println("actID " + actID);
+        //if (actID.equals("search")){
+        //    act = 1;
+        //}
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -148,7 +126,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewEventRecyclerActivity.this, AddEventActivity.class);
-                intent.putExtra("sendingDate", Date);
+                intent.putExtra("date", Date);
                 intent.putExtra("actID", "calendar");
                 startActivity(intent);
             }
@@ -158,9 +136,20 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
 
     }
 
+    private void searchForEvent() {
+
+    }
+
     private void DisplayAllEvents() {
-        Query query = eventsRef.whereEqualTo("date",Date).orderBy("start_time",
-                Query.Direction.ASCENDING);
+        if (actID.equals("search")) {
+            Intent intent = getIntent();
+            String search = intent.getExtras().getString("searchID");
+            query = eventsRef.whereEqualTo("search", search);
+        }
+        else {
+            query = eventsRef.whereEqualTo("date", Date).orderBy("start_time",
+                    Query.Direction.ASCENDING);
+        }
 
         FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
                 .setQuery(query, Events.class)
@@ -193,7 +182,7 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 System.out.println("addr" + events.getAddress());
                 String id = documentSnapshot.getId();
                 String path = documentSnapshot.getReference().getPath();
-                HashMap<String, String> eventMap = new HashMap<>();
+                HashMap<String, Object> eventMap = new HashMap<>();
                 eventMap.put("name", events.getName());
                 eventMap.put("date", events.getDate());
                 eventMap.put("start_time", events.getStart_time());
@@ -219,11 +208,12 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_calendar, menu);
-        final SearchView searchView = (SearchView) MenuItemCompat
+        inflater.inflate(R.menu.menu_settings, menu);
+        /*final SearchView searchView = (SearchView) MenuItemCompat
                 .getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        */
         return true;
     }
     @Override
@@ -237,176 +227,17 @@ public class ViewEventRecyclerActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             // action with ID action_settings was selected
-            case R.id.action_search:
+            /*case R.id.action_search:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
+            */
             default:
                 break;
         }
 
         return true;
     }
-
-        /*private void DisplayAllEvents() {
-        //query = FirebaseDatabase.getInstance().getReference().child("events").limitToLast(50);
-<<<<<<< HEAD
-        FirestoreRecyclerOptions<Events> events = new FirestoreRecyclerOptions.Builder<Events>()
-                .setQuery(query, new SnapshotParser<Events>() {
-                    @NonNull
-                    @Override
-                    public Events parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        Events event = snapshot.toObject(Events.class);
-                        event.setUid(snapshot.getId());
-                        //event.setName(snapshot.g)
-                        return event;
-                    }
-                })
-                .setLifecycleOwner(this)
-                .build();
-        adapter = new FirestoreRecyclerAdapter<Events, EventsViewHolder>(events) {
-            @Override
-            public EventsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.cardview_event, viewGroup, false);
-                return new EventsViewHolder(view);
-            }
-            @Override
-            protected void onBindViewHolder(@NonNull EventsViewHolder holder, int position, @NonNull Events model) {
-                //holder.itemView.setTag(model.getUid());
-                holder.setName(model.getName());
-                holder.setDate(model.getDate());
-                holder.setStart_Time(model.getStart_time());
-                holder.setEnd_Time(model.getEnd_time());
-
-                EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String EventKey = model.getUid();
-                        Intent clickEvent = new Intent(ViewEventRecyclerActivity.this, UpdateEventActivity.class);
-                        clickEvent.putExtra("EventKey", EventKey);
-                        startActivity(clickEvent);
-                    }
-                });
-            }
-        };
-        myEvents.setAdapter(adapter);
-    }
-        /*FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
-=======
-        //Log.e(TAG, "uid = " + EventsRef.child("uid") + " yikes");
-        //Log.e(TAG, "name = " + EventsRef.child("name").toString() + " yikes");
-        FirebaseRecyclerOptions<Events> options = new FirebaseRecyclerOptions.Builder<Events>()
->>>>>>> master
-                .setQuery(query, new SnapshotParser<Events>() {
-                    @NonNull
-                    @Override
-                    public Events parseSnapshot(@NonNull DataSnapshot snapshot) {
-                        return new Events(snapshot.child("uid").getValue().toString(),
-                                snapshot.child("name").getValue().toString(),
-                                snapshot.child("date").getValue().toString(),
-                                snapshot.child("startTime").getValue().toString(),
-                                snapshot.child("endTime").getValue().toString());
-                    }
-                })
-                .build();
-        firebaseRecyclerAdapter
-                = new FirebaseRecyclerAdapter<Events, EventsViewHolder> (options)
-                //(Events.class, EventsViewHolder.class, R.layout.cardview_event, EventsRef)
-        {
-            @Override
-            public EventsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.cardview_event, viewGroup, false);
-                return new EventsViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull EventsViewHolder holder, final int position, @NonNull Events model) {
-                final String EventKey = getRef(position).getKey();
-                if (model.uid.equals(online_user_id)) {
-                    holder.setName(model.getUid_name());
-                    Log.e(TAG, "name = " + model.getUid_name() + " yikes");
-                    holder.setDate(model.getUid_date());
-                    Log.e(TAG, "date = " + model.getUid_date() + " yikes");
-                    holder.setStart_Time(model.getUid_startTime());
-                    Log.e(TAG, "start = " + model.getUid_startTime() + " yikes");
-                    holder.setEnd_Time(model.getUid_endTime());
-                    Log.e(TAG, "end = " + model.getUid_endTime() + " yikes");
-                }
-
-                EventsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent clickEvent = new Intent(ViewEventRecyclerActivity.this, UpdateEventActivity.class);
-                        clickEvent.putExtra("EventKey", EventKey);
-                        startActivity(clickEvent);
-                    }
-                });
-            }
-        };
-        myEvents.setAdapter(firebaseRecyclerAdapter);*/
-
-
-    /*public static class EventsViewHolder extends RecyclerView.ViewHolder {
-
-        //public static Object mView;
-        public TextView textEventName;
-        public TextView textEventDate;
-        public TextView textEventStart;
-        public TextView textEventEnd;
-        static View mView;
-
-        public EventsViewHolder(View itemView) {
-            super(itemView);
-            mView= itemView;
-            textEventName = itemView.findViewById(R.id.cv_event_name);
-            textEventDate = itemView.findViewById(R.id.cv_event_date);
-            textEventStart = itemView.findViewById(R.id.cv_event_start);
-            textEventEnd = itemView.findViewById(R.id.cv_event_end);
-
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Intent i = new Intent(getApplicationContext(), UpdateEventActivity.class);
-                    //String eventID =
-                    //i.putExtra("uid", );
-                    //startActivity(i);
-                    //startActivity(new Intent(getApplicationContext(),AddEventActivity.class));
-                    //int position = getAdapterPosition();
-                    //if (position != RecyclerView.NO_POSITION && listener != null) {
-                    //    listener.onItemClick(FirebaseDatabase.getInstance().getReference().child(position));
-                }
-            });
-
-        }
-
-        public void setName(String eventName){
-
-            //Log.e("Event " + eventName + " is unexp", TAG);
-            textEventName.setText(eventName);
-        }
-        public void setDate(String eventDate) {
-
-            textEventDate.setText(eventDate);
-        }
-        public void setStart_Time(String eventStart) {
-
-            textEventStart.setText(eventStart);
-        }
-        public void setEnd_Time(String eventEnd) {
-
-            textEventEnd.setText(eventEnd);
-        }
-    }
-
-    /*public interface OnItemClickListener {
-        void onItemClicked(DataSnapshot dataSnapshot, int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }*/
 
     @Override
     protected void onStart() {

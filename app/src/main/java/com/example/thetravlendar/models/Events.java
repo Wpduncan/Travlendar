@@ -6,6 +6,7 @@ public class Events {
 
     public String uid;
     public String name;
+    public String search;
     public String date;
     public String start_time;
     public String end_time;
@@ -16,6 +17,8 @@ public class Events {
     public String mode_of_transportation;
     public String note;
     public String location;
+    public Integer sTime;
+    public Integer eTime;
     //public Map<String, Boolean> event = new HashMap<>();
 
     public Events() {
@@ -43,6 +46,14 @@ public class Events {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public String getDate() {
@@ -123,5 +134,22 @@ public class Events {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getsTime() {
+
+        return sTime;
+    }
+
+    public void setsTime(Integer sTime) {
+        this.sTime = sTime;
+    }
+
+    public int geteTime() {
+        return eTime;
+    }
+
+    public void seteTime(Integer eTime) {
+        this.eTime = eTime;
     }
 }

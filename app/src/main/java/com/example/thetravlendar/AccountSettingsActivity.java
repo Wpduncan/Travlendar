@@ -317,11 +317,12 @@ public class AccountSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_calendar, menu);
-        final SearchView searchView = (SearchView) MenuItemCompat
+        inflater.inflate(R.menu.menu_settings, menu);
+        /*final SearchView searchView = (SearchView) MenuItemCompat
                 .getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        */
         return true;
     }
     @Override
@@ -335,10 +336,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             // action with ID action_settings was selected
-            case R.id.action_search:
+            /*case R.id.action_search:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
+            */
             default:
                 break;
         }

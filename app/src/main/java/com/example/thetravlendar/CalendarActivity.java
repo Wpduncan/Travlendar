@@ -4,9 +4,11 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.ColorSpace;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,14 +27,23 @@ import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.bumptech.glide.load.model.Model;
 import com.example.thetravlendar.models.Events;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +51,8 @@ public class CalendarActivity extends AppCompatActivity {
     public static final String RESULT = "result";
     public static final String EVENT = "event";
     private static final int ADD_NOTE = 44;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private String Date;
     private boolean longClick = false;
     private CalendarView calendarView;
@@ -57,7 +70,8 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView.showCurrentMonthPage();
         Date = formatDate(Calendar.getInstance().getTime().toString());
         Log.d("testing", Date);
-
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -135,12 +149,66 @@ public class CalendarActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_calendar, menu);
-        final SearchView searchView = (SearchView) MenuItemCompat
-                .getActionView(menu.findItem(R.id.action_search));
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                searchData(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        /*final SearchView searchView = (SearchView) MenuItemCompat
+                .getActionView(menu.findItem(R.id.action_search));*/
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
+
+    private void searchData(String s) {
+        Intent intent = new Intent(CalendarActivity.this, ViewEventRecyclerActivity.class);
+        intent.putExtra("searchID", s.toLowerCase());
+        intent.putExtra("actID", "search");
+        startActivity(intent);
+        /*db.collection("users").document(user)
+                .collection("events")
+                .whereEqualTo("search", s.toLowerCase())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        HashMap<String, Object> eventMap = new HashMap<>();
+                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                            Events events = new Events();
+
+                            eventMap.put("name", events.getName());
+                            eventMap.put("date", events.getDate());
+                            eventMap.put("start_time", events.getStart_time());
+                            eventMap.put("end_time", events.getEnd_time());
+                            eventMap.put("address", events.getAddress());
+                            eventMap.put("city", events.getCity());
+                            eventMap.put("state", events.getState());
+                            eventMap.put("zip", events.getZip());
+                            eventMap.put("mod", events.getMode_of_transportation());
+                            eventMap.put("location", events.getLocation());
+                            eventMap.put("note", events.getNote());
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(CalendarActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });*/
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -153,7 +221,7 @@ public class CalendarActivity extends AppCompatActivity {
                 break;
             // action with ID action_settings was selected
             case R.id.action_search:
-                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Search selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
             default:
@@ -166,7 +234,7 @@ public class CalendarActivity extends AppCompatActivity {
     private void addNote() {
         Intent intent = new Intent(this, AddEventActivity.class);
         Log.d("testing", "add note");
-        intent.putExtra("sendingDate", Date);
+        intent.putExtra("date", Date);
         intent.putExtra("actID", "calendar");
         startActivity(intent);
         Log.d("testing", "add note - after exec");
@@ -182,7 +250,8 @@ public class CalendarActivity extends AppCompatActivity {
         if(eventDay instanceof MyEventDay){
             intent.putExtra(EVENT, (MyEventDay) eventDay);
         }
-        intent.putExtra("sendingDate", Date);
+        intent.putExtra("date", Date);
+        intent.putExtra("actID", "previewDate");
         startActivity(intent);
     }
 }
