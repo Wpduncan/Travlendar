@@ -366,12 +366,18 @@ public class  AddEventActivity extends AppCompatActivity implements
             eTime1 += 1200;
             //System.out.println("etime = "+ eTime1);
         }
-        final Integer sTime = sTime1;
-        final Integer eTime = eTime1;
+        final int sTime = sTime1;
+        final int eTime = eTime1;
         System.out.println("sTime = " + sTime);
         System.out.println("eTime = " + eTime);
         if(sTime > eTime){
             Toast.makeText(this, "End Time error.", Toast.LENGTH_SHORT).show();
+            editEventEnd.setError(REQUIRED);
+            return;
+        }
+        if(sTime == eTime) {
+            Toast.makeText(this, "Can not start and end at the same time.", Toast.LENGTH_SHORT).show();
+            editEventStart.setError(REQUIRED);
             editEventEnd.setError(REQUIRED);
             return;
         }
@@ -427,6 +433,7 @@ public class  AddEventActivity extends AppCompatActivity implements
                                     System.out.println("start time conflict");
                                     //SendUserToRecycler();
                                     conflictToast(events.getName());
+                                    editEventStart.setError(REQUIRED);
                                     conflict = "true";
                                     return;
                                 }
@@ -435,6 +442,7 @@ public class  AddEventActivity extends AppCompatActivity implements
                                     //SendUserToRecycler();
                                     conflictToast(events.getName());
                                     conflict = "true";
+                                    editEventEnd.setError(REQUIRED);
                                     return;
                                 }
                                 if (startTime.equals(events.getStart_time())) {
@@ -443,6 +451,8 @@ public class  AddEventActivity extends AppCompatActivity implements
                                     if (path == null) {
                                         conflict = "true";
                                         conflictToast(events.getName());
+                                        //Toast.makeText(AddEventActivity.this, "Start Time conflicts with " + events.getName(), Toast.LENGTH_SHORT).show();
+                                        editEventStart.setError(REQUIRED);
                                         return;
                                     }
                                     else
@@ -454,6 +464,7 @@ public class  AddEventActivity extends AppCompatActivity implements
                                     if (path == null) {
                                         conflict = "true";
                                         conflictToast(events.getName());
+                                        editEventEnd.setError(REQUIRED);
                                         return;
                                     }
                                     else
