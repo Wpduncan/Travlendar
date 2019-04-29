@@ -178,13 +178,10 @@ public class  AddEventActivity extends AppCompatActivity implements
         imageAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //displayToast(getString(R.string.Test1));
                 Intent myIntent = new Intent(AddEventActivity.this,MapsActivity.class);
-
-                startActivity(myIntent);
+                startActivityForResult(myIntent, 1);
             }
         });
-
 
 
 
@@ -217,6 +214,28 @@ public class  AddEventActivity extends AppCompatActivity implements
 
         }
 
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String street = data.getStringExtra("street");
+                String city = data.getStringExtra("city");
+                String state = data.getStringExtra("state");
+                String zip = data.getStringExtra("zip");
+                String name = data.getStringExtra("name");
+                String travel = data.getStringExtra("time");
+                //The key argument here must match that used in the other activity
+                if (street != null){
+                    editEventAddress.setText(street);}
+                editEventCity.setText(city);
+                editEventState.setText(state);
+                editEventZipCode.setText(zip);
+                editEventLocation.setText(name);
+                editEventNote.setText(travel);
+            }
+        }
     }
 
     private void restartAddEvent() {
