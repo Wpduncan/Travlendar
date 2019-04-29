@@ -60,6 +60,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
@@ -255,7 +256,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         String res[]=result.split(",");
         Double min=Double.parseDouble(res[0])/60;
-        traveltime = (int) (min / 60) + " hr " + (int) (min % 60) + " mins";
+        int minuets = (int) (min % 60);
+        int hours = (int) (min / 60);
+        traveltime = String.format("%02d", hours) + ":" + String.format("%02d", minuets);
         txtView.setText(streetNum);
         Intent i = new Intent(MapsActivity.this, AddEventActivity.class);
         i.putExtra("street", streetNum);
