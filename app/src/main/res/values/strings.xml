@@ -77,10 +77,10 @@
 
     <!--MOD Array-->
     <string-array name="MOD_array">
-        <item>Walk</item>
-        <item>Bike</item>
-        <item>Car</item>
-        <item>Public Transport</item>
+        <item>walking</item>
+        <item>bike</item>
+        <item>driving</item>
+        <item>transit</item>
         <item>None</item>
     </string-array>
 
