@@ -180,6 +180,7 @@ public class  AddEventActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(AddEventActivity.this,MapsActivity.class);
+                myIntent.putExtra("MOD", editEventMOD.getText().toString());
                 startActivityForResult(myIntent, 1);
             }
         });
