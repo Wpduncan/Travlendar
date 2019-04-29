@@ -104,6 +104,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         Date = intent.getExtras().getString("date");
         editEventDate.setText(Date);
+        editEventMOD.setText("Car");
 
         String actID = intent.getExtras().getString("actID");
         if(actID.equals("recycler")){
@@ -238,7 +239,7 @@ public class  AddEventActivity extends AppCompatActivity implements
         editEventAddress.setText(eventMap.get("address").toString());
         editEventLocation.setText(eventMap.get("location").toString());
         editEventCity.setText(eventMap.get("city").toString());
-        //editEventMOD.setText(eventMap.get("mod").toString());
+        editEventMOD.setText(eventMap.get("mod").toString());
         editEventNote.setText(eventMap.get("note").toString());
         editEventState.setText(eventMap.get("state").toString());
         editEventZipCode.setText(eventMap.get("zip").toString());
