@@ -429,6 +429,8 @@ public class  AddEventActivity extends AppCompatActivity implements
                             String conflict = "false";
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                 Events events = documentSnapshot.toObject(Events.class);
+                                System.out.println("get stime = " + events.getMilitary_start());
+                                System.out.println("get etime = " + events.getMilitary_end());
                                 if (startTime.equals(events.getEnd_time())) {
                                     System.out.println("start time conflict");
                                     //SendUserToRecycler();
@@ -470,12 +472,17 @@ public class  AddEventActivity extends AppCompatActivity implements
                                     else
                                         conflict = "false";
                                 }
-                                /*if(sTime >= (events.getsTime()) && sTime <= (events.geteTime())){
+                                if(sTime >= (events.getMilitary_start()) && sTime <= (events.getMilitary_end())){
                                     System.out.println("nested event conflict");
-                                    conflictToast(events.getName());
-                                    conflict = "true";
-                                    return;
-                                }*/
+                                    if (path == null) {
+                                        conflict = "true";
+                                        conflictToast(events.getName());
+                                        editEventEnd.setError(REQUIRED);
+                                        return;
+                                    }
+                                    else
+                                        conflict = "false";
+                                }
                             }
                             if (conflict.equals("false")) {
                                 System.out.println("conflict flag == 0");
