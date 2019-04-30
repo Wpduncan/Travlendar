@@ -17,6 +17,8 @@ public class Events {
     public String mod;
     public String note;
     public String location;
+    public int military_start;
+    public int military_end;
     public Integer sTime;
     public Integer eTime;
     //public Map<String, Boolean> event = new HashMap<>();
@@ -134,6 +136,22 @@ public class Events {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getMilitary_start() {
+        return military_start;
+    }
+
+    public void setMilitary_start(int military_start) {
+        this.military_start = military_start;
+    }
+
+    public int getMilitary_end() {
+        return military_end;
+    }
+
+    public void setMilitary_end(int military_end) {
+        this.military_end = military_end;
     }
 
     public int getsTime() {
